@@ -9,10 +9,16 @@
     <version>0.1.0-SNAPSHOT</version>
     <description>Modern Programming Practices (MPP) course's Final Project</description>
 
+    <organization>
+        <name>MIU</name>
+    </organization>
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spotless.version>2.39.0</spotless.version>
+        <spotless.ratchet-from>origin/main</spotless.ratchet-from>
         <mainClass>com.miu.cs.librarysystem.LibrarySystemApplication</mainClass>
     </properties>
 
@@ -30,6 +36,37 @@
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+                <configuration>
+                    <ratchetFrom>${spotless.ratchet-from}</ratchetFrom>
+                    <java>
+                        <includes>
+                            <include>**/*.java</include>
+                        </includes>
+                        <googleJavaFormat>
+                            <style>GOOGLE</style>
+                            <reflowLongStrings>true</reflowLongStrings>
+                        </googleJavaFormat>
+                    </java>
+                    <markdown>
+                        <includes>
+                            <include>**/*.md</include>
+                        </includes>
+                        <flexmark />
+                    </markdown>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
