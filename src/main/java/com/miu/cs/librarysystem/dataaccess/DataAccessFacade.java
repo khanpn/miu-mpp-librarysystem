@@ -2,13 +2,10 @@ package com.miu.cs.librarysystem.dataaccess;
 
 import com.miu.cs.librarysystem.business.Book;
 import com.miu.cs.librarysystem.business.LibraryMember;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.nio.file.FileSystems;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,9 +17,8 @@ public class DataAccessFacade implements DataAccess {
     USERS;
   }
 
-  public static final String OUTPUT_DIR =
-      System.getProperty("user.dir") + "/src/dataaccess/storage"; // for Unix file system
-  //			+ "\\src\\dataaccess\\storage"; //for Windows file system
+  public static final String APP_DATA_DIR =
+      System.getProperty("user.dir") + File.separator + "lib-data";
   public static final String DATE_PATTERN = "MM/dd/yyyy";
 
   // implement: other save operations
@@ -81,7 +77,7 @@ public class DataAccessFacade implements DataAccess {
   static void saveToStorage(StorageType type, Object ob) {
     ObjectOutputStream out = null;
     try {
-      Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
+      Path path = getDataPath().resolve(type.toString());
       out = new ObjectOutputStream(Files.newOutputStream(path));
       out.writeObject(ob);
     } catch (IOException e) {
@@ -100,7 +96,7 @@ public class DataAccessFacade implements DataAccess {
     ObjectInputStream in = null;
     Object retVal = null;
     try {
-      Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
+      Path path = getDataPath().resolve(type.toString());
       in = new ObjectInputStream(Files.newInputStream(path));
       retVal = in.readObject();
     } catch (Exception e) {
@@ -114,6 +110,14 @@ public class DataAccessFacade implements DataAccess {
       }
     }
     return retVal;
+  }
+
+  private static Path getDataPath() throws IOException {
+    Path dataPath = Paths.get(APP_DATA_DIR);
+    if (!Files.exists(dataPath)) {
+      Files.createDirectories(dataPath);
+    }
+    return dataPath;
   }
 
   static final class Pair<S, T> implements Serializable {
