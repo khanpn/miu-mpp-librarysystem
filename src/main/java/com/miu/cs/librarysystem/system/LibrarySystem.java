@@ -3,6 +3,9 @@ package com.miu.cs.librarysystem.system;
 import com.miu.cs.librarysystem.business.ControllerInterface;
 import com.miu.cs.librarysystem.business.SystemController;
 import com.miu.cs.librarysystem.dataaccess.User;
+import com.miu.cs.librarysystem.store.AppStore;
+import com.miu.cs.librarysystem.store.state.AppStatePath;
+import com.miu.cs.librarysystem.store.state.LoginState;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -40,9 +43,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
     this.loggedInUser = loggedInUser;
   }
 
-  private static LibWindow[] allWindows = {
-    LibrarySystem.INSTANCE, LoginWindow.INSTANCE, MenuWindow.INSTANCE
-  };
+  private static LibWindow[] allWindows = {LibrarySystem.INSTANCE, MenuWindow.INSTANCE};
 
   public static void hideAllWindows() {
     for (LibWindow frame : allWindows) {
@@ -78,15 +79,9 @@ public class LibrarySystem extends JFrame implements LibWindow {
   }
 
   private void reloadContentPage() {
-    if (loggedInUser == null) {
-      leftPanel = LoginWindow.INSTANCE;
-      LoginWindow.INSTANCE.init();
-      //      MenuWindow.INSTANCE.setAuth(Auth.BOTH);
-      //      leftPanel = MenuWindow.INSTANCE;
-    } else {
-      MenuWindow.INSTANCE.setAuth(loggedInUser.getAuthorization());
-      leftPanel = MenuWindow.INSTANCE;
-    }
+    loggedInUser = AppStore.getState(AppStatePath.LOGIN, LoginState.class).getData().getAuthUser();
+    MenuWindow.INSTANCE.setAuth(loggedInUser.getAuthorization());
+    leftPanel = MenuWindow.INSTANCE;
 
     leftPanel.setLayout(new GridLayout(15, 1));
     leftPanel.setBackground(Color.LIGHT_GRAY);
