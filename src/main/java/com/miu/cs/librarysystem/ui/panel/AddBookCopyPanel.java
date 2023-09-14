@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
@@ -82,7 +83,7 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
     JButton btnClearSearch = new JButton("CLEAR SEARCH");
     searchPanel.add(btnClearSearch);
 
-    JButton btnCopy = new JButton("COPY");
+    JButton btnCopy = new JButton("Add Copy/Copies");
     searchPanel.add(btnCopy);
 
     JPanel middlePanel = new JPanel();
@@ -103,7 +104,7 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
     middlePanel.add(txtTitle);
     txtTitle.setColumns(10);
 
-    JLabel lblAvailability = new JLabel("Availability:");
+    JLabel lblAvailability = new JLabel("Total Available Copies:");
     middlePanel.add(lblAvailability);
 
     txtAvailability = new JTextField("");
@@ -126,7 +127,7 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
     centerPanel.add(middlePanel);
 
     JPanel tablePanel = new JPanel();
-    tablePanel.setBounds(5, 282, 580, 275);
+    tablePanel.setBounds(5, 300, 760, 300);
     centerPanel.add(tablePanel);
     tablePanel.setLayout(new BorderLayout(0, 0));
     table =
@@ -139,13 +140,15 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
         };
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setModel(model);
+    ((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(JLabel.LEFT);
     TableColumnModel colModel = table.getColumnModel();
-    colModel.getColumn(5).setPreferredWidth(200);
-    colModel.getColumn(4).setPreferredWidth(50);
-    colModel.getColumn(3).setPreferredWidth(50);
-    colModel.getColumn(2).setPreferredWidth(50);
-    colModel.getColumn(1).setPreferredWidth(100);
-    colModel.getColumn(0).setPreferredWidth(75);
+    colModel.getColumn(0).setPreferredWidth(100);
+    colModel.getColumn(1).setPreferredWidth(180);
+    colModel.getColumn(2).setPreferredWidth(110);
+    colModel.getColumn(3).setPreferredWidth(90);
+    colModel.getColumn(4).setPreferredWidth(70);
+    colModel.getColumn(5).setPreferredWidth(180);
     JScrollPane jScrollPane = new JScrollPane();
     jScrollPane.setViewportView(table);
     tablePanel.add(jScrollPane);

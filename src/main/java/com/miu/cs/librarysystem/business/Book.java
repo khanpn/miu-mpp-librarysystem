@@ -66,7 +66,12 @@ public final class Book implements Serializable {
 
   @Override
   public String toString() {
-    return "isbn: " + isbn + ", maxLength: " + maxCheckoutLength + ", available: " + isAvailable();
+    return "isbn: "
+        + isbn
+        + ", maxLength: "
+        + maxCheckoutLength
+        + ", copies: "
+        + Arrays.toString(getCopies());
   }
 
   public int getNumCopies() {

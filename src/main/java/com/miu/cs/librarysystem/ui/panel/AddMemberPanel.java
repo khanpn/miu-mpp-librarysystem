@@ -28,6 +28,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
@@ -176,6 +177,8 @@ public class AddMemberPanel extends JPanel implements LibWindow {
         };
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setModel(model);
+    ((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(JLabel.LEFT);
     TableColumnModel colModel = table.getColumnModel();
     colModel.getColumn(4).setPreferredWidth(300);
     colModel.getColumn(3).setPreferredWidth(200);

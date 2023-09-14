@@ -3,9 +3,12 @@ package com.miu.cs.librarysystem.dataaccess;
 import com.miu.cs.librarysystem.business.Address;
 import com.miu.cs.librarysystem.business.Author;
 import com.miu.cs.librarysystem.business.Book;
+import com.miu.cs.librarysystem.business.BookCopy;
 import com.miu.cs.librarysystem.business.LibraryMember;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,6 +27,23 @@ public class TestData {
     DataAccess da = new DataAccessFacade();
     System.out.println(da.readBooksMap());
     System.out.println(da.readUserMap());
+
+    // load sample book checkout record for 1 member
+    HashMap<String, LibraryMember> memberMap = da.readMemberMap();
+    LibraryMember memberWithOverDue = memberMap.values().stream().findFirst().get();
+    Book book = td.allBooks.get(0);
+    BookCopy copy = book.getCopy(1);
+    if (copy != null) {
+      int maxCheckoutLength = copy.getBook().getMaxCheckoutLength();
+      memberWithOverDue.checkout(
+          copy,
+          LocalDate.now().minusDays(maxCheckoutLength),
+          LocalDate.now().minusDays(maxCheckoutLength - 1));
+      da.saveNewMember(memberWithOverDue);
+      da.saveBook(book); // update book status
+      System.out.println(memberWithOverDue);
+      System.out.println(book);
+    }
   }
 
   /// create books

@@ -51,6 +51,6 @@ public final class CheckoutRecord implements Serializable {
 
   @Override
   public String toString() {
-    return "CheckoutRecord{" + "member=" + member + ", entries=" + entries + '}';
+    return "CheckoutRecord{entries=" + entries + '}';
   }
 }
