@@ -1,4 +1,4 @@
-package com.miu.cs.librarysystem.ui.window;
+package com.miu.cs.librarysystem.ui.panel;
 
 import com.miu.cs.librarysystem.business.Book;
 import com.miu.cs.librarysystem.business.ControllerInterface;
@@ -25,7 +25,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class AddBookCopyWindow extends JPanel implements LibWindow {
+public class AddBookCopyPanel extends JPanel implements LibWindow {
 
   private static final long serialVersionUID = -8717602939009496185L;
   private boolean isInitialized = false;
@@ -42,7 +42,7 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
 
   private int selectedRow = -1;
 
-  public AddBookCopyWindow() {
+  public AddBookCopyPanel() {
     init();
   }
 
