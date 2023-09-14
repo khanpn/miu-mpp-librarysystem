@@ -4,6 +4,8 @@ import com.miu.cs.librarysystem.business.Book;
 import com.miu.cs.librarysystem.business.ControllerInterface;
 import com.miu.cs.librarysystem.business.SystemController;
 import com.miu.cs.librarysystem.system.LibWindow;
+import com.miu.cs.librarysystem.system.TypographyUtils;
+import com.miu.cs.librarysystem.ui.renderer.AvailableBookCopyCellRenderer;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -53,8 +55,10 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
 
     JPanel topPanel = new JPanel();
     add(topPanel, BorderLayout.NORTH);
-    topPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+    topPanel.setLayout(
+        new FlowLayout(FlowLayout.CENTER, 5, TypographyUtils.H_PADDING_FROM_PANEL_HEADER));
     JLabel lblNewLabel = new JLabel("Book shelf");
+    lblNewLabel.setFont(getFont().deriveFont(24f));
     topPanel.add(lblNewLabel);
 
     Object[] columnsObjects = {
@@ -83,7 +87,7 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
     JButton btnClearSearch = new JButton("CLEAR SEARCH");
     searchPanel.add(btnClearSearch);
 
-    JButton btnCopy = new JButton("Add Copy/Copies");
+    JButton btnCopy = new JButton("Add Copy");
     searchPanel.add(btnCopy);
 
     JPanel middlePanel = new JPanel();
@@ -110,6 +114,7 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
     txtAvailability = new JTextField("");
     middlePanel.add(txtAvailability);
     txtAvailability.setColumns(10);
+    txtAvailability.setEditable(false); // not allow to edit, adding a copy make it +1
 
     // add empty element to fill gap
     middlePanel.add(new JLabel(""));
@@ -136,6 +141,20 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
 
           public boolean isCellEditable(int row, int column) {
             return false;
+          }
+
+          @Override
+          public Class getColumnClass(int columnIndex) {
+            Class[] types =
+                new Class[] {
+                  String.class,
+                  String.class,
+                  Integer.class,
+                  Integer.class,
+                  Integer.class,
+                  String.class
+                };
+            return types[columnIndex];
           }
         };
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -210,6 +229,7 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
             super.mouseClicked(e);
           }
         });
+    table.setDefaultRenderer(Integer.class, new AvailableBookCopyCellRenderer());
 
     btnClearSearch.addActionListener(
         (evt) -> {
@@ -228,7 +248,7 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
     model.setRowCount(0);
     Collection<Book> books = ci.allBooks();
     for (Book book : books) {
-      Object[] objects = {
+      Object[] rowData = {
         book.getIsbn(),
         book.getTitle(),
         book.getMaxCheckoutLength(),
@@ -236,7 +256,7 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
         book.getCopies().length,
         book.getAuthors().toString()
       };
-      model.addRow(objects);
+      model.addRow(rowData);
     }
   }
 
@@ -245,7 +265,7 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
     Collection<Book> books = ci.allBooks();
     for (Book book : books) {
       if (book.getIsbn().equals(isbn)) {
-        Object[] objects = {
+        Object[] rowData = {
           book.getIsbn(),
           book.getTitle(),
           book.getMaxCheckoutLength(),
@@ -253,7 +273,7 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
           book.getCopies().length,
           book.getAuthors().toString()
         };
-        model.addRow(objects);
+        model.addRow(rowData);
         break;
       }
     }
