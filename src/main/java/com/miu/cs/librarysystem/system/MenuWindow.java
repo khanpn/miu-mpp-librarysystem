@@ -1,6 +1,7 @@
 package com.miu.cs.librarysystem.system;
 
 import com.miu.cs.librarysystem.dataaccess.Auth;
+import com.miu.cs.librarysystem.ui.window.LoginWindow;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -51,7 +52,11 @@ public class MenuWindow extends JPanel implements LibWindow {
     logoutButton.addActionListener(
         e -> {
           LibrarySystem.INSTANCE.setLoggedInUser(null);
-          LibrarySystem.INSTANCE.init();
+          LibrarySystem.INSTANCE.dispose();
+
+          LoginWindow loginWindow = new LoginWindow();
+          Util.centerFrameOnDesktop(loginWindow);
+          loginWindow.setVisible(true);
         });
     return logoutButton;
   }

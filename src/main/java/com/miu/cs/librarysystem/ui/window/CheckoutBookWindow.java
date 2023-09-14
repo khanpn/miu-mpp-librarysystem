@@ -1,7 +1,8 @@
-package com.miu.cs.librarysystem.system;
+package com.miu.cs.librarysystem.ui.window;
 
 import com.miu.cs.librarysystem.business.ControllerInterface;
 import com.miu.cs.librarysystem.business.SystemController;
+import com.miu.cs.librarysystem.system.LibWindow;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 

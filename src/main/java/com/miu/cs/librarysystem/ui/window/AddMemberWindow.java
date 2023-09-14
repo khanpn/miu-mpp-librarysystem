@@ -1,4 +1,4 @@
-package com.miu.cs.librarysystem.system;
+package com.miu.cs.librarysystem.ui.window;
 
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
@@ -7,6 +7,7 @@ import com.miu.cs.librarysystem.business.Address;
 import com.miu.cs.librarysystem.business.ControllerInterface;
 import com.miu.cs.librarysystem.business.LibraryMember;
 import com.miu.cs.librarysystem.business.SystemController;
+import com.miu.cs.librarysystem.system.LibWindow;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
