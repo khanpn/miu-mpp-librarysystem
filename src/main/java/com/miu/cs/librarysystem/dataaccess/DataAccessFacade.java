@@ -2,12 +2,17 @@ package com.miu.cs.librarysystem.dataaccess;
 
 import com.miu.cs.librarysystem.business.Book;
 import com.miu.cs.librarysystem.business.LibraryMember;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class DataAccessFacade implements DataAccess {
 
@@ -32,21 +37,21 @@ public class DataAccessFacade implements DataAccess {
   @SuppressWarnings("unchecked")
   public HashMap<String, Book> readBooksMap() {
     // Returns a Map with name/value pairs being
-    //   isbn -> Book
+    // isbn -> Book
     return (HashMap<String, Book>) readFromStorage(StorageType.BOOKS);
   }
 
   @SuppressWarnings("unchecked")
   public HashMap<String, LibraryMember> readMemberMap() {
     // Returns a Map with name/value pairs being
-    //   memberId -> LibraryMember
+    // memberId -> LibraryMember
     return (HashMap<String, LibraryMember>) readFromStorage(StorageType.MEMBERS);
   }
 
   @SuppressWarnings("unchecked")
   public HashMap<String, User> readUserMap() {
     // Returns a Map with name/value pairs being
-    //   userId -> User
+    // userId -> User
     return (HashMap<String, User>) readFromStorage(StorageType.USERS);
   }
 
@@ -58,7 +63,7 @@ public class DataAccessFacade implements DataAccess {
     for (Book book : bookList) {
       books.put(book.getIsbn(), book);
     }
-    //		bookList.forEach(book -> books.put(book.getIsbn(), book));
+    // bookList.forEach(book -> books.put(book.getIsbn(), book));
     saveToStorage(StorageType.BOOKS, books);
   }
 
@@ -72,6 +77,13 @@ public class DataAccessFacade implements DataAccess {
     HashMap<String, LibraryMember> members = new HashMap<String, LibraryMember>();
     memberList.forEach(member -> members.put(member.getMemberId(), member));
     saveToStorage(StorageType.MEMBERS, members);
+  }
+
+  @Override
+  public void deleteMember(String memberId) {
+    HashMap<String, LibraryMember> mems = readMemberMap();
+    mems.remove(memberId);
+    saveToStorage(StorageType.MEMBERS, mems);
   }
 
   static void saveToStorage(StorageType type, Object ob) {
@@ -151,5 +163,22 @@ public class DataAccessFacade implements DataAccess {
     }
 
     private static final long serialVersionUID = 5399827794066637059L;
+  }
+
+  @Override
+  public void saveBook(Book book) {
+    HashMap<String, Book> books = readBooksMap();
+    books.put(book.getIsbn(), book);
+    saveToStorage(StorageType.BOOKS, books);
+  }
+
+  @Override
+  public Optional<Book> findBookByIsbn(String isbn) {
+    return Optional.ofNullable(readBooksMap().get(isbn));
+  }
+
+  @Override
+  public Optional<LibraryMember> findMemberById(String memberId) {
+    return Optional.ofNullable(readMemberMap().get(memberId));
   }
 }
