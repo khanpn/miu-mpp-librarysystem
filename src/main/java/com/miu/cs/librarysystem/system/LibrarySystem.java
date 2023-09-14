@@ -6,7 +6,7 @@ import com.miu.cs.librarysystem.dataaccess.User;
 import com.miu.cs.librarysystem.store.AppStore;
 import com.miu.cs.librarysystem.store.state.AppStatePath;
 import com.miu.cs.librarysystem.store.state.LoginState;
-import com.miu.cs.librarysystem.ui.window.*;
+import com.miu.cs.librarysystem.ui.panel.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -110,40 +110,40 @@ public class LibrarySystem extends JFrame implements LibWindow {
   }
 
   public void openListLibraryMemberWindow() {
-    if (!(mainPanel instanceof AddMemberWindow)) {
-      mainPanel = new AddMemberWindow();
+    if (!(mainPanel instanceof AddMemberPanel)) {
+      mainPanel = new AddMemberPanel();
       splitPane.setRightComponent(mainPanel);
       splitPane.setDividerLocation(300);
     }
   }
 
   public void openCheckoutBookWindow() {
-    if (!(mainPanel instanceof CheckoutBookWindow)) {
-      mainPanel = new CheckoutBookWindow();
+    if (!(mainPanel instanceof CheckoutBookPanel)) {
+      mainPanel = new CheckoutBookPanel();
       splitPane.setRightComponent(mainPanel);
       splitPane.setDividerLocation(300);
     }
   }
 
   public void openAddBookCopyWindow() {
-    if (!(mainPanel instanceof AddBookCopyWindow)) {
-      mainPanel = new AddBookCopyWindow();
+    if (!(mainPanel instanceof AddBookCopyPanel)) {
+      mainPanel = new AddBookCopyPanel();
       splitPane.setRightComponent(mainPanel);
       splitPane.setDividerLocation(300);
     }
   }
 
   public void openSearchMemberCheckoutRecordWindow() {
-    if (!(mainPanel instanceof SearchMemberCheckoutRecordWindow)) {
-      mainPanel = new SearchMemberCheckoutRecordWindow();
+    if (!(mainPanel instanceof SearchMemberCheckoutRecordPanel)) {
+      mainPanel = new SearchMemberCheckoutRecordPanel();
       splitPane.setRightComponent(mainPanel);
       splitPane.setDividerLocation(300);
     }
   }
 
   public void openSearchOverDueWindow() {
-    if (!(mainPanel instanceof SearchOverDueWindow)) {
-      mainPanel = new SearchOverDueWindow();
+    if (!(mainPanel instanceof SearchOverDuePanel)) {
+      mainPanel = new SearchOverDuePanel();
       splitPane.setRightComponent(mainPanel);
       splitPane.setDividerLocation(300);
     }

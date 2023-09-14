@@ -1,4 +1,4 @@
-package com.miu.cs.librarysystem.ui.window;
+package com.miu.cs.librarysystem.ui.panel;
 
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
@@ -31,7 +31,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class AddMemberWindow extends JPanel implements LibWindow {
+public class AddMemberPanel extends JPanel implements LibWindow {
   @Serial private static final long serialVersionUID = 7863919163615773327L;
   private boolean isInitialized = false;
 
@@ -52,7 +52,7 @@ public class AddMemberWindow extends JPanel implements LibWindow {
   ControllerInterface controller = new SystemController();
   private int selectedRow = -1;
 
-  public AddMemberWindow() {
+  public AddMemberPanel() {
     init();
   }
 
