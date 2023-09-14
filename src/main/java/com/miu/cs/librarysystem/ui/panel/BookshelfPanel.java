@@ -52,6 +52,10 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
   }
 
   private void init() {
+    Util.addButtonHover(searchButton);
+    Util.addButtonHover(clearSearchButton);
+    Util.addButtonHover(addBookButton);
+    Util.addButtonHover(copyBookButton);
     add(contentPane);
     TypographyUtils.applyHeadingStyle(bookshelfLabel);
     bookTableModel = new DefaultTableModel();

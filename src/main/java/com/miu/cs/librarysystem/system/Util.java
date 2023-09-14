@@ -79,4 +79,17 @@ public class Util {
     btn.setVerticalTextPosition(SwingConstants.CENTER);
     return btn;
   }
+
+  public static void addButtonHover(JButton btn) {
+    Color color = btn.getBackground();
+    btn.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseEntered(java.awt.event.MouseEvent evt) {
+        btn.setBackground(Color.decode("#FFC107"));
+      }
+      //when mouse exit the button will return to previous color
+      public void mouseExited(java.awt.event.MouseEvent evt) {
+        btn.setBackground(color);
+      }
+    });
+  }
 }

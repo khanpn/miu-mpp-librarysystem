@@ -51,6 +51,7 @@ public class LoginWindow extends JFrame implements AppStateChangeListener<LoginS
             return new BasicAuthCredentials(usernameField.getText(), passwordField.getText());
           }
         });
+    Util.addButtonHover(loginButton);
   }
 
   @Override

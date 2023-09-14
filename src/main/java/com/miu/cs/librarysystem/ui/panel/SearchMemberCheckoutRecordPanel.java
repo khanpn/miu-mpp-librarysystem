@@ -8,6 +8,8 @@ import com.miu.cs.librarysystem.controller.ControllerInterface;
 import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.system.LibWindow;
 import com.miu.cs.librarysystem.system.TypographyUtils;
+import com.miu.cs.librarysystem.system.Util;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -62,13 +64,16 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
     panel_3.setBounds(154, 231, 430, 39);
 
     JButton searchMemberButton = new JButton("SEARCH");
+    Util.addButtonHover(searchMemberButton);
     panel_3.add(searchMemberButton);
     searchMemberButton.setHorizontalAlignment(SwingConstants.RIGHT);
 
     JButton printRecordButton = new JButton("PRINT RECORD");
+    Util.addButtonHover(printRecordButton);
     panel_3.add(printRecordButton);
 
     JButton clearFieldsButton = new JButton("CLEAR FIELDS");
+    Util.addButtonHover(clearFieldsButton);
     panel_3.add(clearFieldsButton);
 
     JPanel middlePanel = new JPanel();

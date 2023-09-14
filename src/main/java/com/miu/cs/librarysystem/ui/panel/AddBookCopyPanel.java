@@ -5,6 +5,7 @@ import com.miu.cs.librarysystem.controller.ControllerInterface;
 import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.system.LibWindow;
 import com.miu.cs.librarysystem.system.TypographyUtils;
+import com.miu.cs.librarysystem.system.Util;
 import com.miu.cs.librarysystem.ui.renderer.AvailableBookCopyCellRenderer;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -82,12 +83,15 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
     searchField.setSize(200, 24);
     searchPanel.add(searchField);
     JButton btnSearch = new JButton("ISBN SEARCH");
+    Util.addButtonHover(btnSearch);
     searchPanel.add(btnSearch);
 
     JButton btnClearSearch = new JButton("CLEAR SEARCH");
+    Util.addButtonHover(btnClearSearch);
     searchPanel.add(btnClearSearch);
 
     JButton btnCopy = new JButton("Add Copy");
+    Util.addButtonHover(btnCopy);
     searchPanel.add(btnCopy);
 
     JPanel middlePanel = new JPanel();
