@@ -160,6 +160,7 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
                         entry -> {
                           Book book = entry.getCopy().getBook();
                           if (entry.isOverdue() && isbn.equalsIgnoreCase(book.getIsbn())) {
+                            clearTable();
                             model.addRow(
                                 new Object[] {
                                   book.getIsbn(),
@@ -177,8 +178,15 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
     btnClearSearch.addActionListener(
         (evt) -> {
           clearText();
-          model.setRowCount(0);
+          //          model.setRowCount(0);
+          clearTable();
         });
+  }
+
+  void clearTable() {
+    while (model.getRowCount() > 0) {
+      model.removeRow(0);
+    }
   }
 
   void clearText() {
