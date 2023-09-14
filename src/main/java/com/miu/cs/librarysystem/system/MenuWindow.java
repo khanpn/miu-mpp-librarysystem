@@ -1,10 +1,13 @@
 package com.miu.cs.librarysystem.system;
 
-import com.miu.cs.librarysystem.dataaccess.Auth;
+import java.awt.Dimension;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+
+import com.miu.cs.librarysystem.dataaccess.Auth;
 
 public class MenuWindow extends JPanel implements LibWindow {
   /** */
@@ -13,6 +16,7 @@ public class MenuWindow extends JPanel implements LibWindow {
   public static final MenuWindow INSTANCE = new MenuWindow();
 
   private boolean isInitialized = false;
+  
   private Auth role;
 
   public void init() {
@@ -21,19 +25,19 @@ public class MenuWindow extends JPanel implements LibWindow {
     switch (role) {
       case ADMIN -> {
         add(getListBooksButton());
-        add(getUserListButton());
+        add(addMember());
       }
       case LIBRARIAN -> {
         add(getCheckoutButton());
-        add(getSearchMemberButton());
-        add(getSearchBookButton());
+        add(getSearchMemberCheckoutRecordButton());
+        add(getSearchOverDueBookButton());
       }
       case BOTH -> {
         add(getListBooksButton());
-        add(getUserListButton());
+        add(addMember());
         add(getCheckoutButton());
-        add(getSearchBookButton());
-        add(getSearchMemberButton());
+        add(getSearchOverDueBookButton());
+        add(getSearchMemberCheckoutRecordButton());
       }
     }
 
@@ -46,7 +50,7 @@ public class MenuWindow extends JPanel implements LibWindow {
   }
 
   private static JButton getLogoutButton() {
-    JButton logoutButton = new JButton("Sign Out");
+    JButton logoutButton = new JButton("Log Out");
     logoutButton.addActionListener(
         e -> {
           LibrarySystem.INSTANCE.setLoggedInUser(null);
@@ -55,38 +59,45 @@ public class MenuWindow extends JPanel implements LibWindow {
     return logoutButton;
   }
 
-  private static JButton getUserListButton() {
-    JButton usersButton = new JButton("Members");
-    return usersButton;
+  private static JButton addMember() {
+    JButton btn = new JButton("Add Member");
+    btn.addActionListener(e -> LibrarySystem.INSTANCE.openListLibraryMemberWindow());
+    return btn;
   }
 
   private static JButton getCheckoutButton() {
-    JButton checkoutButton = new JButton("Checkout Book");
-    return checkoutButton;
+    JButton btn = new JButton("Checkout Book");
+    btn.addActionListener(e -> LibrarySystem.INSTANCE.openCheckoutBookWindow());
+    return btn;
   }
 
   private static JButton getListBooksButton() {
-    JButton booksButton = new JButton("Add Book");
-    return booksButton;
+    JButton btn = new JButton("Add Book Copy");
+    btn.addActionListener(e -> LibrarySystem.INSTANCE.openAddBookCopyWindow());
+    return btn;
   }
 
-  private static JButton getSearchMemberButton() {
-    JButton booksButton = new JButton("Search Member");
-    return booksButton;
+  private static JButton getSearchMemberCheckoutRecordButton() {
+    JButton btn = new JButton("Search Member Checkout Record");
+    btn.addActionListener(e -> LibrarySystem.INSTANCE.openSearchMemberCheckoutRecordWindow());
+    return btn;
   }
 
-  private static JButton getSearchBookButton() {
-    JButton booksButton = new JButton("Search Book");
-    return booksButton;
+  private static JButton getSearchOverDueBookButton() {
+    JButton btn = new JButton("Search OverDue Book");
+    btn.addActionListener(e -> LibrarySystem.INSTANCE.openSearchOverDueWindow());
+    return btn;
   }
 
   @Override
   public boolean isInitialized() {
-    return false;
+    return isInitialized;
   }
 
   @Override
-  public void setInitialized(boolean val) {}
+  public void setInitialized(boolean val) {
+	  this.isInitialized = val;
+  }
 
   public void setAuth(Auth role) {
     this.role = role;
