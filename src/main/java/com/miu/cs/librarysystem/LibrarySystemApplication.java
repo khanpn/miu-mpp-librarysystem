@@ -8,7 +8,7 @@ public class LibrarySystemApplication {
   public static void main(String[] args) {
     EventQueue.invokeLater(
         () -> {
-          LibrarySystem.INSTANCE.setTitle("Sample Library Application");
+          LibrarySystem.INSTANCE.setTitle("Library System Application");
           LibrarySystem.INSTANCE.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
           LibrarySystem.INSTANCE.init();

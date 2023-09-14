@@ -2,35 +2,46 @@ package com.miu.cs.librarysystem.system;
 
 import com.miu.cs.librarysystem.business.ControllerInterface;
 import com.miu.cs.librarysystem.business.SystemController;
+import com.miu.cs.librarysystem.dataaccess.User;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Collections;
-import java.util.List;
-import javax.swing.BorderFactory;
+import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.border.EmptyBorder;
 
 public class LibrarySystem extends JFrame implements LibWindow {
+  /** */
+  private static final long serialVersionUID = -8006557307706389790L;
+
   ControllerInterface ci = new SystemController();
   public static final LibrarySystem INSTANCE = new LibrarySystem();
+
+  JPanel leftPanel;
   JPanel mainPanel;
-  JMenuBar menuBar;
-  JMenu options;
-  JMenuItem login, allBookIds, allMemberIds;
+
+  JSplitPane splitPane;
+
   String pathToImage;
   private boolean isInitialized = false;
 
+  private User loggedInUser;
+
+  public User getLoggedInUser() {
+    return loggedInUser;
+  }
+
+  public void setLoggedInUser(User loggedInUser) {
+    this.loggedInUser = loggedInUser;
+  }
+
   private static LibWindow[] allWindows = {
-    LibrarySystem.INSTANCE,
-    LoginWindow.INSTANCE,
-    AllMemberIdsWindow.INSTANCE,
-    AllBookIdsWindow.INSTANCE
+    LibrarySystem.INSTANCE, LoginWindow.INSTANCE, MenuWindow.INSTANCE
   };
 
   public static void hideAllWindows() {
@@ -39,117 +50,65 @@ public class LibrarySystem extends JFrame implements LibWindow {
     }
   }
 
-  private LibrarySystem() {}
+  private LibrarySystem() {
+    leftPanel = new JPanel();
+    leftPanel.setLayout(new GridLayout(10, 1));
+    leftPanel.setBackground(Color.LIGHT_GRAY);
+    leftPanel.setBorder(new EmptyBorder(15, 30, 10, 30));
+
+    mainPanel = new JPanel();
+    mainPanel.setLayout(new GridLayout(1, 1));
+    splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, mainPanel);
+    splitPane.setDividerLocation(200);
+    // splitPane.setEnabled(false);
+    // splitPane.setDividerSize(0);
+    getContentPane().add(splitPane);
+  }
 
   public void init() {
-    formatContentPane();
+    reloadContentPage();
     setPathToImage();
     insertSplashImage();
 
-    createMenus();
+    setSize(850, 700);
+    splitPane.setDividerLocation(200);
     // pack();
-    setSize(660, 500);
-    isInitialized = true;
+    //		setSize(660, 500);
+    setInitialized(true);
   }
 
-  private void formatContentPane() {
-    mainPanel = new JPanel();
-    mainPanel.setLayout(new GridLayout(1, 2));
-    getContentPane().add(mainPanel);
+  private void reloadContentPage() {
+    if (loggedInUser == null) {
+      leftPanel = LoginWindow.INSTANCE;
+      LoginWindow.INSTANCE.init();
+    } else {
+      MenuWindow.INSTANCE.setAuth(loggedInUser.getAuthorization());
+      leftPanel = MenuWindow.INSTANCE;
+    }
+
+    leftPanel.setLayout(new GridLayout(15, 1));
+    leftPanel.setBackground(Color.LIGHT_GRAY);
+    splitPane.setLeftComponent(leftPanel);
   }
 
   private void setPathToImage() {
-    String currDirectory = System.getProperty("user.dir");
-    // for Windows file system
-    //    	pathToImage = currDirectory+"\\src\\librarysystem\\library.jpg";
-    // for unix file system
-    pathToImage = currDirectory + "/src/librarysystem/library.jpg";
+    //		String currDirectory = System.getProperty("user.dir");
+    //		// for Windows file system
+    //		 pathToImage = currDirectory+"\\src\\main\\java\\librarysystem\\library.jpg";
+    //		// for unix file system
+    ////		pathToImage = currDirectory + "/src/librarysystem/library.jpg";
+    pathToImage = getClass().getResource("/library.jpg").getFile();
   }
 
   private void insertSplashImage() {
+    // repaint background after success login
+    mainPanel.removeAll();
+    mainPanel.validate();
+    mainPanel.repaint();
+
     ImageIcon image = new ImageIcon(pathToImage);
     mainPanel.add(new JLabel(image));
-  }
-
-  private void createMenus() {
-    menuBar = new JMenuBar();
-    menuBar.setBorder(BorderFactory.createRaisedBevelBorder());
-    addMenuItems();
-    setJMenuBar(menuBar);
-  }
-
-  private void addMenuItems() {
-    options = new JMenu("Options");
-    menuBar.add(options);
-    login = new JMenuItem("Login");
-    login.addActionListener(new LoginListener());
-    allBookIds = new JMenuItem("All Book Ids");
-    allBookIds.addActionListener(new AllBookIdsListener());
-    allMemberIds = new JMenuItem("All Member Ids");
-    allMemberIds.addActionListener(new AllMemberIdsListener());
-    options.add(login);
-    options.add(allBookIds);
-    options.add(allMemberIds);
-  }
-
-  class LoginListener implements ActionListener {
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      LibrarySystem.hideAllWindows();
-      LoginWindow.INSTANCE.init();
-      Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
-      LoginWindow.INSTANCE.setVisible(true);
-    }
-  }
-
-  class AllBookIdsListener implements ActionListener {
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      LibrarySystem.hideAllWindows();
-      AllBookIdsWindow.INSTANCE.init();
-
-      List<String> ids = ci.allBookIds();
-      Collections.sort(ids);
-      StringBuilder sb = new StringBuilder();
-      for (String s : ids) {
-        sb.append(s + "\n");
-      }
-      System.out.println(sb.toString());
-      AllBookIdsWindow.INSTANCE.setData(sb.toString());
-      AllBookIdsWindow.INSTANCE.pack();
-      // AllBookIdsWindow.INSTANCE.setSize(660,500);
-      Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
-      AllBookIdsWindow.INSTANCE.setVisible(true);
-    }
-  }
-
-  class AllMemberIdsListener implements ActionListener {
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      LibrarySystem.hideAllWindows();
-      AllMemberIdsWindow.INSTANCE.init();
-      AllMemberIdsWindow.INSTANCE.pack();
-      AllMemberIdsWindow.INSTANCE.setVisible(true);
-
-      LibrarySystem.hideAllWindows();
-      AllBookIdsWindow.INSTANCE.init();
-
-      List<String> ids = ci.allMemberIds();
-      Collections.sort(ids);
-      StringBuilder sb = new StringBuilder();
-      for (String s : ids) {
-        sb.append(s + "\n");
-      }
-      System.out.println(sb.toString());
-      AllMemberIdsWindow.INSTANCE.setData(sb.toString());
-      AllMemberIdsWindow.INSTANCE.pack();
-      // AllMemberIdsWindow.INSTANCE.setSize(660,500);
-      Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
-      AllMemberIdsWindow.INSTANCE.setVisible(true);
-    }
+    mainPanel.setBackground(Color.WHITE);
   }
 
   @Override
@@ -158,7 +117,28 @@ public class LibrarySystem extends JFrame implements LibWindow {
   }
 
   @Override
-  public void isInitialized(boolean val) {
+  public void setInitialized(boolean val) {
     isInitialized = val;
+  }
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(
+        () -> {
+          LibrarySystem.INSTANCE.setTitle("Library System Application");
+          LibrarySystem.INSTANCE.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+          LibrarySystem.INSTANCE.init();
+          centerFrameOnDesktop(LibrarySystem.INSTANCE);
+          LibrarySystem.INSTANCE.setVisible(true);
+        });
+  }
+
+  public static void centerFrameOnDesktop(Component f) {
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    int height = toolkit.getScreenSize().height;
+    int width = toolkit.getScreenSize().width;
+    int frameHeight = f.getSize().height;
+    int frameWidth = f.getSize().width;
+    f.setLocation(((width - frameWidth) / 2), (height - frameHeight) / 3);
   }
 }

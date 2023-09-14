@@ -5,7 +5,7 @@ public interface LibWindow {
 
   boolean isInitialized();
 
-  void isInitialized(boolean val);
-
   void setVisible(boolean b);
+
+  void setInitialized(boolean val);
 }
