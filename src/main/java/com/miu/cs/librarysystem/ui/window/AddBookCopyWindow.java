@@ -1,8 +1,9 @@
-package com.miu.cs.librarysystem.system;
+package com.miu.cs.librarysystem.ui.window;
 
 import com.miu.cs.librarysystem.business.Book;
 import com.miu.cs.librarysystem.business.ControllerInterface;
 import com.miu.cs.librarysystem.business.SystemController;
+import com.miu.cs.librarysystem.system.LibWindow;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
