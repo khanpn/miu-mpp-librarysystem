@@ -7,6 +7,8 @@ public final class TypographyUtils {
 
   public static final int HEADING_1 = 16;
 
+  public static final int H_PADDING_FROM_PANEL_HEADER = 20;
+
   private TypographyUtils() {}
 
   public static void applyHeadingStyle(JComponent component) {

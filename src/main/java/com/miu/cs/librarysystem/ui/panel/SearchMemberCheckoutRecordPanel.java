@@ -7,6 +7,7 @@ import com.miu.cs.librarysystem.business.ControllerInterface;
 import com.miu.cs.librarysystem.business.LibraryMember;
 import com.miu.cs.librarysystem.business.SystemController;
 import com.miu.cs.librarysystem.system.LibWindow;
+import com.miu.cs.librarysystem.system.TypographyUtils;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -44,9 +45,11 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
     setLayout(new BorderLayout());
     JPanel panel = new JPanel();
     add(panel, BorderLayout.NORTH);
-    panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+    panel.setLayout(
+        new FlowLayout(FlowLayout.CENTER, 5, TypographyUtils.H_PADDING_FROM_PANEL_HEADER));
 
     JLabel lblNewLabel = new JLabel("Member Search");
+    lblNewLabel.setFont(getFont().deriveFont(24f));
     panel.add(lblNewLabel);
 
     JPanel panel_1 = new JPanel();

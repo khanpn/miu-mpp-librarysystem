@@ -8,6 +8,7 @@ import com.miu.cs.librarysystem.business.ControllerInterface;
 import com.miu.cs.librarysystem.business.LibraryMember;
 import com.miu.cs.librarysystem.business.SystemController;
 import com.miu.cs.librarysystem.system.LibWindow;
+import com.miu.cs.librarysystem.system.TypographyUtils;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -62,9 +63,11 @@ public class AddMemberPanel extends JPanel implements LibWindow {
     setLayout(new BorderLayout());
     JPanel panel = new JPanel();
     add(panel, BorderLayout.NORTH);
-    panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+    panel.setLayout(
+        new FlowLayout(FlowLayout.CENTER, 5, TypographyUtils.H_PADDING_FROM_PANEL_HEADER));
 
     JLabel lblNewLabel = new JLabel("Table of Library Members");
+    lblNewLabel.setFont(getFont().deriveFont(24f));
     panel.add(lblNewLabel);
     Object[] columnsObjects = {"ID", "First Name", "Last Name", "TEL", "Address"};
     DefaultTableModel model = new DefaultTableModel();
@@ -269,14 +272,14 @@ public class AddMemberPanel extends JPanel implements LibWindow {
               "",
               INFORMATION_MESSAGE,
               new ImageIcon(System.getProperty("user.dir") + "/src/librarysystem/success.png"));
-          Object[] objects = {
+          Object[] rowData = {
             member.getMemberId(),
             member.getFirstName(),
             member.getLastName(),
             member.getTelephone(),
             member.getAddress()
           };
-          model.addRow(objects);
+          model.addRow(rowData);
         });
 
     // Update button
