@@ -1,6 +1,7 @@
 package com.miu.cs.librarysystem.business;
 
 import com.miu.cs.librarysystem.dataaccess.User;
+import com.miu.cs.librarysystem.exception.LoginException;
 import java.util.Date;
 
 public class AuthenticationContext {

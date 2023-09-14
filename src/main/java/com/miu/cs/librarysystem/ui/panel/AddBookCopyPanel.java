@@ -1,8 +1,8 @@
 package com.miu.cs.librarysystem.ui.panel;
 
 import com.miu.cs.librarysystem.business.Book;
-import com.miu.cs.librarysystem.business.ControllerInterface;
-import com.miu.cs.librarysystem.business.SystemController;
+import com.miu.cs.librarysystem.controller.ControllerInterface;
+import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.system.LibWindow;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

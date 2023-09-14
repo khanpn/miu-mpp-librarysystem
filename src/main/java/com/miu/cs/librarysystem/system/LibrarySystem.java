@@ -1,17 +1,14 @@
 package com.miu.cs.librarysystem.system;
 
-import com.miu.cs.librarysystem.business.ControllerInterface;
-import com.miu.cs.librarysystem.business.SystemController;
+import com.miu.cs.librarysystem.controller.ControllerInterface;
+import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.dataaccess.User;
 import com.miu.cs.librarysystem.store.AppStore;
 import com.miu.cs.librarysystem.store.state.AppStatePath;
 import com.miu.cs.librarysystem.store.state.LoginState;
 import com.miu.cs.librarysystem.ui.panel.*;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -157,27 +154,5 @@ public class LibrarySystem extends JFrame implements LibWindow {
   @Override
   public void setInitialized(boolean val) {
     isInitialized = val;
-  }
-
-  public static void centerFrameOnDesktop(Component f) {
-    Toolkit toolkit = Toolkit.getDefaultToolkit();
-    int height = toolkit.getScreenSize().height;
-    int width = toolkit.getScreenSize().width;
-    int frameHeight = f.getSize().height;
-    int frameWidth = f.getSize().width;
-    f.setLocation(((width - frameWidth) / 2), (height - frameHeight) / 3);
-  }
-
-  // for quick UI test only
-  public static void main(String[] args) {
-    EventQueue.invokeLater(
-        () -> {
-          LibrarySystem.INSTANCE.setTitle("Library System Application");
-          LibrarySystem.INSTANCE.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-          LibrarySystem.INSTANCE.init();
-          centerFrameOnDesktop(LibrarySystem.INSTANCE);
-          LibrarySystem.INSTANCE.setVisible(true);
-        });
   }
 }

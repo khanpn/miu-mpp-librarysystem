@@ -63,12 +63,12 @@ public class LoginWindow extends JFrame implements AppStateChangeListener<LoginS
 
     EventQueue.invokeLater(
         () -> {
-          LibrarySystem.INSTANCE.setTitle("Sample Library Application");
+          LibrarySystem.INSTANCE.setTitle("Library System Application");
           LibrarySystem.INSTANCE.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
           LibrarySystem.INSTANCE.init();
           Util.centerFrameOnDesktop(LibrarySystem.INSTANCE);
           LibrarySystem.INSTANCE.setVisible(true);
+
           AppStore.unregisterOnStateChange(getListeningStatePath(), this);
           dispose();
         });

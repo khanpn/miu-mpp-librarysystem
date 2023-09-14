@@ -1,4 +1,4 @@
-package com.miu.cs.librarysystem.business;
+package com.miu.cs.librarysystem.exception;
 
 import java.io.Serializable;
 

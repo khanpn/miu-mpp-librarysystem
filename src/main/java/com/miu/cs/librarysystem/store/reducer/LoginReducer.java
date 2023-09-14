@@ -2,9 +2,9 @@ package com.miu.cs.librarysystem.store.reducer;
 
 import com.miu.cs.librarysystem.business.AuthenticationContext;
 import com.miu.cs.librarysystem.business.BasicAuthCredentials;
-import com.miu.cs.librarysystem.business.LoginException;
-import com.miu.cs.librarysystem.business.SystemController;
+import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.dataaccess.User;
+import com.miu.cs.librarysystem.exception.LoginException;
 import com.miu.cs.librarysystem.store.action.AppAction;
 import com.miu.cs.librarysystem.store.action.LoginSubmitAction;
 import com.miu.cs.librarysystem.store.state.LoginState;

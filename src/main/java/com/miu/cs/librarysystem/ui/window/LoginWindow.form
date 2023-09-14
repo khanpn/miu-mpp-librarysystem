@@ -15,7 +15,7 @@
           <component id="3771e" class="javax.swing.JLabel" binding="headingLabel">
             <constraints/>
             <properties>
-              <text value="Labrary System Login"/>
+              <text value="Library System Login"/>
             </properties>
           </component>
         </children>

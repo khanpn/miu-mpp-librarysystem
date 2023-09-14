@@ -4,10 +4,10 @@ import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 import com.miu.cs.librarysystem.business.Book;
 import com.miu.cs.librarysystem.business.CheckoutHistory;
-import com.miu.cs.librarysystem.business.ControllerInterface;
 import com.miu.cs.librarysystem.business.LibraryMember;
-import com.miu.cs.librarysystem.business.LibrarySystemException;
-import com.miu.cs.librarysystem.business.SystemController;
+import com.miu.cs.librarysystem.controller.ControllerInterface;
+import com.miu.cs.librarysystem.controller.SystemController;
+import com.miu.cs.librarysystem.exception.LibrarySystemException;
 import com.miu.cs.librarysystem.system.LibWindow;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
