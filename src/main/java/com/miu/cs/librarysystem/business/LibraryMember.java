@@ -42,7 +42,10 @@ public final class LibraryMember extends Person implements Serializable {
         + ", "
         + getTelephone()
         + " "
-        + getAddress();
+        + getAddress()
+        + " "
+        + "Checkout Records: "
+        + getCheckoutRecords();
   }
 
   private static final long serialVersionUID = -2226197306790714013L;

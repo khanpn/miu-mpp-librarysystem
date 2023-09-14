@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class CheckoutBookPanel extends JPanel implements LibWindow {
@@ -125,6 +126,8 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
 
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setModel(model);
+    ((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(JLabel.LEFT);
     JScrollPane jScrollPane = new JScrollPane();
     jScrollPane.setViewportView(table);
     panel_4.add(jScrollPane);

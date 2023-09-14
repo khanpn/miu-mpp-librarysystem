@@ -72,7 +72,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
     setPathToImage();
     insertSplashImage();
 
-    setSize(950, 700);
+    setSize(1100, 700);
     splitPane.setDividerLocation(300);
     // pack();
     // setSize(660, 500);
@@ -159,6 +159,16 @@ public class LibrarySystem extends JFrame implements LibWindow {
     isInitialized = val;
   }
 
+  public static void centerFrameOnDesktop(Component f) {
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    int height = toolkit.getScreenSize().height;
+    int width = toolkit.getScreenSize().width;
+    int frameHeight = f.getSize().height;
+    int frameWidth = f.getSize().width;
+    f.setLocation(((width - frameWidth) / 2), (height - frameHeight) / 3);
+  }
+
+  // for quick UI test only
   public static void main(String[] args) {
     EventQueue.invokeLater(
         () -> {
@@ -169,14 +179,5 @@ public class LibrarySystem extends JFrame implements LibWindow {
           centerFrameOnDesktop(LibrarySystem.INSTANCE);
           LibrarySystem.INSTANCE.setVisible(true);
         });
-  }
-
-  public static void centerFrameOnDesktop(Component f) {
-    Toolkit toolkit = Toolkit.getDefaultToolkit();
-    int height = toolkit.getScreenSize().height;
-    int width = toolkit.getScreenSize().width;
-    int frameHeight = f.getSize().height;
-    int frameWidth = f.getSize().width;
-    f.setLocation(((width - frameWidth) / 2), (height - frameHeight) / 3);
   }
 }
