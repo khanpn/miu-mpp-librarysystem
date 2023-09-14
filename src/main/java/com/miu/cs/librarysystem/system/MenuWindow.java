@@ -2,10 +2,10 @@ package com.miu.cs.librarysystem.system;
 
 import com.miu.cs.librarysystem.dataaccess.Auth;
 import com.miu.cs.librarysystem.ui.window.LoginWindow;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
+
+import javax.swing.*;
+
+import static com.miu.cs.librarysystem.system.Util.buttonImage;
 
 public class MenuWindow extends JPanel implements LibWindow {
   /** */
@@ -48,7 +48,7 @@ public class MenuWindow extends JPanel implements LibWindow {
   }
 
   private static JButton getLogoutButton() {
-    JButton logoutButton = new JButton("Log Out");
+    JButton logoutButton = buttonImage("src/main/resources/images/logout-color.png","Log Out", 30, 30);
     logoutButton.addActionListener(
         e -> {
           LibrarySystem.INSTANCE.setLoggedInUser(null);
@@ -62,31 +62,31 @@ public class MenuWindow extends JPanel implements LibWindow {
   }
 
   private static JButton addMember() {
-    JButton btn = new JButton("Add Member");
+    JButton btn = buttonImage("src/main/resources/images/add-member-color.png","Add Member", 30, 30);
     btn.addActionListener(e -> LibrarySystem.INSTANCE.openListLibraryMemberWindow());
     return btn;
   }
 
   private static JButton getCheckoutButton() {
-    JButton btn = new JButton("Checkout Book");
+    JButton btn = buttonImage("src/main/resources/images/checkout-book-color.png","Checkout Book", 30, 30);
     btn.addActionListener(e -> LibrarySystem.INSTANCE.openCheckoutBookWindow());
     return btn;
   }
 
   private static JButton getListBooksButton() {
-    JButton btn = new JButton("Add Book Copy");
+    JButton btn = buttonImage("src/main/resources/images/add-copy-book-color.png","Add Copy Book", 30, 30);
     btn.addActionListener(e -> LibrarySystem.INSTANCE.openAddBookCopyWindow());
     return btn;
   }
 
   private static JButton getSearchMemberCheckoutRecordButton() {
-    JButton btn = new JButton("Search Member Checkout Record");
+    JButton btn = buttonImage("src/main/resources/images/search-checkout-color.png","Search Member Checkout Record", 30, 30);
     btn.addActionListener(e -> LibrarySystem.INSTANCE.openSearchMemberCheckoutRecordWindow());
     return btn;
   }
 
   private static JButton getSearchOverDueBookButton() {
-    JButton btn = new JButton("Search OverDue Book");
+    JButton btn = buttonImage("src/main/resources/images/search-overdue-color.png","Search Overdue Book", 30, 30);
     btn.addActionListener(e -> LibrarySystem.INSTANCE.openSearchOverDueWindow());
     return btn;
   }

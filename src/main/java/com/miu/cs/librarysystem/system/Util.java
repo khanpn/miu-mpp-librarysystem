@@ -1,13 +1,10 @@
 package com.miu.cs.librarysystem.system;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 public class Util {
 
@@ -70,5 +67,16 @@ public class Util {
     int frameHeight = f.getSize().height;
     int frameWidth = f.getSize().width;
     f.setLocation(((width - frameWidth) / 2), (height - frameHeight) / 3);
+  }
+
+  public static JButton buttonImage(String sourseImage, String btnText, int iconWidth, int iconHeight) {
+    ImageIcon icon = new ImageIcon(sourseImage);
+    Image scaledImage = icon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+    ImageIcon scaledIcon = new ImageIcon(scaledImage);
+    JButton btn = new JButton(btnText, scaledIcon);
+    btn.setHorizontalAlignment(SwingConstants.LEFT);
+    btn.setHorizontalTextPosition(SwingConstants.RIGHT);
+    btn.setVerticalTextPosition(SwingConstants.CENTER);
+    return btn;
   }
 }
