@@ -9,6 +9,7 @@ import com.miu.cs.librarysystem.controller.ControllerInterface;
 import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.exception.LibrarySystemException;
 import com.miu.cs.librarysystem.system.LibWindow;
+import com.miu.cs.librarysystem.system.TypographyUtils;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -47,9 +48,11 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     setLayout(new BorderLayout());
     JPanel panel = new JPanel();
     add(panel, BorderLayout.NORTH);
-    panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+    panel.setLayout(
+        new FlowLayout(FlowLayout.CENTER, 5, TypographyUtils.H_PADDING_FROM_PANEL_HEADER));
 
     JLabel lblNewLabel = new JLabel("Book Checkout History");
+    lblNewLabel.setFont(getFont().deriveFont(24f));
     panel.add(lblNewLabel);
 
     panel.add(lblNewLabel);
@@ -64,21 +67,25 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     JPanel panel_1 = new JPanel();
     add(panel_1, BorderLayout.SOUTH);
 
-    JPanel panel_2 = new JPanel();
-    add(panel_2, BorderLayout.CENTER);
+    JPanel midlePanel = new JPanel();
+    add(midlePanel, BorderLayout.CENTER);
 
-    JPanel panel_3 = new JPanel();
-    panel_3.setBounds(154, 231, 430, 39);
+    JPanel checkoutPanel = new JPanel(new BorderLayout());
+    checkoutPanel.setBounds(5, 130, 460, 40);
+    // test
+    //    checkoutPanel.setBorder(new LineBorder(null, 1, true));
 
     JButton checkoutBookButton = new JButton("CHECKOUT BOOK");
-    panel_3.add(checkoutBookButton);
+    checkoutPanel.add(checkoutBookButton, BorderLayout.EAST);
     checkoutBookButton.setHorizontalAlignment(SwingConstants.RIGHT);
 
-    JPanel middlePanel = new JPanel();
-    middlePanel.setBounds(5, 5, 460, 219);
-    middlePanel.setLayout(new GridLayout(0, 2, 0, 0));
+    JPanel inputsPanel = new JPanel();
+    inputsPanel.setBounds(5, 5, 460, 100);
+    inputsPanel.setLayout(new GridLayout(0, 2, 0, 20));
+    // test
+    //    inputsPanel.setBorder(new LineBorder(null, 1, true));
     JLabel memberIdLabel = new JLabel("Member ID:");
-    middlePanel.add(memberIdLabel);
+    inputsPanel.add(memberIdLabel);
 
     Collection<LibraryMember> members = ci.allLibraryMembers();
 
@@ -90,10 +97,10 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     }
 
     memberIdTextField = new JComboBox<>(membersStrings);
-    middlePanel.add(memberIdTextField);
+    inputsPanel.add(memberIdTextField);
 
     JLabel bookIsbnLabel = new JLabel("ISBN:");
-    middlePanel.add(bookIsbnLabel);
+    inputsPanel.add(bookIsbnLabel);
 
     Collection<Book> books = ci.allBooks();
     String[] bookStrings = new String[books.size()];
@@ -104,16 +111,16 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     }
 
     bookIsbnTextField = new JComboBox<>(bookStrings);
-    middlePanel.add(bookIsbnTextField);
+    inputsPanel.add(bookIsbnTextField);
 
-    panel_2.setLayout(null);
-    panel_2.add(panel_3);
-    panel_2.add(middlePanel);
+    midlePanel.setLayout(null);
+    midlePanel.add(checkoutPanel);
+    midlePanel.add(inputsPanel);
 
-    JPanel panel_4 = new JPanel();
-    panel_4.setBounds(5, 282, 650, 275);
-    panel_2.add(panel_4);
-    panel_4.setLayout(new BorderLayout(0, 0));
+    JPanel tablePanel = new JPanel();
+    tablePanel.setBounds(5, 200, 650, 275);
+    midlePanel.add(tablePanel);
+    tablePanel.setLayout(new BorderLayout(0, 0));
 
     JTable table =
         new JTable() {
@@ -130,7 +137,7 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
         .setHorizontalAlignment(JLabel.LEFT);
     JScrollPane jScrollPane = new JScrollPane();
     jScrollPane.setViewportView(table);
-    panel_4.add(jScrollPane);
+    tablePanel.add(jScrollPane);
 
     checkoutBookButton.addActionListener(
         event -> {
