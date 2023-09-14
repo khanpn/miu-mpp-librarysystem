@@ -2,7 +2,7 @@ package com.miu.cs.librarysystem.ui.listener;
 
 import com.miu.cs.librarysystem.business.BasicAuthCredentials;
 import com.miu.cs.librarysystem.store.Dispatcher;
-import com.miu.cs.librarysystem.store.action.LoginSubmitAction;
+import com.miu.cs.librarysystem.store.action.login.LoginSubmitAction;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

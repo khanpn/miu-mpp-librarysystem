@@ -18,9 +18,10 @@ public final class AppStore {
     return INSTANCE.appStateMap.get(statePath);
   }
 
-  public static <T> AppState<T> getState(
+  @SuppressWarnings("unchecked")
+  public static <E extends AppState<T>, T> E getState(
       AppStatePath statePath, Class<? extends AppState<T>> type) {
-    return type.cast(getState(statePath));
+    return (E) type.cast(getState(statePath));
   }
 
   public static void registerOnStateChange(

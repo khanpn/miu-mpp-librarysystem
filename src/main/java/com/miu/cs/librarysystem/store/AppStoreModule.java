@@ -1,5 +1,6 @@
 package com.miu.cs.librarysystem.store;
 
+import com.miu.cs.librarysystem.store.reducer.BookshelfReducer;
 import com.miu.cs.librarysystem.store.reducer.LoginReducer;
 import com.miu.cs.librarysystem.store.reducer.Reducer;
 import java.util.Collections;
@@ -12,6 +13,7 @@ public final class AppStoreModule {
 
   static {
     ACTIVE_REDUCERS.add(new LoginReducer());
+    ACTIVE_REDUCERS.add(new BookshelfReducer());
   }
 
   private AppStoreModule() {}

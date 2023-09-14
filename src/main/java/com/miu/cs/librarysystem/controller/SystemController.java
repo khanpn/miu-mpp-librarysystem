@@ -120,6 +120,10 @@ public class SystemController implements ControllerInterface {
     return da.readBooksMap().values();
   }
 
+  public static Collection<Book> getAllBooks() {
+    return INSTANCE.allBooks();
+  }
+
   @Override
   public void checkBook(String memberId, String isbn) throws LibrarySystemException {
     DataAccess dao = new DataAccessFacade();

@@ -6,7 +6,7 @@ import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.dataaccess.User;
 import com.miu.cs.librarysystem.exception.LoginException;
 import com.miu.cs.librarysystem.store.action.AppAction;
-import com.miu.cs.librarysystem.store.action.LoginSubmitAction;
+import com.miu.cs.librarysystem.store.action.login.LoginSubmitAction;
 import com.miu.cs.librarysystem.store.state.LoginState;
 
 public class LoginReducer implements Reducer<LoginState, LoginSubmitAction> {

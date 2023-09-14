@@ -123,8 +123,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
   }
 
   public void openAddBookCopyWindow() {
-    if (!(mainPanel instanceof AddBookCopyPanel)) {
-      mainPanel = new AddBookCopyPanel();
+    if (!(mainPanel instanceof BookshelfPanel)) {
+      mainPanel = new BookshelfPanel();
       splitPane.setRightComponent(mainPanel);
       splitPane.setDividerLocation(300);
     }

@@ -1,7 +1,8 @@
 package com.miu.cs.librarysystem.store.state;
 
 public enum AppStatePath {
-  LOGIN("login");
+  LOGIN("login"),
+  BOOKSHELF("bookshelf");
   private final String value;
 
   AppStatePath(String value) {
