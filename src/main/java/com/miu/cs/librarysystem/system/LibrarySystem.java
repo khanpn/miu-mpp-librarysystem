@@ -22,15 +22,12 @@ public class LibrarySystem extends JFrame implements LibWindow {
   JPanel mainPanel;
   JMenuBar menuBar;
   JMenu options;
-  JMenuItem login, allBookIds, allMemberIds;
+  JMenuItem allBookIds, allMemberIds;
   String pathToImage;
   private boolean isInitialized = false;
 
   private static LibWindow[] allWindows = {
-    LibrarySystem.INSTANCE,
-    LoginWindow.INSTANCE,
-    AllMemberIdsWindow.INSTANCE,
-    AllBookIdsWindow.INSTANCE
+    LibrarySystem.INSTANCE, AllMemberIdsWindow.INSTANCE, AllBookIdsWindow.INSTANCE
   };
 
   public static void hideAllWindows() {
@@ -81,26 +78,12 @@ public class LibrarySystem extends JFrame implements LibWindow {
   private void addMenuItems() {
     options = new JMenu("Options");
     menuBar.add(options);
-    login = new JMenuItem("Login");
-    login.addActionListener(new LoginListener());
     allBookIds = new JMenuItem("All Book Ids");
     allBookIds.addActionListener(new AllBookIdsListener());
     allMemberIds = new JMenuItem("All Member Ids");
     allMemberIds.addActionListener(new AllMemberIdsListener());
-    options.add(login);
     options.add(allBookIds);
     options.add(allMemberIds);
-  }
-
-  class LoginListener implements ActionListener {
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      LibrarySystem.hideAllWindows();
-      LoginWindow.INSTANCE.init();
-      Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
-      LoginWindow.INSTANCE.setVisible(true);
-    }
   }
 
   class AllBookIdsListener implements ActionListener {
