@@ -17,6 +17,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <intellij.version>212.5284.40</intellij.version>
         <spotless.version>2.39.0</spotless.version>
         <spotless.ratchet-from>origin/main</spotless.ratchet-from>
         <mainClass>com.miu.cs.librarysystem.LibrarySystemApplication</mainClass>
@@ -24,6 +25,34 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>ideauidesigner-maven-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.jetbrains.intellij.java</groupId>
+                        <artifactId>java-compiler-ant-tasks</artifactId>
+                        <version>${intellij.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.jetbrains.intellij.java</groupId>
+                        <artifactId>java-gui-forms-rt</artifactId>
+                        <version>${intellij.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javac2</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <fork>true</fork>
+                    <debug>true</debug>
+                    <failOnError>true</failOnError>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -70,4 +99,15 @@
             </plugin>
         </plugins>
     </build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>intellij-repository</id>
+            <url>https://www.jetbrains.com/intellij-repository/releases</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>intellij-third-party</id>
+            <url>https://cache-redirector.jetbrains.com/intellij-dependencies</url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
