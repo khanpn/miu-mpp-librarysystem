@@ -1,13 +1,10 @@
 package com.miu.cs.librarysystem.system;
 
-import java.awt.Dimension;
-
+import com.miu.cs.librarysystem.dataaccess.Auth;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-
-import com.miu.cs.librarysystem.dataaccess.Auth;
 
 public class MenuWindow extends JPanel implements LibWindow {
   /** */
@@ -16,7 +13,7 @@ public class MenuWindow extends JPanel implements LibWindow {
   public static final MenuWindow INSTANCE = new MenuWindow();
 
   private boolean isInitialized = false;
-  
+
   private Auth role;
 
   public void init() {
@@ -96,7 +93,7 @@ public class MenuWindow extends JPanel implements LibWindow {
 
   @Override
   public void setInitialized(boolean val) {
-	  this.isInitialized = val;
+    this.isInitialized = val;
   }
 
   public void setAuth(Auth role) {

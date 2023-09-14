@@ -3,17 +3,19 @@ package com.miu.cs.librarysystem.system;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
+import com.miu.cs.librarysystem.business.Address;
+import com.miu.cs.librarysystem.business.ControllerInterface;
+import com.miu.cs.librarysystem.business.LibraryMember;
+import com.miu.cs.librarysystem.business.SystemController;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,14 +30,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-import com.miu.cs.librarysystem.business.Address;
-import com.miu.cs.librarysystem.business.ControllerInterface;
-import com.miu.cs.librarysystem.business.LibraryMember;
-import com.miu.cs.librarysystem.business.SystemController;
-
 public class AddMemberWindow extends JPanel implements LibWindow {
-  @Serial
-  private static final long serialVersionUID = 7863919163615773327L;
+  @Serial private static final long serialVersionUID = 7863919163615773327L;
   private boolean isInitialized = false;
 
   private JTextField txtFieldFirstName;
@@ -49,7 +45,7 @@ public class AddMemberWindow extends JPanel implements LibWindow {
   private JButton btnAdd;
   private JButton btnDelete;
   private JButton btnUpdate;
-  
+
   private JFrame frame;
   private JTable table;
   ControllerInterface controller = new SystemController();
@@ -58,181 +54,186 @@ public class AddMemberWindow extends JPanel implements LibWindow {
   public AddMemberWindow() {
     init();
   }
-  
 
   @Override
   public void init() {
-	  setLayout(new BorderLayout());
-      JPanel panel = new JPanel();
-      add(panel, BorderLayout.NORTH);
-      panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+    setLayout(new BorderLayout());
+    JPanel panel = new JPanel();
+    add(panel, BorderLayout.NORTH);
+    panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-      JLabel lblNewLabel = new JLabel("Table of Library Members");
-      panel.add(lblNewLabel);
-      Object[] columnsObjects = {"ID", "First Name", "Last Name", "TEL", "Address"};
-      DefaultTableModel model = new DefaultTableModel();
-      model.setColumnIdentifiers(columnsObjects);
-      Collection<LibraryMember> members = controller.allLibraryMembers();
-      for (LibraryMember member : members) {
-          model.addRow(new Object[]{
-                  member.getMemberId(),
-                  member.getFirstName(),
-                  member.getLastName(),
-                  member.getTelephone(),
-                  member.getAddress()
+    JLabel lblNewLabel = new JLabel("Table of Library Members");
+    panel.add(lblNewLabel);
+    Object[] columnsObjects = {"ID", "First Name", "Last Name", "TEL", "Address"};
+    DefaultTableModel model = new DefaultTableModel();
+    model.setColumnIdentifiers(columnsObjects);
+    Collection<LibraryMember> members = controller.allLibraryMembers();
+    for (LibraryMember member : members) {
+      model.addRow(
+          new Object[] {
+            member.getMemberId(),
+            member.getFirstName(),
+            member.getLastName(),
+            member.getTelephone(),
+            member.getAddress()
           });
-      }
+    }
 
-      JPanel panel_1 = new JPanel();
-      add(panel_1, BorderLayout.SOUTH);
+    JPanel panel_1 = new JPanel();
+    add(panel_1, BorderLayout.SOUTH);
 
-      JPanel panel_2 = new JPanel();
-      add(panel_2, BorderLayout.CENTER);
+    JPanel panel_2 = new JPanel();
+    add(panel_2, BorderLayout.CENTER);
 
-      JPanel actionPanel = new JPanel();
-      actionPanel.setBounds(134, 235, 430, 40);
+    JPanel actionPanel = new JPanel();
+    actionPanel.setBounds(134, 235, 430, 40);
 
-      btnAdd = new JButton("ADD");
-      actionPanel.add(btnAdd);
-      btnAdd.setHorizontalAlignment(SwingConstants.RIGHT);
+    btnAdd = new JButton("ADD");
+    actionPanel.add(btnAdd);
+    btnAdd.setHorizontalAlignment(SwingConstants.RIGHT);
 
-      btnDelete = new JButton("DELETE");
-      actionPanel.add(btnDelete);
+    btnDelete = new JButton("DELETE");
+    actionPanel.add(btnDelete);
 
-      btnUpdate = new JButton("UPDATE");
-      actionPanel.add(btnUpdate);
+    btnUpdate = new JButton("UPDATE");
+    actionPanel.add(btnUpdate);
 
-      JPanel middlePanel = new JPanel();
-      middlePanel.setBounds(5, 5, 460, 219);
-      middlePanel.setLayout(new GridLayout(0, 2, 0, 0));
-      JLabel lblMemberId = new JLabel("ID:");
-      middlePanel.add(lblMemberId);
+    JPanel middlePanel = new JPanel();
+    middlePanel.setBounds(5, 5, 460, 219);
+    middlePanel.setLayout(new GridLayout(0, 2, 0, 0));
+    JLabel lblMemberId = new JLabel("ID:");
+    middlePanel.add(lblMemberId);
 
-      txtFieldId = new JTextField();
-      middlePanel.add(txtFieldId);
-      txtFieldId.setColumns(10);
+    txtFieldId = new JTextField();
+    middlePanel.add(txtFieldId);
+    txtFieldId.setColumns(10);
 
-      JLabel lblFirstName = new JLabel("First Name:");
-      middlePanel.add(lblFirstName);
+    JLabel lblFirstName = new JLabel("First Name:");
+    middlePanel.add(lblFirstName);
 
-      txtFieldFirstName = new JTextField();
-      middlePanel.add(txtFieldFirstName);
-      txtFieldFirstName.setColumns(10);
+    txtFieldFirstName = new JTextField();
+    middlePanel.add(txtFieldFirstName);
+    txtFieldFirstName.setColumns(10);
 
-      JLabel lblLastName = new JLabel("Last Name:");
-      middlePanel.add(lblLastName);
+    JLabel lblLastName = new JLabel("Last Name:");
+    middlePanel.add(lblLastName);
 
-      txtFieldLastName = new JTextField();
-      middlePanel.add(txtFieldLastName);
-      txtFieldLastName.setColumns(10);
+    txtFieldLastName = new JTextField();
+    middlePanel.add(txtFieldLastName);
+    txtFieldLastName.setColumns(10);
 
-      JLabel lblStreet = new JLabel("Street:");
-      middlePanel.add(lblStreet);
+    JLabel lblStreet = new JLabel("Street:");
+    middlePanel.add(lblStreet);
 
-      txtFieldStreet = new JTextField();
-      middlePanel.add(txtFieldStreet);
-      txtFieldStreet.setColumns(10);
+    txtFieldStreet = new JTextField();
+    middlePanel.add(txtFieldStreet);
+    txtFieldStreet.setColumns(10);
 
-      JLabel lblCity = new JLabel("City:");
-      middlePanel.add(lblCity);
+    JLabel lblCity = new JLabel("City:");
+    middlePanel.add(lblCity);
 
-      txtCity = new JTextField();
-      middlePanel.add(txtCity);
-      txtCity.setColumns(10);
+    txtCity = new JTextField();
+    middlePanel.add(txtCity);
+    txtCity.setColumns(10);
 
-      JLabel lblState = new JLabel("State:");
-      middlePanel.add(lblState);
+    JLabel lblState = new JLabel("State:");
+    middlePanel.add(lblState);
 
-      txtState = new JTextField();
-      middlePanel.add(txtState);
-      txtState.setColumns(10);
+    txtState = new JTextField();
+    middlePanel.add(txtState);
+    txtState.setColumns(10);
 
-      JLabel lblZip = new JLabel("Zip:");
-      middlePanel.add(lblZip);
+    JLabel lblZip = new JLabel("Zip:");
+    middlePanel.add(lblZip);
 
-      txtZip = new JTextField();
-      middlePanel.add(txtZip);
-      txtZip.setColumns(10);
+    txtZip = new JTextField();
+    middlePanel.add(txtZip);
+    txtZip.setColumns(10);
 
-      JLabel lblTelephone = new JLabel("Telephone:");
-      middlePanel.add(lblTelephone);
+    JLabel lblTelephone = new JLabel("Telephone:");
+    middlePanel.add(lblTelephone);
 
-      txtTelephone = new JTextField();
-      middlePanel.add(txtTelephone);
-      txtTelephone.setColumns(10);
-      panel_2.setLayout(null);
-      panel_2.add(actionPanel);
-      panel_2.add(middlePanel);
+    txtTelephone = new JTextField();
+    middlePanel.add(txtTelephone);
+    txtTelephone.setColumns(10);
+    panel_2.setLayout(null);
+    panel_2.add(actionPanel);
+    panel_2.add(middlePanel);
 
-      JPanel tablePanel = new JPanel();
-      tablePanel.setBounds(5, 282, 580, 275);
-      panel_2.add(tablePanel);
-      tablePanel.setLayout(new BorderLayout(0, 0));
+    JPanel tablePanel = new JPanel();
+    tablePanel.setBounds(5, 282, 580, 275);
+    panel_2.add(tablePanel);
+    tablePanel.setLayout(new BorderLayout(0, 0));
 
-      table = new JTable() {
-		private static final long serialVersionUID = -5795502418632762890L;
-		public boolean isCellEditable(int row, int column) {
-              return false;
+    table =
+        new JTable() {
+          private static final long serialVersionUID = -5795502418632762890L;
+
+          public boolean isCellEditable(int row, int column) {
+            return false;
           }
-      };
-      table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-      table.setModel(model);
-      TableColumnModel colModel = table.getColumnModel();
-      colModel.getColumn(4).setPreferredWidth(300);
-      colModel.getColumn(3).setPreferredWidth(200);
-      colModel.getColumn(2).setPreferredWidth(100);
-      colModel.getColumn(1).setPreferredWidth(100);
-      colModel.getColumn(0).setPreferredWidth(50);
-      JScrollPane jScrollPane = new JScrollPane();
-      jScrollPane.setViewportView(table);
-      tablePanel.add(jScrollPane);
-      
-      // Delete button
-      btnDelete.addActionListener(e -> {
+        };
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    table.setModel(model);
+    TableColumnModel colModel = table.getColumnModel();
+    colModel.getColumn(4).setPreferredWidth(300);
+    colModel.getColumn(3).setPreferredWidth(200);
+    colModel.getColumn(2).setPreferredWidth(100);
+    colModel.getColumn(1).setPreferredWidth(100);
+    colModel.getColumn(0).setPreferredWidth(50);
+    JScrollPane jScrollPane = new JScrollPane();
+    jScrollPane.setViewportView(table);
+    tablePanel.add(jScrollPane);
+
+    // Delete button
+    btnDelete.addActionListener(
+        e -> {
           int count = table.getSelectedRowCount();
           if (count == 1) {
-              selectedRow = table.getSelectedRow();
+            selectedRow = table.getSelectedRow();
 
-              String memberIdString = (String) table.getValueAt(selectedRow, 0);
-              model.removeRow(selectedRow);
-              controller.deleteMember(memberIdString);
-              selectedRow = -1;
-              clearText();
+            String memberIdString = (String) table.getValueAt(selectedRow, 0);
+            model.removeRow(selectedRow);
+            controller.deleteMember(memberIdString);
+            selectedRow = -1;
+            clearText();
           } else if (count > 1) {
-              JOptionPane.showMessageDialog(frame, "Please select single row", "", ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Please select single row", "", ERROR_MESSAGE);
           } else {
-              JOptionPane.showMessageDialog(frame, "There is no row to delete", "", ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "There is no row to delete", "", ERROR_MESSAGE);
           }
-      });
-      
-      // on select table row
-      table.addMouseListener(new MouseAdapter() {
+        });
+
+    // on select table row
+    table.addMouseListener(
+        new MouseAdapter() {
 
           @Override
           public void mousePressed(MouseEvent e) {
-              int count = table.getSelectedRowCount();
-              if (count == 1) {
-                  selectedRow = table.getSelectedRow();
-                  System.out.println(model.getValueAt(selectedRow, 0));
-                  LibraryMember member = controller.getLibraryMemberById((String) model.getValueAt(selectedRow, 0));
-                  txtCity.setText(member.getAddress().getCity());
-                  txtFieldFirstName.setText(member.getFirstName());
-                  txtFieldId.setText(member.getMemberId());
-                  txtFieldLastName.setText(member.getLastName());
-                  txtFieldStreet.setText(member.getAddress().getStreet());
-                  txtState.setText(member.getAddress().getState());
-                  txtTelephone.setText(member.getTelephone());
-                  txtZip.setText(member.getAddress().getZip());
-              } else {
-                  clearText();
-              }
-              super.mouseClicked(e);
-
+            int count = table.getSelectedRowCount();
+            if (count == 1) {
+              selectedRow = table.getSelectedRow();
+              System.out.println(model.getValueAt(selectedRow, 0));
+              LibraryMember member =
+                  controller.getLibraryMemberById((String) model.getValueAt(selectedRow, 0));
+              txtCity.setText(member.getAddress().getCity());
+              txtFieldFirstName.setText(member.getFirstName());
+              txtFieldId.setText(member.getMemberId());
+              txtFieldLastName.setText(member.getLastName());
+              txtFieldStreet.setText(member.getAddress().getStreet());
+              txtState.setText(member.getAddress().getState());
+              txtTelephone.setText(member.getTelephone());
+              txtZip.setText(member.getAddress().getZip());
+            } else {
+              clearText();
+            }
+            super.mouseClicked(e);
           }
-      });
-      
-      // Add button
-      btnAdd.addActionListener((evt) -> {
+        });
+
+    // Add button
+    btnAdd.addActionListener(
+        (evt) -> {
           String idString = txtFieldId.getText();
           String firstNameString = txtFieldFirstName.getText();
           String lastNameString = txtFieldLastName.getText();
@@ -242,31 +243,41 @@ public class AddMemberWindow extends JPanel implements LibWindow {
           String stateString = txtState.getText() == null ? "N/A" : txtState.getText();
           String zipString = txtZip.getText() == null ? "N/A" : txtZip.getText();
           if (firstNameString.isEmpty() || lastNameString.isEmpty() || idString.isEmpty()) {
-              JOptionPane.showMessageDialog(frame, "Invalid id or first name or last name", "",
-                      ERROR_MESSAGE);
-              System.out.println("Invalid id or first name or last name");
-              return;
+            JOptionPane.showMessageDialog(
+                frame, "Invalid id or first name or last name", "", ERROR_MESSAGE);
+            System.out.println("Invalid id or first name or last name");
+            return;
           }
           List<String> memberStrings = controller.allMemberIds();
           if (memberStrings.contains(idString)) {
-              JOptionPane.showMessageDialog(frame, "exist member id", "", ERROR_MESSAGE);
-              System.out.println("exist member id");
-              return;
+            JOptionPane.showMessageDialog(frame, "exist member id", "", ERROR_MESSAGE);
+            System.out.println("exist member id");
+            return;
           }
           Address newAddress = new Address(streetString, cityString, stateString, zipString);
-          LibraryMember member = new LibraryMember(idString, firstNameString, lastNameString, telephoneString,
-                  newAddress);
+          LibraryMember member =
+              new LibraryMember(
+                  idString, firstNameString, lastNameString, telephoneString, newAddress);
           controller.saveMember(member);
-          JOptionPane.showMessageDialog(frame, "Add member successfully", "", INFORMATION_MESSAGE,
-                  new ImageIcon(System.getProperty("user.dir") + "/src/librarysystem/success.png"));
-          Object[] objects = {member.getMemberId(), member.getFirstName(), member.getLastName(),
-                  member.getTelephone(), member.getAddress()};
+          JOptionPane.showMessageDialog(
+              frame,
+              "Add member successfully",
+              "",
+              INFORMATION_MESSAGE,
+              new ImageIcon(System.getProperty("user.dir") + "/src/librarysystem/success.png"));
+          Object[] objects = {
+            member.getMemberId(),
+            member.getFirstName(),
+            member.getLastName(),
+            member.getTelephone(),
+            member.getAddress()
+          };
           model.addRow(objects);
+        });
 
-      });
-      
-      // Update button
-      btnUpdate.addActionListener((ActionEvent evt) -> {
+    // Update button
+    btnUpdate.addActionListener(
+        (ActionEvent evt) -> {
           String idString = txtFieldId.getText();
           String firstNameString = txtFieldFirstName.getText();
           String lastNameString = txtFieldLastName.getText();
@@ -276,39 +287,42 @@ public class AddMemberWindow extends JPanel implements LibWindow {
           String stateString = txtState.getText() == null ? "N/A" : txtState.getText();
           String zipString = txtZip.getText() == null ? "N/A" : txtZip.getText();
           if (firstNameString.isEmpty() || lastNameString.isEmpty() || idString.isEmpty()) {
-              JOptionPane.showMessageDialog(frame, "Invalid id or first name or last name", "",
-                      ERROR_MESSAGE);
-              System.out.println("Invalid id or first name or last name");
-              return;
+            JOptionPane.showMessageDialog(
+                frame, "Invalid id or first name or last name", "", ERROR_MESSAGE);
+            System.out.println("Invalid id or first name or last name");
+            return;
           }
 
           Address newAddress = new Address(streetString, cityString, stateString, zipString);
-          LibraryMember member = new LibraryMember(idString, firstNameString, lastNameString, telephoneString,
-                  newAddress);
+          LibraryMember member =
+              new LibraryMember(
+                  idString, firstNameString, lastNameString, telephoneString, newAddress);
           controller.saveMember(member);
-          JOptionPane.showMessageDialog(frame, "Update member successfully", "", INFORMATION_MESSAGE,
-                  new ImageIcon(System.getProperty("user.dir") + "/src/librarysystem/success.png"));
+          JOptionPane.showMessageDialog(
+              frame,
+              "Update member successfully",
+              "",
+              INFORMATION_MESSAGE,
+              new ImageIcon(System.getProperty("user.dir") + "/src/librarysystem/success.png"));
           model.setValueAt(member.getMemberId(), selectedRow, 0);
           model.setValueAt(member.getFirstName(), selectedRow, 1);
           model.setValueAt(member.getLastName(), selectedRow, 2);
           model.setValueAt(member.getTelephone(), selectedRow, 3);
           model.setValueAt(member.getAddress(), selectedRow, 4);
           clearText();
-
-      });
+        });
   }
-  
+
   void clearText() {
-      txtCity.setText("");
-      txtFieldFirstName.setText("");
-      txtFieldId.setText("");
-      txtFieldLastName.setText("");
-      txtFieldStreet.setText("");
-      txtState.setText("");
-      txtTelephone.setText("");
-      txtZip.setText("");
+    txtCity.setText("");
+    txtFieldFirstName.setText("");
+    txtFieldId.setText("");
+    txtFieldLastName.setText("");
+    txtFieldStreet.setText("");
+    txtState.setText("");
+    txtTelephone.setText("");
+    txtZip.setText("");
   }
-
 
   @Override
   public boolean isInitialized() {
