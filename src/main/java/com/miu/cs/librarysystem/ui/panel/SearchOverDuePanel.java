@@ -10,22 +10,11 @@ import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.system.LibWindow;
 import com.miu.cs.librarysystem.system.TypographyUtils;
 import com.miu.cs.librarysystem.system.Util;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -40,18 +29,6 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
   DefaultTableModel model;
 
   ControllerInterface ci = new SystemController();
-
-  private JList<String> createJList() {
-    JList<String> ret = new JList<>(listModel);
-    ret.setVisibleRowCount(4);
-    return ret;
-  }
-
-  private void initializeDefaultList() {
-    defaultList.add("Red");
-    defaultList.add("Blue");
-    defaultList.add("Yellow");
-  }
 
   public SearchOverDuePanel() {
     init();
@@ -72,45 +49,52 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
     JPanel panel_1 = new JPanel();
     add(panel_1, BorderLayout.SOUTH);
 
-    JPanel middlePanel = new JPanel();
-    add(middlePanel, BorderLayout.CENTER);
+    JPanel centerPanel = new JPanel();
+    add(centerPanel, BorderLayout.CENTER);
 
-    JPanel actionButtonsPanel = new JPanel();
-    actionButtonsPanel.setLayout(new GridLayout(0, 6, 8, 0));
-    actionButtonsPanel.setBounds(5, 5, 600, 39);
+    JPanel actionPanel = new JPanel();
 
     JLabel searchLabel = new JLabel("Book ISBN:");
-    actionButtonsPanel.add(searchLabel);
+    actionPanel.add(searchLabel);
     searchField = new JTextField();
     searchField.setSize(200, 24);
-    actionButtonsPanel.add(searchField);
+    actionPanel.add(searchField);
 
     // empty label for spacing
-    actionButtonsPanel.add(new JLabel());
-    actionButtonsPanel.add(new JLabel());
+    actionPanel.add(new JLabel());
+    actionPanel.add(new JLabel());
 
     JButton btnSearch = new JButton("SEARCH");
     Util.addButtonHover(btnSearch);
-    actionButtonsPanel.add(btnSearch);
+    actionPanel.add(btnSearch);
 
     JButton btnClearSearch = new JButton("CLEAR");
     Util.addButtonHover(btnClearSearch);
-    actionButtonsPanel.add(btnClearSearch);
+    actionPanel.add(btnClearSearch);
 
-    JList<String> mainList = createJList();
-    mainList.setFixedCellWidth(70);
-    JScrollPane mainScroll = new JScrollPane(mainList);
+    actionPanel.setLayout(new GridLayout(0, 6, 8, 0));
+    actionPanel.setBounds(5, 5, 750, 40);
 
-    initializeDefaultList();
-    middlePanel.add(mainScroll);
+    //    centerPanel.setLayout(null);
+    //    centerPanel.add(actionPanel);
 
-    middlePanel.setLayout(null);
-    middlePanel.add(actionButtonsPanel);
+    centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
+    actionPanel.setPreferredSize(new Dimension(750, 40));
+    actionPanel.setMaximumSize(new Dimension(750, 40));
+
+    centerPanel.add(actionPanel);
+    centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
     JPanel tablePanel = new JPanel();
-    tablePanel.setBounds(5, 60, 600, 300);
-    middlePanel.add(tablePanel);
-    tablePanel.setLayout(new BorderLayout(0, 0));
+    //    tablePanel.setLayout(new BorderLayout(0, 0));
+    //    tablePanel.setBounds(5, 60, 600, 300);
+
+    tablePanel.setLayout(new FlowLayout(0, 0, 0));
+    tablePanel.setPreferredSize(new Dimension(750, 275));
+    tablePanel.setMaximumSize(new Dimension(750, 275));
+    centerPanel.add(tablePanel);
+
     JTable table =
         new JTable() {
           private static final long serialVersionUID = 1L;
@@ -138,6 +122,7 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
     colModel.getColumn(0).setPreferredWidth(75);
     JScrollPane jScrollPane = new JScrollPane();
     jScrollPane.setViewportView(table);
+    jScrollPane.setPreferredSize(new Dimension(750, 275));
     tablePanel.add(jScrollPane);
 
     btnSearch.addActionListener(

@@ -101,8 +101,8 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     bookIsbnTextField = new JComboBox<>(bookStrings);
     controlsPanel.add(bookIsbnTextField);
 
-    actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 6));
-    actionPanel.setBounds(5, 130, 460, 40);
+    actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 6));
+    actionPanel.setBounds(5, 200, 460, 40);
 
     controlsPanel.setLayout(new GridLayout(0, 2, 10, 20));
     controlsPanel.setBounds(5, 5, 460, 100);
@@ -115,14 +115,14 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
 
     controlsPanel.setPreferredSize(new Dimension(460, 100));
     controlsPanel.setMaximumSize(new Dimension(460, 100));
-    controlsPanel.setBackground(Color.RED);
 
     actionPanel.setPreferredSize(new Dimension(460, 40));
     actionPanel.setMaximumSize(new Dimension(460, 40));
-    actionPanel.setBackground(Color.GREEN);
 
     centerPanel.add(controlsPanel);
+    centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
     centerPanel.add(actionPanel);
+    centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
     //    JPanel tablePanel = new JPanel();
     //    tablePanel.setBounds(5, 200, 650, 275);

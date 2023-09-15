@@ -151,11 +151,11 @@ public class AddMemberPanel extends JPanel implements LibWindow {
     controlsPanel.add(txtTelephone);
     txtTelephone.setColumns(10);
 
+    actionPanel.setBounds(134, 235, 460, 40);
+    actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 5));
+
     controlsPanel.setBounds(5, 5, 460, 219);
     controlsPanel.setLayout(new GridLayout(0, 2, 0, 0));
-
-    actionPanel.setBounds(134, 235, 460, 40);
-    actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 5));
 
     //    centerPanel.setLayout(null);
     //    centerPanel.add(actionPanel);
@@ -200,7 +200,6 @@ public class AddMemberPanel extends JPanel implements LibWindow {
     JScrollPane jScrollPane = new JScrollPane();
     jScrollPane.setViewportView(table);
     jScrollPane.setPreferredSize(new Dimension(750, 275));
-    jScrollPane.setBackground(Color.BLUE);
     tablePanel.add(jScrollPane);
 
     // Delete button

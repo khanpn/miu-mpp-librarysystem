@@ -6,16 +6,17 @@ import java.awt.*;
 
 public class LibrarySystemApplication {
   public static void main(String[] args) {
-    EventQueue.invokeLater(
-        () -> {
-          LoginWindow loginWindow = new LoginWindow();
-          Util.centerFrameOnDesktop(loginWindow);
-          loginWindow.setVisible(true);
+    EventQueue.invokeLater(LibrarySystemApplication::run);
+  }
 
-          // for testing
-          //          AppStore.setState(
-          //              new LoginState(new AuthenticationContext(new User("103", "111",
-          // Auth.BOTH))));
-        });
+  private static void run() {
+    LoginWindow loginWindow = new LoginWindow();
+    Util.centerFrameOnDesktop(loginWindow);
+    loginWindow.setVisible(true);
+
+    // for testing
+    //    AppStore.setState(
+    //        new LoginState(new AuthenticationContextViewModel(new User("103", "111",
+    // Auth.BOTH))));
   }
 }

@@ -125,7 +125,7 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
     controlsPanel.add(txtTelephone);
     txtTelephone.setColumns(10);
 
-    actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 4, 4));
+    actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 4));
 
     //    controlsPanel.setBounds(5, 5, 460, 219);
     controlsPanel.setLayout(new GridLayout(0, 2, 0, 0));
@@ -143,6 +143,7 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
     actionPanel.setMaximumSize(new Dimension(460, 40));
 
     centerPanel.add(controlsPanel);
+    centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
     centerPanel.add(actionPanel);
 
     searchMemberButton.addActionListener(
