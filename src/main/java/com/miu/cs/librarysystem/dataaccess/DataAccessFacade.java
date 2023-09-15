@@ -124,7 +124,7 @@ public class DataAccessFacade implements DataAccess {
     return retVal;
   }
 
-  private static Path getDataPath() throws IOException {
+  public static Path getDataPath() throws IOException {
     Path dataPath = Paths.get(APP_DATA_DIR);
     if (!Files.exists(dataPath)) {
       Files.createDirectories(dataPath);

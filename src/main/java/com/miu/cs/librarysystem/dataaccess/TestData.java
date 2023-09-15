@@ -20,6 +20,10 @@ import java.util.List;
 public class TestData {
 
   public static void main(String[] args) {
+    insertTestData();
+  }
+
+  public static void insertTestData() {
     TestData td = new TestData();
     td.bookData();
     td.libraryMemberData();
