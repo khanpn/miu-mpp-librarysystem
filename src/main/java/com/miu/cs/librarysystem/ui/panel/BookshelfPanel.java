@@ -55,6 +55,10 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
   }
 
   private void init() {
+    Util.addButtonHover(searchButton);
+    Util.addButtonHover(clearSearchButton);
+    Util.addButtonHover(addBookButton);
+    Util.addButtonHover(copyBookButton);
     add(contentPane);
 
     //      contentPane.setSize(760, 300);

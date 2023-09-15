@@ -10,6 +10,8 @@ import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.exception.LibrarySystemException;
 import com.miu.cs.librarysystem.system.LibWindow;
 import com.miu.cs.librarysystem.system.TypographyUtils;
+import com.miu.cs.librarysystem.system.Util;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -76,6 +78,7 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     //    checkoutPanel.setBorder(new LineBorder(null, 1, true));
 
     JButton checkoutBookButton = new JButton("CHECKOUT BOOK");
+    Util.addButtonHover(checkoutBookButton);
     checkoutPanel.add(checkoutBookButton, BorderLayout.EAST);
     checkoutBookButton.setHorizontalAlignment(SwingConstants.RIGHT);
 

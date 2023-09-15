@@ -9,6 +9,8 @@ import com.miu.cs.librarysystem.controller.ControllerInterface;
 import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.system.LibWindow;
 import com.miu.cs.librarysystem.system.TypographyUtils;
+import com.miu.cs.librarysystem.system.Util;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -89,9 +91,11 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
     actionButtonsPanel.add(new JLabel());
 
     JButton btnSearch = new JButton("SEARCH");
+    Util.addButtonHover(btnSearch);
     actionButtonsPanel.add(btnSearch);
 
     JButton btnClearSearch = new JButton("CLEAR");
+    Util.addButtonHover(btnClearSearch);
     actionButtonsPanel.add(btnClearSearch);
 
     JList<String> mainList = createJList();

@@ -9,6 +9,8 @@ import com.miu.cs.librarysystem.controller.ControllerInterface;
 import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.system.LibWindow;
 import com.miu.cs.librarysystem.system.TypographyUtils;
+import com.miu.cs.librarysystem.system.Util;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -94,13 +96,16 @@ public class AddMemberPanel extends JPanel implements LibWindow {
     actionPanel.setBounds(134, 235, 430, 40);
 
     btnAdd = new JButton("ADD");
+      Util.addButtonHover(btnAdd);
     actionPanel.add(btnAdd);
     btnAdd.setHorizontalAlignment(SwingConstants.RIGHT);
 
     btnDelete = new JButton("DELETE");
+    Util.addButtonHover(btnDelete);
     actionPanel.add(btnDelete);
 
     btnUpdate = new JButton("UPDATE");
+    Util.addButtonHover(btnUpdate);
     actionPanel.add(btnUpdate);
 
     JPanel middlePanel = new JPanel();

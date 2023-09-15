@@ -1,6 +1,8 @@
 package com.miu.cs.librarysystem.ui.dialog;
 
 import com.miu.cs.librarysystem.system.TypographyUtils;
+import com.miu.cs.librarysystem.system.Util;
+
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -36,6 +38,8 @@ public class AddBookDialog extends JDialog {
   }
 
   private void initialize() {
+    Util.addButtonHover(addBookButton);
+    Util.addButtonHover(cancelButton);
     TypographyUtils.applyHeadingStyle(headingLabel);
     setContentPane(contentPane);
     setModal(true);
