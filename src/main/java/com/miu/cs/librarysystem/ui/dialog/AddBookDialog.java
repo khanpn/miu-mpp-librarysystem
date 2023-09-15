@@ -1,49 +1,61 @@
 package com.miu.cs.librarysystem.ui.dialog;
 
+import com.miu.cs.librarysystem.business.Author;
+import com.miu.cs.librarysystem.business.Book;
+import com.miu.cs.librarysystem.store.AppStore;
+import com.miu.cs.librarysystem.store.Dispatcher;
+import com.miu.cs.librarysystem.store.action.bookshelf.BookshelfAddBookAction;
+import com.miu.cs.librarysystem.store.action.bookshelf.BookshelfLoadBooksAction;
+import com.miu.cs.librarysystem.store.state.AppStatePath;
+import com.miu.cs.librarysystem.store.state.BookshelfState;
 import com.miu.cs.librarysystem.system.TypographyUtils;
 import com.miu.cs.librarysystem.system.Util;
-
 import java.awt.event.*;
+import java.util.*;
+import java.util.List;
+import java.util.regex.Pattern;
 import javax.swing.*;
 
 public class AddBookDialog extends JDialog {
+  private static final Pattern BOOK_ISBN_FORMAT_PATTER = Pattern.compile("^\\d{2}-\\d{5}$");
   private JPanel contentPane;
-  private JPanel topPanel;
   private JLabel headingLabel;
-  private JPanel centerPanel;
-  private JPanel formPanel;
-  private JPanel isbnPanel;
-  private JLabel isbnLabel;
+  private JPanel newBookPanel;
   private JTextField isbnField;
-  private JPanel titlePanel;
-  private JLabel titleLabel;
   private JTextField titleField;
-  private JPanel authorsPanel;
-  private JLabel authorsLabel;
   private JTextField authorsField;
-  private JPanel maxCheckoutLengthPanel;
-  private JLabel maxCheckoutLengthLabel;
-  private JPanel numOfCopiesPanel;
-  private JLabel numOfCopiesLabel;
-  private JTextField numOfCopiesField;
-  private JPanel buttonsPanel;
   private JButton addBookButton;
   private JButton cancelButton;
   private JComboBox maxCheckoutLengthSelect;
-  private JPanel headingTopPanel;
-  private JPanel headingCenterPanel;
+  private JSpinner numOfCopiesSpinner;
+  private JLabel errorMessageLabel;
+  private JList<Author> authorList;
+  private JSplitPane splitPane;
+  private JPanel authorsPanel;
 
   public AddBookDialog() {
     initialize();
   }
 
   private void initialize() {
+    setContentPane(contentPane);
+    setTitle("New Book");
+    setSize(550, 310);
     Util.addButtonHover(addBookButton);
     Util.addButtonHover(cancelButton);
     TypographyUtils.applyHeadingStyle(headingLabel);
-    setContentPane(contentPane);
+    TypographyUtils.applyDangerStyle(errorMessageLabel);
+    errorMessageLabel.setText("");
+
     setModal(true);
     getRootPane().setDefaultButton(addBookButton);
+
+    Dispatcher.dispatch(new BookshelfLoadBooksAction());
+    DefaultListModel<Author> authorListModel = new DefaultListModel<>();
+    Set<Author> authors =
+        AppStore.getState(AppStatePath.BOOKSHELF, BookshelfState.class).getData().getAuthors();
+    authors.forEach(authorListModel::addElement);
+    authorList.setModel(authorListModel);
 
     // call onCancel() when cross is clicked
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -64,15 +76,57 @@ public class AddBookDialog extends JDialog {
         KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     cancelButton.addActionListener((event) -> onCancel());
+    addBookButton.addActionListener(
+        (event) -> {
+          errorMessageLabel.setText("");
+          try {
+            String isbn = isbnField.getText().strip();
+            String title = titleField.getText().strip();
+            int maxCheckoutLength =
+                Integer.parseInt(
+                    (String) Objects.requireNonNull(maxCheckoutLengthSelect.getSelectedItem()));
+            int numOfCopies = (int) numOfCopiesSpinner.getValue();
+            if (isbn.isBlank() || title.isBlank()) {
+              errorMessageLabel.setText("All fields must be input");
+              return;
+            }
+            if (!BOOK_ISBN_FORMAT_PATTER.matcher(isbn).matches()) {
+              errorMessageLabel.setText(
+                  "ISBN must be in format ##-#####. Note that # is represented for a digit");
+              return;
+            }
+            if (numOfCopies < 0) {
+              errorMessageLabel.setText("Number of copies must be equal or greater than 0");
+              return;
+            }
+            List<Author> selectedAuthors = authorList.getSelectedValuesList();
+            if (selectedAuthors.isEmpty()) {
+              errorMessageLabel.setText("You have not selected authors");
+              return;
+            }
+            Book newBook = new Book(isbn, title, maxCheckoutLength, selectedAuthors);
+            for (int i = 0; i < numOfCopies; i++) {
+              newBook.addCopy();
+            }
+            Dispatcher.dispatch(new BookshelfAddBookAction(newBook));
+            onOK();
+          } catch (IllegalArgumentException e) {
+            errorMessageLabel.setText("Invalid data input");
+          }
+        });
+  }
+
+  public static void main(String[] args) {
+    AddBookDialog addBookDialog = new AddBookDialog();
+    Util.centerFrameOnDesktop(addBookDialog);
+    addBookDialog.setVisible(true);
   }
 
   private void onOK() {
-    // add your code here
     dispose();
   }
 
   private void onCancel() {
-    // add your code here if necessary
     dispose();
   }
 }

@@ -69,9 +69,11 @@ public class Util {
     f.setLocation(((width - frameWidth) / 2), (height - frameHeight) / 3);
   }
 
-  public static JButton buttonImage(String sourseImage, String btnText, int iconWidth, int iconHeight) {
+  public static JButton buttonImage(
+      String sourseImage, String btnText, int iconWidth, int iconHeight) {
     ImageIcon icon = new ImageIcon(sourseImage);
-    Image scaledImage = icon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+    Image scaledImage =
+        icon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
     ImageIcon scaledIcon = new ImageIcon(scaledImage);
     JButton btn = new JButton(btnText, scaledIcon);
     btn.setHorizontalAlignment(SwingConstants.LEFT);
@@ -82,14 +84,16 @@ public class Util {
 
   public static void addButtonHover(JButton btn) {
     Color color = btn.getBackground();
-    btn.addMouseListener(new java.awt.event.MouseAdapter() {
-      public void mouseEntered(java.awt.event.MouseEvent evt) {
-        btn.setBackground(Color.decode("#FFC107"));
-      }
-      //when mouse exit the button will return to previous color
-      public void mouseExited(java.awt.event.MouseEvent evt) {
-        btn.setBackground(color);
-      }
-    });
+    btn.addMouseListener(
+        new java.awt.event.MouseAdapter() {
+          public void mouseEntered(java.awt.event.MouseEvent evt) {
+            btn.setBackground(Color.decode("#FFC107"));
+          }
+
+          // when mouse exit the button will return to previous color
+          public void mouseExited(java.awt.event.MouseEvent evt) {
+            btn.setBackground(color);
+          }
+        });
   }
 }

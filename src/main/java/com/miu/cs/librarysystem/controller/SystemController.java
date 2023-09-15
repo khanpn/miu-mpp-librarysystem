@@ -110,6 +110,14 @@ public class SystemController implements ControllerInterface {
     da.saveBook(book);
   }
 
+  public static void addBook(Book book) {
+    INSTANCE.saveBook(book);
+  }
+
+  public static void updateBook(Book book) {
+    INSTANCE.saveBook(book);
+  }
+
   @Override
   public LibraryMember findMemberById(String memberId) {
     return da.findMemberById(memberId).orElse(null);

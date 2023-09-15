@@ -5,9 +5,7 @@ import com.miu.cs.librarysystem.business.BookshelfViewModel;
 import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.store.AppStore;
 import com.miu.cs.librarysystem.store.action.AppAction;
-import com.miu.cs.librarysystem.store.action.bookshelf.BookshelfFilterAction;
-import com.miu.cs.librarysystem.store.action.bookshelf.BookshelfLoadBooksAction;
-import com.miu.cs.librarysystem.store.action.bookshelf.BookshelfSelectBookAction;
+import com.miu.cs.librarysystem.store.action.bookshelf.*;
 import com.miu.cs.librarysystem.store.state.AppStatePath;
 import com.miu.cs.librarysystem.store.state.BookshelfState;
 import java.util.ArrayList;
@@ -31,6 +29,12 @@ public class BookshelfReducer implements Reducer<BookshelfState, AppAction<?>> {
               .filter(book -> book.getIsbn().contains(filterAction.getData()))
               .toList();
       return new BookshelfState(new BookshelfViewModel(books));
+    } else if (action instanceof BookshelfAddBookAction addBookAction) {
+      SystemController.addBook(addBookAction.getData());
+      return new BookshelfState(new BookshelfViewModel(loadBook()));
+    } else if (action instanceof BookshelfUpdateBookAction updateBookAction) {
+      SystemController.updateBook(updateBookAction.getData());
+      return new BookshelfState(new BookshelfViewModel(loadBook()));
     }
     throw new IllegalArgumentException("Unexpected action: " + action.getClass());
   }
@@ -44,6 +48,8 @@ public class BookshelfReducer implements Reducer<BookshelfState, AppAction<?>> {
   public <O extends AppAction<?>> boolean canReduce(O action) {
     return action instanceof BookshelfLoadBooksAction
         || action instanceof BookshelfSelectBookAction
-        || action instanceof BookshelfFilterAction;
+        || action instanceof BookshelfFilterAction
+        || action instanceof BookshelfAddBookAction
+        || action instanceof BookshelfUpdateBookAction;
   }
 }

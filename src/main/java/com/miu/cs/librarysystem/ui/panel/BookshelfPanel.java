@@ -14,9 +14,11 @@ import com.miu.cs.librarysystem.store.state.BookshelfState;
 import com.miu.cs.librarysystem.system.TypographyUtils;
 import com.miu.cs.librarysystem.system.Util;
 import com.miu.cs.librarysystem.ui.dialog.AddBookDialog;
+import com.miu.cs.librarysystem.ui.dialog.CopyBookDialog;
 import com.miu.cs.librarysystem.ui.renderer.AvailableBookCopyCellRenderer;
-import java.awt.*;
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -25,20 +27,16 @@ import javax.swing.table.TableColumnModel;
 
 public class BookshelfPanel extends JPanel implements AppStateChangeListener<BookshelfState> {
   private JPanel contentPane;
-  private JPanel topPanel;
-  private JPanel centerPanel;
-  private JPanel headingTopPanel;
-  private JPanel headingCenterPanel;
   private JLabel bookshelfLabel;
-  private JPanel toolBarPanel;
   private JTextField searchField;
   private JButton searchButton;
   private JButton clearSearchButton;
   private JButton addBookButton;
   private JButton copyBookButton;
-  private JPanel bookTablePanel;
   private JScrollPane tableScrollPane;
   private JTable bookTable;
+  private JLabel selectedBookLabel;
+  private JLabel selectedBookAuthorsLabel;
   private DefaultTableModel bookTableModel;
   private List<Book> books;
 
@@ -60,19 +58,8 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
     Util.addButtonHover(addBookButton);
     Util.addButtonHover(copyBookButton);
     add(contentPane);
-
-    //      contentPane.setSize(760, 300);
-    //      contentPane.setBackground(Color.RED);
-    //
-    //      bookTablePanel.setSize(new Dimension(600, 300));
-    //      bookTablePanel.setBorder(new LineBorder(null, 1, true));
-    //      bookTablePanel.setBounds(5, 300, 600, 200);
-    //      bookTablePanel.setBackground(Color.YELLOW);
-
-    topPanel.setLayout(
-        new FlowLayout(FlowLayout.CENTER, 5, TypographyUtils.H_PADDING_FROM_PANEL_HEADER));
     TypographyUtils.applyHeadingStyle(bookshelfLabel);
-
+    selectedBookLabel.setText("");
     bookTableModel =
         new DefaultTableModel() {
           @Override
@@ -125,11 +112,16 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
           searchField.setText("");
         });
     addBookButton.addActionListener(
-        e -> {
+        (e) -> {
           AddBookDialog addBookDialog = new AddBookDialog();
-          addBookDialog.setSize(500, 400);
           Util.centerFrameOnDesktop(addBookDialog);
           addBookDialog.setVisible(true);
+        });
+    copyBookButton.addActionListener(
+        (e) -> {
+          CopyBookDialog copyBookDialog = new CopyBookDialog();
+          Util.centerFrameOnDesktop(copyBookDialog);
+          copyBookDialog.setVisible(true);
         });
     Dispatcher.dispatch(new BookshelfLoadBooksAction());
   }
@@ -137,7 +129,11 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
   @Override
   public void onStateChanged(AppStateChangeEvent<BookshelfState> event) {
     BookshelfViewModel viewModel = event.getNewState().getData();
+    copyBookButton.setEnabled(false);
+    Book selectedBook = viewModel.getSelectedBook();
+    updateSelectedBookText(selectedBook);
     if (viewModel.getSelectedBook() != null) {
+      copyBookButton.setEnabled(true);
       return;
     }
     bookTableModel.setRowCount(0);
@@ -162,5 +158,26 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
   @Override
   public AppStatePath getListeningStatePath() {
     return AppStatePath.BOOKSHELF;
+  }
+
+  private void updateSelectedBookText(Book selectedBook) {
+    String bookInfoFormat = "ISBN: {0} | Title: {1} | Available: {2}";
+    String authorsFormat = "Authors: {0}";
+    selectedBookLabel.setText(
+        MessageFormat.format(
+            bookInfoFormat,
+            Optional.ofNullable(selectedBook).map(Book::getIsbn).orElse(""),
+            Optional.ofNullable(selectedBook).map(Book::getTitle).orElse(""),
+            Optional.ofNullable(selectedBook)
+                .map(Book::getAvailableBooksLength)
+                .map(String::valueOf)
+                .orElse("")));
+    selectedBookAuthorsLabel.setText(
+        MessageFormat.format(
+            authorsFormat,
+            Optional.ofNullable(selectedBook)
+                .map(Book::getAuthors)
+                .map(String::valueOf)
+                .orElse("")));
   }
 }
