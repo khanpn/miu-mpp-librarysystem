@@ -1,7 +1,6 @@
 package com.miu.cs.librarysystem.ui.panel;
 
 import com.miu.cs.librarysystem.business.Book;
-import com.miu.cs.librarysystem.business.BookshelfViewModel;
 import com.miu.cs.librarysystem.store.AppStateChangeEvent;
 import com.miu.cs.librarysystem.store.AppStateChangeListener;
 import com.miu.cs.librarysystem.store.AppStore;
@@ -16,6 +15,7 @@ import com.miu.cs.librarysystem.system.Util;
 import com.miu.cs.librarysystem.ui.dialog.AddBookDialog;
 import com.miu.cs.librarysystem.ui.dialog.CopyBookDialog;
 import com.miu.cs.librarysystem.ui.renderer.AvailableBookCopyCellRenderer;
+import com.miu.cs.librarysystem.viewmodel.BookshelfViewModel;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;

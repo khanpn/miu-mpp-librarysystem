@@ -1,5 +1,7 @@
-package com.miu.cs.librarysystem.business;
+package com.miu.cs.librarysystem.viewmodel;
 
+import com.miu.cs.librarysystem.business.Author;
+import com.miu.cs.librarysystem.business.Book;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

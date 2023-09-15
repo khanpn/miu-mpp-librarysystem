@@ -7,7 +7,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="92819" binding="topPanel" layout-manager="FlowLayout" hgap="5" vgap="25" flow-align="1">
+      <grid id="92819" layout-manager="FlowLayout" hgap="5" vgap="25" flow-align="1">
         <constraints border-constraint="North"/>
         <properties/>
         <border type="none"/>
@@ -20,25 +20,25 @@
           </component>
         </children>
       </grid>
-      <grid id="568a7" binding="centerPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+      <grid id="568a7" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
         <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="93fc7" binding="formPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="93fc7" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints/>
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="ed3ca" binding="usernamePanel" layout-manager="FlowLayout" hgap="5" vgap="3" flow-align="2">
+              <grid id="ed3ca" layout-manager="FlowLayout" hgap="5" vgap="3" flow-align="2">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="a026" class="javax.swing.JLabel" binding="usernameLabel">
+                  <component id="a026" class="javax.swing.JLabel">
                     <constraints/>
                     <properties>
                       <text value="Username: "/>
@@ -53,14 +53,14 @@
                   </component>
                 </children>
               </grid>
-              <grid id="57792" binding="passwordPanel" layout-manager="FlowLayout" hgap="5" vgap="3" flow-align="2">
+              <grid id="57792" layout-manager="FlowLayout" hgap="5" vgap="3" flow-align="2">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="e120f" class="javax.swing.JLabel" binding="passwordLabel">
+                  <component id="e120f" class="javax.swing.JLabel">
                     <constraints/>
                     <properties>
                       <text value="Password: "/>
@@ -74,7 +74,7 @@
                   </component>
                 </children>
               </grid>
-              <grid id="1a036" binding="buttonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
+              <grid id="1a036" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -90,7 +90,7 @@
                   </component>
                 </children>
               </grid>
-              <grid id="ccd39" binding="messagePanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+              <grid id="ccd39" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
                 <constraints>
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>

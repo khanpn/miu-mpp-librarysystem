@@ -1,13 +1,13 @@
 package com.miu.cs.librarysystem.store.reducer;
 
 import com.miu.cs.librarysystem.business.Book;
-import com.miu.cs.librarysystem.business.BookshelfViewModel;
 import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.store.AppStore;
 import com.miu.cs.librarysystem.store.action.AppAction;
 import com.miu.cs.librarysystem.store.action.bookshelf.*;
 import com.miu.cs.librarysystem.store.state.AppStatePath;
 import com.miu.cs.librarysystem.store.state.BookshelfState;
+import com.miu.cs.librarysystem.viewmodel.BookshelfViewModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

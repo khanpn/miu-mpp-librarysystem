@@ -1,13 +1,13 @@
 package com.miu.cs.librarysystem.store.reducer;
 
-import com.miu.cs.librarysystem.business.AuthenticationContext;
 import com.miu.cs.librarysystem.business.BasicAuthCredentials;
-import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.dataaccess.User;
 import com.miu.cs.librarysystem.exception.LoginException;
+import com.miu.cs.librarysystem.service.LoginService;
 import com.miu.cs.librarysystem.store.action.AppAction;
 import com.miu.cs.librarysystem.store.action.login.LoginSubmitAction;
 import com.miu.cs.librarysystem.store.state.LoginState;
+import com.miu.cs.librarysystem.viewmodel.AuthenticationContextViewModel;
 
 public class LoginReducer implements Reducer<LoginState, LoginSubmitAction> {
 
@@ -16,11 +16,11 @@ public class LoginReducer implements Reducer<LoginState, LoginSubmitAction> {
     BasicAuthCredentials basicAuthCredentials = action.getData();
     User authUser;
     try {
-      authUser = SystemController.login(basicAuthCredentials);
+      authUser = LoginService.getInstance().login(basicAuthCredentials);
     } catch (LoginException e) {
-      return new LoginState(new AuthenticationContext(e));
+      return new LoginState(new AuthenticationContextViewModel(e));
     }
-    return new LoginState(new AuthenticationContext(authUser));
+    return new LoginState(new AuthenticationContextViewModel(authUser));
   }
 
   @Override

@@ -15,19 +15,10 @@ import javax.swing.*;
 
 public class LoginWindow extends JFrame implements AppStateChangeListener<LoginState> {
   private JPanel contentPanel;
-  private JPanel topPanel;
   private JLabel headingLabel;
-  private JPanel centerPanel;
-  private JLabel usernameLabel;
   private JTextField usernameField;
-  private JPanel usernamePanel;
-  private JPanel passwordPanel;
-  private JLabel passwordLabel;
   private JTextField passwordField;
-  private JPanel buttonPanel;
   private JButton loginButton;
-  private JPanel formPanel;
-  private JPanel messagePanel;
   private JLabel errorMessageLabel;
 
   public LoginWindow() throws HeadlessException {

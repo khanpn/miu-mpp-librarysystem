@@ -1,6 +1,6 @@
 package com.miu.cs.librarysystem.store.state;
 
-import com.miu.cs.librarysystem.business.BookshelfViewModel;
+import com.miu.cs.librarysystem.viewmodel.BookshelfViewModel;
 
 public class BookshelfState extends AppState<BookshelfViewModel> {
   public BookshelfState(BookshelfViewModel data) {

@@ -1,20 +1,20 @@
-package com.miu.cs.librarysystem.business;
+package com.miu.cs.librarysystem.viewmodel;
 
 import com.miu.cs.librarysystem.dataaccess.User;
 import com.miu.cs.librarysystem.exception.LoginException;
 import java.util.Date;
 
-public class AuthenticationContext {
+public class AuthenticationContextViewModel {
   private final User authUser;
   private Date loggedDate;
   private LoginException loginException;
 
-  public AuthenticationContext(User authUser) {
+  public AuthenticationContextViewModel(User authUser) {
     this.authUser = authUser;
     this.loggedDate = new Date();
   }
 
-  public AuthenticationContext(LoginException loginException) {
+  public AuthenticationContextViewModel(LoginException loginException) {
     this.authUser = null;
     this.loginException = loginException;
   }
