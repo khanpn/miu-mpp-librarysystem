@@ -14,7 +14,10 @@ import com.miu.cs.librarysystem.store.state.BookshelfState;
 import com.miu.cs.librarysystem.system.TypographyUtils;
 import com.miu.cs.librarysystem.system.Util;
 import com.miu.cs.librarysystem.ui.dialog.AddBookDialog;
+import com.miu.cs.librarysystem.ui.renderer.AvailableBookCopyCellRenderer;
+import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -53,8 +56,35 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
 
   private void init() {
     add(contentPane);
+
+    //      contentPane.setSize(760, 300);
+    //      contentPane.setBackground(Color.RED);
+    //
+    //      bookTablePanel.setSize(new Dimension(600, 300));
+    //      bookTablePanel.setBorder(new LineBorder(null, 1, true));
+    //      bookTablePanel.setBounds(5, 300, 600, 200);
+    //      bookTablePanel.setBackground(Color.YELLOW);
+
+    topPanel.setLayout(
+        new FlowLayout(FlowLayout.CENTER, 5, TypographyUtils.H_PADDING_FROM_PANEL_HEADER));
     TypographyUtils.applyHeadingStyle(bookshelfLabel);
-    bookTableModel = new DefaultTableModel();
+
+    bookTableModel =
+        new DefaultTableModel() {
+          @Override
+          public Class getColumnClass(int columnIndex) {
+            Class[] types =
+                new Class[] {
+                  String.class,
+                  String.class,
+                  Integer.class,
+                  Integer.class,
+                  Integer.class,
+                  String.class
+                };
+            return types[columnIndex];
+          }
+        };
     bookTableModel.setColumnIdentifiers(
         new String[] {
           "ISBN", "Title", "Maximum checkout", "Available copies", "Total copies", "Authors"
@@ -63,9 +93,11 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
     bookTable.setModel(bookTableModel);
     ((DefaultTableCellRenderer) bookTable.getTableHeader().getDefaultRenderer())
         .setHorizontalAlignment(JLabel.LEFT);
+    bookTable.setDefaultRenderer(Integer.class, new AvailableBookCopyCellRenderer());
+
     TableColumnModel colModel = bookTable.getColumnModel();
     colModel.getColumn(0).setPreferredWidth(100);
-    colModel.getColumn(1).setPreferredWidth(180);
+    colModel.getColumn(1).setPreferredWidth(280);
     colModel.getColumn(2).setPreferredWidth(110);
     colModel.getColumn(3).setPreferredWidth(90);
     colModel.getColumn(4).setPreferredWidth(70);
@@ -118,7 +150,7 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
                   book.getMaxCheckoutLength(),
                   book.getAvailableBooksLength(),
                   book.getCopies().length,
-                  book.getAuthors().toString()
+                  book.getAuthors().stream().map(Object::toString).collect(Collectors.joining(", "))
                 })
         .forEach(bookTableModel::addRow);
   }

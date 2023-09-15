@@ -58,7 +58,7 @@ public class AddBookCopyPanel extends JPanel implements LibWindow {
     topPanel.setLayout(
         new FlowLayout(FlowLayout.CENTER, 5, TypographyUtils.H_PADDING_FROM_PANEL_HEADER));
     JLabel lblNewLabel = new JLabel("Book shelf");
-    lblNewLabel.setFont(getFont().deriveFont(24f));
+    TypographyUtils.applyHeadingStyle(lblNewLabel);
     topPanel.add(lblNewLabel);
 
     Object[] columnsObjects = {

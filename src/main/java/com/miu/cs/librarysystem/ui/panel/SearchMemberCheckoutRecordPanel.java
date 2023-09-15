@@ -49,7 +49,7 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
         new FlowLayout(FlowLayout.CENTER, 5, TypographyUtils.H_PADDING_FROM_PANEL_HEADER));
 
     JLabel lblNewLabel = new JLabel("Member Search");
-    lblNewLabel.setFont(getFont().deriveFont(24f));
+    TypographyUtils.applyHeadingStyle(lblNewLabel);
     panel.add(lblNewLabel);
 
     JPanel panel_1 = new JPanel();

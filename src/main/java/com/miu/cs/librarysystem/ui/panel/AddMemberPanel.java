@@ -67,7 +67,7 @@ public class AddMemberPanel extends JPanel implements LibWindow {
         new FlowLayout(FlowLayout.CENTER, 5, TypographyUtils.H_PADDING_FROM_PANEL_HEADER));
 
     JLabel lblNewLabel = new JLabel("Table of Library Members");
-    lblNewLabel.setFont(getFont().deriveFont(24f));
+    TypographyUtils.applyHeadingStyle(lblNewLabel);
     panel.add(lblNewLabel);
     Object[] columnsObjects = {"ID", "First Name", "Last Name", "TEL", "Address"};
     DefaultTableModel model = new DefaultTableModel();

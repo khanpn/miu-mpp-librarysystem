@@ -52,7 +52,7 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
         new FlowLayout(FlowLayout.CENTER, 5, TypographyUtils.H_PADDING_FROM_PANEL_HEADER));
 
     JLabel lblNewLabel = new JLabel("Book Checkout History");
-    lblNewLabel.setFont(getFont().deriveFont(24f));
+    TypographyUtils.applyHeadingStyle(lblNewLabel);
     panel.add(lblNewLabel);
 
     panel.add(lblNewLabel);
