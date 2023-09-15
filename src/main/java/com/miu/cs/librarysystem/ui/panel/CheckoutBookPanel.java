@@ -11,22 +11,10 @@ import com.miu.cs.librarysystem.exception.LibrarySystemException;
 import com.miu.cs.librarysystem.system.LibWindow;
 import com.miu.cs.librarysystem.system.TypographyUtils;
 import com.miu.cs.librarysystem.system.Util;
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -69,26 +57,23 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     JPanel panel_1 = new JPanel();
     add(panel_1, BorderLayout.SOUTH);
 
-    JPanel midlePanel = new JPanel();
-    add(midlePanel, BorderLayout.CENTER);
+    JPanel centerPanel = new JPanel();
+    add(centerPanel, BorderLayout.CENTER);
 
-    JPanel checkoutPanel = new JPanel(new BorderLayout());
-    checkoutPanel.setBounds(5, 130, 460, 40);
+    JPanel actionPanel = new JPanel();
     // test
     //    checkoutPanel.setBorder(new LineBorder(null, 1, true));
 
     JButton checkoutBookButton = new JButton("CHECKOUT BOOK");
     Util.addButtonHover(checkoutBookButton);
-    checkoutPanel.add(checkoutBookButton, BorderLayout.EAST);
+    actionPanel.add(checkoutBookButton, BorderLayout.EAST);
     checkoutBookButton.setHorizontalAlignment(SwingConstants.RIGHT);
 
-    JPanel inputsPanel = new JPanel();
-    inputsPanel.setBounds(5, 5, 460, 100);
-    inputsPanel.setLayout(new GridLayout(0, 2, 0, 20));
+    JPanel controlsPanel = new JPanel();
     // test
     //    inputsPanel.setBorder(new LineBorder(null, 1, true));
     JLabel memberIdLabel = new JLabel("Member ID:");
-    inputsPanel.add(memberIdLabel);
+    controlsPanel.add(memberIdLabel);
 
     Collection<LibraryMember> members = ci.allLibraryMembers();
 
@@ -100,10 +85,10 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     }
 
     memberIdTextField = new JComboBox<>(membersStrings);
-    inputsPanel.add(memberIdTextField);
+    controlsPanel.add(memberIdTextField);
 
     JLabel bookIsbnLabel = new JLabel("ISBN:");
-    inputsPanel.add(bookIsbnLabel);
+    controlsPanel.add(bookIsbnLabel);
 
     Collection<Book> books = ci.allBooks();
     String[] bookStrings = new String[books.size()];
@@ -114,16 +99,42 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     }
 
     bookIsbnTextField = new JComboBox<>(bookStrings);
-    inputsPanel.add(bookIsbnTextField);
+    controlsPanel.add(bookIsbnTextField);
 
-    midlePanel.setLayout(null);
-    midlePanel.add(checkoutPanel);
-    midlePanel.add(inputsPanel);
+    actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 6));
+    actionPanel.setBounds(5, 130, 460, 40);
+
+    controlsPanel.setLayout(new GridLayout(0, 2, 10, 20));
+    controlsPanel.setBounds(5, 5, 460, 100);
+
+    //    centerPanel.setLayout(null);
+    //    centerPanel.add(checkoutPanel);
+    //    centerPanel.add(inputsPanel);
+
+    centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
+    controlsPanel.setPreferredSize(new Dimension(460, 100));
+    controlsPanel.setMaximumSize(new Dimension(460, 100));
+    controlsPanel.setBackground(Color.RED);
+
+    actionPanel.setPreferredSize(new Dimension(460, 40));
+    actionPanel.setMaximumSize(new Dimension(460, 40));
+    actionPanel.setBackground(Color.GREEN);
+
+    centerPanel.add(controlsPanel);
+    centerPanel.add(actionPanel);
+
+    //    JPanel tablePanel = new JPanel();
+    //    tablePanel.setBounds(5, 200, 650, 275);
+    //    tablePanel.setLayout(new BorderLayout(0, 0));
+    //    centerPanel.add(tablePanel);
 
     JPanel tablePanel = new JPanel();
-    tablePanel.setBounds(5, 200, 650, 275);
-    midlePanel.add(tablePanel);
-    tablePanel.setLayout(new BorderLayout(0, 0));
+    tablePanel.setLayout(new FlowLayout(0, 0, 0));
+    tablePanel.setPreferredSize(new Dimension(750, 275));
+    tablePanel.setMaximumSize(new Dimension(750, 275));
+
+    centerPanel.add(tablePanel);
 
     JTable table =
         new JTable() {
@@ -140,6 +151,7 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
         .setHorizontalAlignment(JLabel.LEFT);
     JScrollPane jScrollPane = new JScrollPane();
     jScrollPane.setViewportView(table);
+    jScrollPane.setPreferredSize(new Dimension(750, 275));
     tablePanel.add(jScrollPane);
 
     checkoutBookButton.addActionListener(

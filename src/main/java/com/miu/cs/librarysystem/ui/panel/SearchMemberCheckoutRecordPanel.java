@@ -9,17 +9,9 @@ import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.system.LibWindow;
 import com.miu.cs.librarysystem.system.TypographyUtils;
 import com.miu.cs.librarysystem.system.Util;
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.time.format.DateTimeFormatter;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow {
@@ -57,87 +49,101 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
     JPanel panel_1 = new JPanel();
     add(panel_1, BorderLayout.SOUTH);
 
-    JPanel panel_2 = new JPanel();
-    add(panel_2, BorderLayout.CENTER);
+    JPanel centerPanel = new JPanel();
+    add(centerPanel, BorderLayout.CENTER);
 
-    JPanel panel_3 = new JPanel();
-    panel_3.setBounds(154, 231, 430, 39);
+    JPanel actionPanel = new JPanel();
+    actionPanel.setBounds(154, 231, 430, 39);
 
     JButton searchMemberButton = new JButton("SEARCH");
     Util.addButtonHover(searchMemberButton);
-    panel_3.add(searchMemberButton);
+    actionPanel.add(searchMemberButton);
     searchMemberButton.setHorizontalAlignment(SwingConstants.RIGHT);
 
     JButton printRecordButton = new JButton("PRINT RECORD");
     Util.addButtonHover(printRecordButton);
-    panel_3.add(printRecordButton);
+    actionPanel.add(printRecordButton);
 
     JButton clearFieldsButton = new JButton("CLEAR FIELDS");
     Util.addButtonHover(clearFieldsButton);
-    panel_3.add(clearFieldsButton);
+    actionPanel.add(clearFieldsButton);
 
-    JPanel middlePanel = new JPanel();
-    middlePanel.setBounds(5, 5, 460, 219);
-    middlePanel.setLayout(new GridLayout(0, 2, 0, 0));
+    JPanel controlsPanel = new JPanel();
     JLabel lblMemberId = new JLabel("ID:");
-    middlePanel.add(lblMemberId);
+    controlsPanel.add(lblMemberId);
 
     txtFieldId = new JTextField();
-    middlePanel.add(txtFieldId);
+    controlsPanel.add(txtFieldId);
     txtFieldId.setColumns(10);
 
     JLabel lblFirstName = new JLabel("First Name:");
-    middlePanel.add(lblFirstName);
+    controlsPanel.add(lblFirstName);
 
     txtFieldFirstName = new JTextField();
-    middlePanel.add(txtFieldFirstName);
+    controlsPanel.add(txtFieldFirstName);
     txtFieldFirstName.setColumns(10);
 
     JLabel lblLastName = new JLabel("Last Name:");
-    middlePanel.add(lblLastName);
+    controlsPanel.add(lblLastName);
 
     txtFieldLastName = new JTextField();
-    middlePanel.add(txtFieldLastName);
+    controlsPanel.add(txtFieldLastName);
     txtFieldLastName.setColumns(10);
 
     JLabel lblStreet = new JLabel("Street:");
-    middlePanel.add(lblStreet);
+    controlsPanel.add(lblStreet);
 
     txtFieldStreet = new JTextField();
-    middlePanel.add(txtFieldStreet);
+    controlsPanel.add(txtFieldStreet);
     txtFieldStreet.setColumns(10);
 
     JLabel lblCity = new JLabel("City:");
-    middlePanel.add(lblCity);
+    controlsPanel.add(lblCity);
 
     txtCity = new JTextField();
-    middlePanel.add(txtCity);
+    controlsPanel.add(txtCity);
     txtCity.setColumns(10);
 
     JLabel lblState = new JLabel("State:");
-    middlePanel.add(lblState);
+    controlsPanel.add(lblState);
 
     txtState = new JTextField();
-    middlePanel.add(txtState);
+    controlsPanel.add(txtState);
     txtState.setColumns(10);
 
     JLabel lblZip = new JLabel("Zip:");
-    middlePanel.add(lblZip);
+    controlsPanel.add(lblZip);
 
     txtZip = new JTextField();
-    middlePanel.add(txtZip);
+    controlsPanel.add(txtZip);
     txtZip.setColumns(10);
 
     JLabel lblTelephone = new JLabel("Telephone:");
-    middlePanel.add(lblTelephone);
+    controlsPanel.add(lblTelephone);
 
     txtTelephone = new JTextField();
-    middlePanel.add(txtTelephone);
+    controlsPanel.add(txtTelephone);
     txtTelephone.setColumns(10);
 
-    panel_2.setLayout(null);
-    panel_2.add(panel_3);
-    panel_2.add(middlePanel);
+    actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 4, 4));
+
+    //    controlsPanel.setBounds(5, 5, 460, 219);
+    controlsPanel.setLayout(new GridLayout(0, 2, 0, 0));
+
+    //    centerPanel.setLayout(null);
+    //    centerPanel.add(actionPanel);
+    //    centerPanel.add(controlsPanel);
+
+    centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
+    controlsPanel.setPreferredSize(new Dimension(460, 219));
+    controlsPanel.setMaximumSize(new Dimension(460, 219));
+
+    actionPanel.setPreferredSize(new Dimension(460, 40));
+    actionPanel.setMaximumSize(new Dimension(460, 40));
+
+    centerPanel.add(controlsPanel);
+    centerPanel.add(actionPanel);
 
     searchMemberButton.addActionListener(
         (evt) -> {

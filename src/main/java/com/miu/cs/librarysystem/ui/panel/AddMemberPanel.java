@@ -10,27 +10,14 @@ import com.miu.cs.librarysystem.controller.SystemController;
 import com.miu.cs.librarysystem.system.LibWindow;
 import com.miu.cs.librarysystem.system.TypographyUtils;
 import com.miu.cs.librarysystem.system.Util;
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -63,14 +50,14 @@ public class AddMemberPanel extends JPanel implements LibWindow {
   @Override
   public void init() {
     setLayout(new BorderLayout());
-    JPanel panel = new JPanel();
-    add(panel, BorderLayout.NORTH);
-    panel.setLayout(
+    JPanel titlePanel = new JPanel();
+    add(titlePanel, BorderLayout.NORTH);
+    titlePanel.setLayout(
         new FlowLayout(FlowLayout.CENTER, 5, TypographyUtils.H_PADDING_FROM_PANEL_HEADER));
 
     JLabel lblNewLabel = new JLabel("Table of Library Members");
     TypographyUtils.applyHeadingStyle(lblNewLabel);
-    panel.add(lblNewLabel);
+    titlePanel.add(lblNewLabel);
     Object[] columnsObjects = {"ID", "First Name", "Last Name", "TEL", "Address"};
     DefaultTableModel model = new DefaultTableModel();
     model.setColumnIdentifiers(columnsObjects);
@@ -89,16 +76,15 @@ public class AddMemberPanel extends JPanel implements LibWindow {
     JPanel panel_1 = new JPanel();
     add(panel_1, BorderLayout.SOUTH);
 
-    JPanel panel_2 = new JPanel();
-    add(panel_2, BorderLayout.CENTER);
+    JPanel centerPanel = new JPanel();
+    add(centerPanel, BorderLayout.CENTER);
 
     JPanel actionPanel = new JPanel();
-    actionPanel.setBounds(134, 235, 430, 40);
 
     btnAdd = new JButton("ADD");
-      Util.addButtonHover(btnAdd);
+    Util.addButtonHover(btnAdd);
+    actionPanel.add(btnAdd, BorderLayout.EAST);
     actionPanel.add(btnAdd);
-    btnAdd.setHorizontalAlignment(SwingConstants.RIGHT);
 
     btnDelete = new JButton("DELETE");
     Util.addButtonHover(btnDelete);
@@ -108,72 +94,90 @@ public class AddMemberPanel extends JPanel implements LibWindow {
     Util.addButtonHover(btnUpdate);
     actionPanel.add(btnUpdate);
 
-    JPanel middlePanel = new JPanel();
-    middlePanel.setBounds(5, 5, 460, 219);
-    middlePanel.setLayout(new GridLayout(0, 2, 0, 0));
+    JPanel controlsPanel = new JPanel();
     JLabel lblMemberId = new JLabel("ID:");
-    middlePanel.add(lblMemberId);
+    controlsPanel.add(lblMemberId);
 
     txtFieldId = new JTextField();
-    middlePanel.add(txtFieldId);
+    controlsPanel.add(txtFieldId);
     txtFieldId.setColumns(10);
 
     JLabel lblFirstName = new JLabel("First Name:");
-    middlePanel.add(lblFirstName);
+    controlsPanel.add(lblFirstName);
 
     txtFieldFirstName = new JTextField();
-    middlePanel.add(txtFieldFirstName);
+    controlsPanel.add(txtFieldFirstName);
     txtFieldFirstName.setColumns(10);
 
     JLabel lblLastName = new JLabel("Last Name:");
-    middlePanel.add(lblLastName);
+    controlsPanel.add(lblLastName);
 
     txtFieldLastName = new JTextField();
-    middlePanel.add(txtFieldLastName);
+    controlsPanel.add(txtFieldLastName);
     txtFieldLastName.setColumns(10);
 
     JLabel lblStreet = new JLabel("Street:");
-    middlePanel.add(lblStreet);
+    controlsPanel.add(lblStreet);
 
     txtFieldStreet = new JTextField();
-    middlePanel.add(txtFieldStreet);
+    controlsPanel.add(txtFieldStreet);
     txtFieldStreet.setColumns(10);
 
     JLabel lblCity = new JLabel("City:");
-    middlePanel.add(lblCity);
+    controlsPanel.add(lblCity);
 
     txtCity = new JTextField();
-    middlePanel.add(txtCity);
+    controlsPanel.add(txtCity);
     txtCity.setColumns(10);
 
     JLabel lblState = new JLabel("State:");
-    middlePanel.add(lblState);
+    controlsPanel.add(lblState);
 
     txtState = new JTextField();
-    middlePanel.add(txtState);
+    controlsPanel.add(txtState);
     txtState.setColumns(10);
 
     JLabel lblZip = new JLabel("Zip:");
-    middlePanel.add(lblZip);
+    controlsPanel.add(lblZip);
 
     txtZip = new JTextField();
-    middlePanel.add(txtZip);
+    controlsPanel.add(txtZip);
     txtZip.setColumns(10);
 
     JLabel lblTelephone = new JLabel("Telephone:");
-    middlePanel.add(lblTelephone);
+    controlsPanel.add(lblTelephone);
 
     txtTelephone = new JTextField();
-    middlePanel.add(txtTelephone);
+    controlsPanel.add(txtTelephone);
     txtTelephone.setColumns(10);
-    panel_2.setLayout(null);
-    panel_2.add(actionPanel);
-    panel_2.add(middlePanel);
+
+    controlsPanel.setBounds(5, 5, 460, 219);
+    controlsPanel.setLayout(new GridLayout(0, 2, 0, 0));
+
+    actionPanel.setBounds(134, 235, 460, 40);
+    actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 5));
+
+    //    centerPanel.setLayout(null);
+    //    centerPanel.add(actionPanel);
+    //    centerPanel.add(controlsPanel);
+
+    centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
+    controlsPanel.setPreferredSize(new Dimension(460, 219));
+    controlsPanel.setMaximumSize(new Dimension(460, 219));
+
+    actionPanel.setPreferredSize(new Dimension(460, 40));
+    actionPanel.setMaximumSize(new Dimension(460, 40));
+
+    centerPanel.add(controlsPanel);
+    centerPanel.add(actionPanel);
 
     JPanel tablePanel = new JPanel();
-    tablePanel.setBounds(5, 282, 580, 275);
-    panel_2.add(tablePanel);
-    tablePanel.setLayout(new BorderLayout(0, 0));
+    tablePanel.setLayout(new FlowLayout(0, 0, 0));
+    tablePanel.setPreferredSize(new Dimension(750, 275));
+    tablePanel.setMaximumSize(new Dimension(750, 275));
+
+    centerPanel.add(tablePanel);
 
     table =
         new JTable() {
@@ -195,6 +199,8 @@ public class AddMemberPanel extends JPanel implements LibWindow {
     colModel.getColumn(0).setPreferredWidth(50);
     JScrollPane jScrollPane = new JScrollPane();
     jScrollPane.setViewportView(table);
+    jScrollPane.setPreferredSize(new Dimension(750, 275));
+    jScrollPane.setBackground(Color.BLUE);
     tablePanel.add(jScrollPane);
 
     // Delete button
