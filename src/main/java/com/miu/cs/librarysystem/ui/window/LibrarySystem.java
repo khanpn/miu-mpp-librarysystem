@@ -1,4 +1,4 @@
-package com.miu.cs.librarysystem.system;
+package com.miu.cs.librarysystem.ui.window;
 
 import com.miu.cs.librarysystem.controller.ControllerInterface;
 import com.miu.cs.librarysystem.controller.SystemController;

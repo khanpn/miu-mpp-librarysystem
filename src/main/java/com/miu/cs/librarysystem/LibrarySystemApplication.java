@@ -1,7 +1,7 @@
 package com.miu.cs.librarysystem;
 
-import com.miu.cs.librarysystem.system.Util;
 import com.miu.cs.librarysystem.ui.window.LoginWindow;
+import com.miu.cs.librarysystem.util.Util;
 import java.awt.*;
 
 public class LibrarySystemApplication {

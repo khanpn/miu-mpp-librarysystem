@@ -1,11 +1,12 @@
-package com.miu.cs.librarysystem.system;
+package com.miu.cs.librarysystem.ui.panel;
 
-import static com.miu.cs.librarysystem.system.Util.addButtonHover;
-import static com.miu.cs.librarysystem.system.Util.buttonImage;
+import static com.miu.cs.librarysystem.util.Util.addButtonHover;
+import static com.miu.cs.librarysystem.util.Util.buttonImage;
 
 import com.miu.cs.librarysystem.dataaccess.Auth;
+import com.miu.cs.librarysystem.ui.window.LibrarySystem;
 import com.miu.cs.librarysystem.ui.window.LoginWindow;
-import java.awt.*;
+import com.miu.cs.librarysystem.util.Util;
 import javax.swing.*;
 
 public class MenuWindow extends JPanel implements LibWindow {

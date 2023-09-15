@@ -6,7 +6,7 @@ import com.miu.cs.librarysystem.store.Dispatcher;
 import com.miu.cs.librarysystem.store.action.bookshelf.BookshelfUpdateBookAction;
 import com.miu.cs.librarysystem.store.state.AppStatePath;
 import com.miu.cs.librarysystem.store.state.BookshelfState;
-import com.miu.cs.librarysystem.system.TypographyUtils;
+import com.miu.cs.librarysystem.util.TypographyUtils;
 import java.awt.event.*;
 import javax.swing.*;
 

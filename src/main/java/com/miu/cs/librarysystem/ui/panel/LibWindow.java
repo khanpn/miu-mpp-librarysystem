@@ -1,4 +1,4 @@
-package com.miu.cs.librarysystem.system;
+package com.miu.cs.librarysystem.ui.panel;
 
 public interface LibWindow {
   void init();

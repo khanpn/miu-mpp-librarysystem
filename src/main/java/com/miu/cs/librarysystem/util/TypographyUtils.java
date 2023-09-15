@@ -1,4 +1,4 @@
-package com.miu.cs.librarysystem.system;
+package com.miu.cs.librarysystem.util;
 
 import java.awt.*;
 import javax.swing.*;

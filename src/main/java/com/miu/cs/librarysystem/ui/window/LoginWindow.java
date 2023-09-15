@@ -6,10 +6,9 @@ import com.miu.cs.librarysystem.store.AppStateChangeListener;
 import com.miu.cs.librarysystem.store.AppStore;
 import com.miu.cs.librarysystem.store.state.AppStatePath;
 import com.miu.cs.librarysystem.store.state.LoginState;
-import com.miu.cs.librarysystem.system.LibrarySystem;
-import com.miu.cs.librarysystem.system.TypographyUtils;
-import com.miu.cs.librarysystem.system.Util;
 import com.miu.cs.librarysystem.ui.listener.LoginSubmitActionListener;
+import com.miu.cs.librarysystem.util.TypographyUtils;
+import com.miu.cs.librarysystem.util.Util;
 import java.awt.*;
 import javax.swing.*;
 
