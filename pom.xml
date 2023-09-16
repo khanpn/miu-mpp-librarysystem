@@ -22,7 +22,7 @@
         <spotless.version>2.39.0</spotless.version>
         <spotless.ratchet-from>origin/main</spotless.ratchet-from>
         <native.maven.plugin.version>0.9.26</native.maven.plugin.version>
-        <mainClass>com.miu.cs.librarysystem.LibrarySystemApplication</mainClass>
+        <mainClass>edu.miu.cs.librarysystem.LibrarySystemApplication</mainClass>
     </properties>
 
     <dependencies>
