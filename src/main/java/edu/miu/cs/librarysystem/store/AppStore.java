@@ -39,7 +39,7 @@ public final class AppStore {
   }
 
   @SuppressWarnings("unchecked")
-  public static <T extends AppState<?>> void setState(T state) {
+  static <T extends AppState<?>> void setState(T state) {
     AppStatePath statePath = state.getPath();
     Map<Object, AppStateChangeListener> listenerMap =
         INSTANCE.appStateChangeListenerMap.get(statePath);
