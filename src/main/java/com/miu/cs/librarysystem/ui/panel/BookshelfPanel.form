@@ -24,7 +24,7 @@
           <component id="86743" class="javax.swing.JButton" binding="searchButton">
             <constraints/>
             <properties>
-              <text value="Search"/>
+              <text value="Search ISBN"/>
             </properties>
           </component>
           <component id="d57f" class="javax.swing.JButton" binding="clearSearchButton">

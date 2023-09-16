@@ -95,8 +95,8 @@ public class AddBookDialog extends JDialog {
                   "ISBN must be in format ##-#####. Note that # is represented for a digit");
               return;
             }
-            if (numOfCopies < 0) {
-              errorMessageLabel.setText("Number of copies must be equal or greater than 0");
+            if (numOfCopies < 1) {
+              errorMessageLabel.setText("Number of copies must be greater than 0");
               return;
             }
             List<Author> selectedAuthors = authorList.getSelectedValuesList();
