@@ -97,10 +97,6 @@ public class SystemController implements ControllerInterface {
     INSTANCE.saveBook(book);
   }
 
-  public static void updateBook(Book book) {
-    INSTANCE.saveBook(book);
-  }
-
   @Override
   public LibraryMember findMemberById(String memberId) {
     return da.findMemberById(memberId).orElse(null);
@@ -109,10 +105,6 @@ public class SystemController implements ControllerInterface {
   @Override
   public Collection<Book> allBooks() {
     return da.readBooksMap().values();
-  }
-
-  public static Collection<Book> getAllBooks() {
-    return INSTANCE.allBooks();
   }
 
   @Override
