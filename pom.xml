@@ -17,15 +17,47 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <intellij.version>212.5284.40</intellij.version>
+        <com.intellij.forms_rt.version>7.0.3</com.intellij.forms_rt.version>
+        <com.jetbrains.intellij.java.version>212.5284.40</com.jetbrains.intellij.java.version>
         <spotless.version>2.39.0</spotless.version>
         <spotless.ratchet-from>origin/main</spotless.ratchet-from>
         <native.maven.plugin.version>0.9.26</native.maven.plugin.version>
         <mainClass>com.miu.cs.librarysystem.LibrarySystemApplication</mainClass>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>forms_rt</artifactId>
+            <version>${com.intellij.forms_rt.version}</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>
+                                        ${mainClass}
+                                    </mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>ideauidesigner-maven-plugin</artifactId>
@@ -33,12 +65,12 @@
                     <dependency>
                         <groupId>com.jetbrains.intellij.java</groupId>
                         <artifactId>java-compiler-ant-tasks</artifactId>
-                        <version>${intellij.version}</version>
+                        <version>${com.jetbrains.intellij.java.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>com.jetbrains.intellij.java</groupId>
                         <artifactId>java-gui-forms-rt</artifactId>
-                        <version>${intellij.version}</version>
+                        <version>${com.jetbrains.intellij.java.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -52,19 +84,6 @@
                     <fork>true</fork>
                     <debug>true</debug>
                     <failOnError>true</failOnError>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>${mainClass}</mainClass>
-                        </manifest>
-                    </archive>
                 </configuration>
             </plugin>
             <plugin>
