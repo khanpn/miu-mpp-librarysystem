@@ -1,9 +1,12 @@
 package com.miu.cs.librarysystem.util;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Util {
@@ -71,7 +74,7 @@ public class Util {
 
   public static JButton buttonImage(
       String sourseImage, String btnText, int iconWidth, int iconHeight) {
-    ImageIcon icon = new ImageIcon(sourseImage);
+    ImageIcon icon = new ImageIcon(getImage(sourseImage));
     Image scaledImage =
         icon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
     ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -80,6 +83,14 @@ public class Util {
     btn.setHorizontalTextPosition(SwingConstants.RIGHT);
     btn.setVerticalTextPosition(SwingConstants.CENTER);
     return btn;
+  }
+
+  private static Image getImage(String path) {
+    try {
+      return ImageIO.read(Objects.requireNonNull(Util.class.getResourceAsStream(path)));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public static void addButtonHover(JButton btn) {
