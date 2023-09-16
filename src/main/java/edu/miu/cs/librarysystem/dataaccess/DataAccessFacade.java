@@ -16,6 +16,8 @@ import java.util.Optional;
 
 public class DataAccessFacade implements DataAccess {
 
+  private static final DataAccessFacade INSTANCE = new DataAccessFacade();
+
   enum StorageType {
     BOOKS,
     MEMBERS,
@@ -24,14 +26,14 @@ public class DataAccessFacade implements DataAccess {
 
   public static final String APP_DATA_DIR =
       System.getProperty("user.dir") + File.separator + "lib-data";
-  public static final String DATE_PATTERN = "MM/dd/yyyy";
 
   // implement: other save operations
-  public void saveNewMember(LibraryMember member) {
+  public LibraryMember saveNewMember(LibraryMember member) {
     HashMap<String, LibraryMember> mems = readMemberMap();
     String memberId = member.getMemberId();
     mems.put(memberId, member);
     saveToStorage(StorageType.MEMBERS, mems);
+    return member;
   }
 
   @SuppressWarnings("unchecked")
@@ -80,10 +82,11 @@ public class DataAccessFacade implements DataAccess {
   }
 
   @Override
-  public void deleteMember(String memberId) {
+  public LibraryMember deleteMember(String memberId) {
     HashMap<String, LibraryMember> mems = readMemberMap();
-    mems.remove(memberId);
+    LibraryMember removedMember = mems.remove(memberId);
     saveToStorage(StorageType.MEMBERS, mems);
+    return removedMember;
   }
 
   static void saveToStorage(StorageType type, Object ob) {

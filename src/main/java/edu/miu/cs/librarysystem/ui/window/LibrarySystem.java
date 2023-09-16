@@ -1,7 +1,5 @@
 package edu.miu.cs.librarysystem.ui.window;
 
-import edu.miu.cs.librarysystem.controller.ControllerInterface;
-import edu.miu.cs.librarysystem.controller.SystemController;
 import edu.miu.cs.librarysystem.dataaccess.User;
 import edu.miu.cs.librarysystem.store.AppStore;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
@@ -21,7 +19,6 @@ public class LibrarySystem extends JFrame implements LibWindow {
   /** */
   private static final long serialVersionUID = -8006557307706389790L;
 
-  ControllerInterface ci = new SystemController();
   public static final LibrarySystem INSTANCE = new LibrarySystem();
 
   JPanel leftPanel;

@@ -5,9 +5,9 @@ import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import edu.miu.cs.librarysystem.business.Book;
 import edu.miu.cs.librarysystem.business.CheckoutHistory;
 import edu.miu.cs.librarysystem.business.LibraryMember;
-import edu.miu.cs.librarysystem.controller.ControllerInterface;
-import edu.miu.cs.librarysystem.controller.SystemController;
 import edu.miu.cs.librarysystem.exception.LibrarySystemException;
+import edu.miu.cs.librarysystem.service.BookService;
+import edu.miu.cs.librarysystem.service.LibraryMemberService;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
 import edu.miu.cs.librarysystem.util.Util;
 import java.awt.*;
@@ -26,7 +26,6 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
   private JComboBox<String> memberIdTextField;
 
   DefaultTableModel model = new DefaultTableModel();
-  ControllerInterface ci = new SystemController();
 
   public CheckoutBookPanel() {
     init();
@@ -74,7 +73,7 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     JLabel memberIdLabel = new JLabel("Member ID:");
     controlsPanel.add(memberIdLabel);
 
-    Collection<LibraryMember> members = ci.allLibraryMembers();
+    Collection<LibraryMember> members = LibraryMemberService.getInstance().getAllMembers();
 
     String[] membersStrings = new String[members.size()];
     int counter = 0;
@@ -89,7 +88,7 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     JLabel bookIsbnLabel = new JLabel("ISBN:");
     controlsPanel.add(bookIsbnLabel);
 
-    Collection<Book> books = ci.allBooks();
+    Collection<Book> books = BookService.getInstance().getAllBooks();
     String[] bookStrings = new String[books.size()];
     int index = 0;
     for (Book book : books) {
@@ -168,7 +167,7 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
 
           try {
             clearText();
-            ci.checkBook(memberId, bookIsbn);
+            BookService.getInstance().checkBook(memberId, bookIsbn);
             JOptionPane.showMessageDialog(
                 this,
                 "Book successfully checked out",
@@ -188,7 +187,7 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
   }
 
   void getCheckoutHistoryList() {
-    Collection<CheckoutHistory> checkouts = ci.getCheckoutHistory();
+    Collection<CheckoutHistory> checkouts = BookService.getInstance().getCheckoutHistory();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     model.setRowCount(0);
     for (CheckoutHistory checkout : checkouts) {

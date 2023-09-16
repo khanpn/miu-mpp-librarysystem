@@ -4,12 +4,12 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
 import edu.miu.cs.librarysystem.business.Book;
 import edu.miu.cs.librarysystem.business.LibraryMember;
-import edu.miu.cs.librarysystem.controller.ControllerInterface;
-import edu.miu.cs.librarysystem.controller.SystemController;
+import edu.miu.cs.librarysystem.service.LibraryMemberService;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
 import edu.miu.cs.librarysystem.util.Util;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,7 +27,6 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
   private JTextField txtTelephone;
 
   DefaultTableModel model = new DefaultTableModel();
-  ControllerInterface ci = new SystemController();
 
   public SearchMemberCheckoutRecordPanel() {
     init();
@@ -154,14 +153,15 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
             return;
           }
 
-          LibraryMember member = ci.findMemberById(memberId);
+          Optional<LibraryMember> memberOpt =
+              LibraryMemberService.getInstance().findMemberById(memberId);
 
-          if (member == null) {
+          if (memberOpt.isEmpty()) {
             JOptionPane.showMessageDialog(
                 this, "Member with ID " + memberId + " not found", "", ERROR_MESSAGE);
             return;
           }
-
+          LibraryMember member = memberOpt.get();
           txtFieldId.setEnabled(false);
 
           txtFieldFirstName.setText(member.getFirstName());
@@ -182,9 +182,10 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
             return;
           }
 
-          LibraryMember member = ci.findMemberById(memberId);
+          Optional<LibraryMember> memberOpt =
+              LibraryMemberService.getInstance().findMemberById(memberId);
 
-          if (member == null) {
+          if (memberOpt.isEmpty()) {
             JOptionPane.showMessageDialog(
                 this, "Member with ID " + memberId + " not found", "", ERROR_MESSAGE);
             return;
@@ -194,7 +195,8 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
           System.out.printf(
               "%-10s\t%-10s\t%-8s\t%-6s\t%-20s\t%s\n",
               "CHECKOUT", "DUE", "ISBN", "COPIES", "TITLE", "MEMBER");
-          member
+          memberOpt
+              .get()
               .getCheckoutRecords()
               .forEach(
                   record -> {

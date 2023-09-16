@@ -5,8 +5,7 @@ import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 import edu.miu.cs.librarysystem.business.Address;
 import edu.miu.cs.librarysystem.business.LibraryMember;
-import edu.miu.cs.librarysystem.controller.ControllerInterface;
-import edu.miu.cs.librarysystem.controller.SystemController;
+import edu.miu.cs.librarysystem.service.LibraryMemberService;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
 import edu.miu.cs.librarysystem.util.Util;
 import java.awt.*;
@@ -24,7 +23,6 @@ import javax.swing.table.TableColumnModel;
 public class AddMemberPanel extends JPanel implements LibWindow {
   @Serial private static final long serialVersionUID = 7863919163615773327L;
   private boolean isInitialized = false;
-
   private JTextField txtFieldFirstName;
   private JTextField txtState;
   private JTextField txtZip;
@@ -39,7 +37,6 @@ public class AddMemberPanel extends JPanel implements LibWindow {
 
   private JFrame frame;
   private JTable table;
-  ControllerInterface controller = new SystemController();
   private int selectedRow = -1;
 
   public AddMemberPanel() {
@@ -60,7 +57,7 @@ public class AddMemberPanel extends JPanel implements LibWindow {
     Object[] columnsObjects = {"ID", "First Name", "Last Name", "TEL", "Address"};
     DefaultTableModel model = new DefaultTableModel();
     model.setColumnIdentifiers(columnsObjects);
-    Collection<LibraryMember> members = controller.allLibraryMembers();
+    Collection<LibraryMember> members = LibraryMemberService.getInstance().getAllMembers();
     for (LibraryMember member : members) {
       model.addRow(
           new Object[] {
@@ -210,7 +207,7 @@ public class AddMemberPanel extends JPanel implements LibWindow {
 
             String memberIdString = (String) table.getValueAt(selectedRow, 0);
             model.removeRow(selectedRow);
-            controller.deleteMember(memberIdString);
+            LibraryMemberService.getInstance().deleteMember(memberIdString);
             selectedRow = -1;
             clearText();
           } else if (count > 1) {
@@ -230,8 +227,9 @@ public class AddMemberPanel extends JPanel implements LibWindow {
             if (count == 1) {
               selectedRow = table.getSelectedRow();
               System.out.println(model.getValueAt(selectedRow, 0));
+              String memberId = (String) model.getValueAt(selectedRow, 0);
               LibraryMember member =
-                  controller.getLibraryMemberById((String) model.getValueAt(selectedRow, 0));
+                  LibraryMemberService.getInstance().findMemberById(memberId).orElseThrow();
               txtCity.setText(member.getAddress().getCity());
               txtFieldFirstName.setText(member.getFirstName());
               txtFieldId.setText(member.getMemberId());
@@ -264,7 +262,10 @@ public class AddMemberPanel extends JPanel implements LibWindow {
             System.out.println("Invalid id or first name or last name");
             return;
           }
-          List<String> memberStrings = controller.allMemberIds();
+          List<String> memberStrings =
+              LibraryMemberService.getInstance().getAllMembers().stream()
+                  .map(LibraryMember::getMemberId)
+                  .toList();
           if (memberStrings.contains(idString)) {
             JOptionPane.showMessageDialog(frame, "exist member id", "", ERROR_MESSAGE);
             System.out.println("exist member id");
@@ -274,7 +275,7 @@ public class AddMemberPanel extends JPanel implements LibWindow {
           LibraryMember member =
               new LibraryMember(
                   idString, firstNameString, lastNameString, telephoneString, newAddress);
-          controller.saveMember(member);
+          LibraryMemberService.getInstance().save(member);
           JOptionPane.showMessageDialog(
               frame,
               "Add member successfully",
@@ -313,7 +314,7 @@ public class AddMemberPanel extends JPanel implements LibWindow {
           LibraryMember member =
               new LibraryMember(
                   idString, firstNameString, lastNameString, telephoneString, newAddress);
-          controller.saveMember(member);
+          LibraryMemberService.getInstance().save(member);
           JOptionPane.showMessageDialog(
               frame,
               "Update member successfully",

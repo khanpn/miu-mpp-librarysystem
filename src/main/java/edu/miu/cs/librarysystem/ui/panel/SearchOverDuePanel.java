@@ -5,14 +5,15 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import edu.miu.cs.librarysystem.business.Book;
 import edu.miu.cs.librarysystem.business.CheckoutRecord;
 import edu.miu.cs.librarysystem.business.LibraryMember;
-import edu.miu.cs.librarysystem.controller.ControllerInterface;
-import edu.miu.cs.librarysystem.controller.SystemController;
+import edu.miu.cs.librarysystem.service.BookService;
+import edu.miu.cs.librarysystem.service.LibraryMemberService;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
 import edu.miu.cs.librarysystem.util.Util;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -26,8 +27,6 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
   private final DefaultListModel<String> listModel = new DefaultListModel<>();
   private JTextField searchField;
   DefaultTableModel model;
-
-  ControllerInterface ci = new SystemController();
 
   public SearchOverDuePanel() {
     init();
@@ -133,8 +132,8 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
             return;
           }
 
-          Book theBook = ci.getBookByISBN(isbn);
-          if (theBook == null) {
+          Optional<Book> theBookOpt = BookService.getInstance().findById(isbn);
+          if (theBookOpt.isEmpty()) {
             JOptionPane.showMessageDialog(
                 this, "Book with ISBN " + isbn + " could not be found", "", ERROR_MESSAGE);
             return;
@@ -143,9 +142,9 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
           List<CheckoutRecord> records =
-              ci.allLibraryMembers().stream()
+              LibraryMemberService.getInstance().getAllMembers().stream()
                   .map(LibraryMember::getCheckoutRecords)
-                  .filter(checkoutRecords -> checkoutRecords.size() > 0)
+                  .filter(checkoutRecords -> !checkoutRecords.isEmpty())
                   .flatMap(List::stream)
                   .toList();
 
