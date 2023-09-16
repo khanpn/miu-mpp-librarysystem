@@ -7,6 +7,7 @@ import com.miu.cs.librarysystem.store.AppStore;
 import com.miu.cs.librarysystem.store.state.AppStatePath;
 import com.miu.cs.librarysystem.store.state.LoginState;
 import com.miu.cs.librarysystem.ui.panel.*;
+import com.miu.cs.librarysystem.util.Util;
 import java.awt.Color;
 import java.awt.GridLayout;
 import javax.swing.ImageIcon;
@@ -27,8 +28,6 @@ public class LibrarySystem extends JFrame implements LibWindow {
   JPanel mainPanel;
 
   JSplitPane splitPane;
-
-  String pathToImage;
   private boolean isInitialized = false;
 
   private User loggedInUser;
@@ -66,7 +65,6 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
   public void init() {
     reloadContentPage();
-    setPathToImage();
     insertSplashImage();
 
     setSize(1100, 700);
@@ -86,17 +84,13 @@ public class LibrarySystem extends JFrame implements LibWindow {
     splitPane.setLeftComponent(leftPanel);
   }
 
-  private void setPathToImage() {
-    pathToImage = getClass().getResource("/library.jpg").getFile();
-  }
-
   private void insertSplashImage() {
     // repaint background after success login
     mainPanel.removeAll();
     mainPanel.validate();
     mainPanel.repaint();
 
-    ImageIcon image = new ImageIcon(pathToImage);
+    ImageIcon image = new ImageIcon(Util.getImage("/library.jpg"));
     mainPanel.add(new JLabel(image));
     mainPanel.setBackground(Color.WHITE);
   }

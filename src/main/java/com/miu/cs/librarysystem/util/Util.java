@@ -85,7 +85,7 @@ public class Util {
     return btn;
   }
 
-  private static Image getImage(String path) {
+  public static Image getImage(String path) {
     try {
       return ImageIO.read(Objects.requireNonNull(Util.class.getResourceAsStream(path)));
     } catch (IOException e) {
