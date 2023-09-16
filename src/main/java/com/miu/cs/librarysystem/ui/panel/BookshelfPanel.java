@@ -75,6 +75,11 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
                 };
             return types[columnIndex];
           }
+
+          @Override
+          public boolean isCellEditable(int row, int column) {
+            return false;
+          }
         };
     bookTableModel.setColumnIdentifiers(
         new String[] {
