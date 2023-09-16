@@ -1,7 +1,7 @@
 package edu.miu.cs.librarysystem.ui.window;
 
 import edu.miu.cs.librarysystem.dataaccess.User;
-import edu.miu.cs.librarysystem.store.AppStore;
+import edu.miu.cs.librarysystem.store.core.Store;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.LoginState;
 import edu.miu.cs.librarysystem.ui.panel.*;
@@ -72,7 +72,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
   }
 
   private void reloadContentPage() {
-    loggedInUser = AppStore.getState(AppStatePath.LOGIN, LoginState.class).getData().getAuthUser();
+    loggedInUser = Store.getState(AppStatePath.LOGIN, LoginState.class).getData().getAuthUser();
     MenuWindow.INSTANCE.setAuth(loggedInUser.getAuthorization());
     leftPanel = MenuWindow.INSTANCE;
 

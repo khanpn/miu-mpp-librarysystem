@@ -2,10 +2,10 @@ package edu.miu.cs.librarysystem.ui.dialog;
 
 import edu.miu.cs.librarysystem.business.Author;
 import edu.miu.cs.librarysystem.business.Book;
-import edu.miu.cs.librarysystem.store.AppStore;
-import edu.miu.cs.librarysystem.store.Dispatcher;
 import edu.miu.cs.librarysystem.store.action.bookshelf.BookshelfAddBookAction;
 import edu.miu.cs.librarysystem.store.action.bookshelf.BookshelfLoadBooksAction;
+import edu.miu.cs.librarysystem.store.core.Dispatcher;
+import edu.miu.cs.librarysystem.store.core.Store;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.BookshelfState;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
@@ -53,7 +53,7 @@ public class AddBookDialog extends JDialog {
     Dispatcher.dispatch(new BookshelfLoadBooksAction());
     DefaultListModel<Author> authorListModel = new DefaultListModel<>();
     Set<Author> authors =
-        AppStore.getState(AppStatePath.BOOKSHELF, BookshelfState.class).getData().getAuthors();
+        Store.getState(AppStatePath.BOOKSHELF, BookshelfState.class).getData().getAuthors();
     authors.forEach(authorListModel::addElement);
     authorList.setModel(authorListModel);
 

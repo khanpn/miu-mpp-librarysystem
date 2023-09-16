@@ -2,9 +2,10 @@ package edu.miu.cs.librarysystem.store.reducer;
 
 import edu.miu.cs.librarysystem.business.Book;
 import edu.miu.cs.librarysystem.service.BookService;
-import edu.miu.cs.librarysystem.store.AppStore;
-import edu.miu.cs.librarysystem.store.action.AppAction;
 import edu.miu.cs.librarysystem.store.action.bookshelf.*;
+import edu.miu.cs.librarysystem.store.core.Store;
+import edu.miu.cs.librarysystem.store.core.action.Action;
+import edu.miu.cs.librarysystem.store.core.reducer.Reducer;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.BookshelfState;
 import edu.miu.cs.librarysystem.viewmodel.BookshelfViewModel;
@@ -12,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BookshelfReducer implements Reducer<BookshelfState, AppAction<?>> {
+public class BookshelfReducer implements Reducer<BookshelfState, Action<?>> {
   @Override
-  public BookshelfState reduce(AppAction<?> action) {
+  public BookshelfState reduce(Action<?> action) {
     if (action instanceof BookshelfSelectBookAction selectBookAction) {
       Book selectedBook = selectBookAction.getData();
-      BookshelfState currentState = AppStore.getState(AppStatePath.BOOKSHELF, BookshelfState.class);
+      BookshelfState currentState = Store.getState(AppStatePath.BOOKSHELF, BookshelfState.class);
       BookshelfViewModel currentViewModel = currentState.getData();
       return new BookshelfState(new BookshelfViewModel(currentViewModel.getBooks(), selectedBook));
     } else if (action instanceof BookshelfLoadBooksAction) {
@@ -45,7 +46,7 @@ public class BookshelfReducer implements Reducer<BookshelfState, AppAction<?>> {
   }
 
   @Override
-  public <O extends AppAction<?>> boolean canReduce(O action) {
+  public <O extends Action<?>> boolean canReduce(O action) {
     return action instanceof BookshelfLoadBooksAction
         || action instanceof BookshelfSelectBookAction
         || action instanceof BookshelfFilterAction

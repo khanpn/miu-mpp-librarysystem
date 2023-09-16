@@ -1,9 +1,10 @@
 package edu.miu.cs.librarysystem.ui.window;
 
 import edu.miu.cs.librarysystem.business.BasicAuthCredentials;
-import edu.miu.cs.librarysystem.store.AppStateChangeEvent;
-import edu.miu.cs.librarysystem.store.AppStateChangeListener;
-import edu.miu.cs.librarysystem.store.AppStore;
+import edu.miu.cs.librarysystem.store.core.StateChangeEvent;
+import edu.miu.cs.librarysystem.store.core.StateChangeListener;
+import edu.miu.cs.librarysystem.store.core.Store;
+import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.LoginState;
 import edu.miu.cs.librarysystem.ui.listener.LoginSubmitActionListener;
@@ -12,7 +13,7 @@ import edu.miu.cs.librarysystem.util.Util;
 import java.awt.*;
 import javax.swing.*;
 
-public class LoginWindow extends JFrame implements AppStateChangeListener<LoginState> {
+public class LoginWindow extends JFrame implements StateChangeListener<LoginState> {
   private JPanel contentPanel;
   private JLabel headingLabel;
   private JTextField usernameField;
@@ -22,7 +23,7 @@ public class LoginWindow extends JFrame implements AppStateChangeListener<LoginS
 
   public LoginWindow() throws HeadlessException {
     init();
-    AppStore.registerOnStateChange(getListeningStatePath(), this);
+    Store.registerOnStateChange(getListeningStatePath(), this);
   }
 
   private void init() {
@@ -45,7 +46,7 @@ public class LoginWindow extends JFrame implements AppStateChangeListener<LoginS
   }
 
   @Override
-  public void onStateChanged(AppStateChangeEvent<LoginState> event) {
+  public void onStateChanged(StateChangeEvent<LoginState> event) {
     LoginState loginState = event.getNewState();
     if (!loginState.getData().isAuthenticated()) {
       errorMessageLabel.setText(loginState.getData().getLoginException().getMessage());
@@ -60,13 +61,13 @@ public class LoginWindow extends JFrame implements AppStateChangeListener<LoginS
           Util.centerFrameOnDesktop(LibrarySystem.INSTANCE);
           LibrarySystem.INSTANCE.setVisible(true);
 
-          AppStore.unregisterOnStateChange(getListeningStatePath(), this);
+          Store.unregisterOnStateChange(getListeningStatePath(), this);
           dispose();
         });
   }
 
   @Override
-  public AppStatePath getListeningStatePath() {
+  public StatePath getListeningStatePath() {
     return AppStatePath.LOGIN;
   }
 }

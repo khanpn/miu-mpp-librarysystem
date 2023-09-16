@@ -1,14 +1,14 @@
 package edu.miu.cs.librarysystem.store;
 
+import edu.miu.cs.librarysystem.store.core.StoreModule;
+import edu.miu.cs.librarysystem.store.core.reducer.Reducer;
 import edu.miu.cs.librarysystem.store.reducer.BookshelfReducer;
 import edu.miu.cs.librarysystem.store.reducer.LoginReducer;
-import edu.miu.cs.librarysystem.store.reducer.Reducer;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-@SuppressWarnings("rawtypes")
-public final class AppStoreModule {
+public class AppStoreModule {
+
   private static final Set<Reducer> ACTIVE_REDUCERS = new HashSet<>();
 
   static {
@@ -16,9 +16,7 @@ public final class AppStoreModule {
     ACTIVE_REDUCERS.add(new BookshelfReducer());
   }
 
-  private AppStoreModule() {}
-
-  public static Set<Reducer> getActiveReducers() {
-    return Collections.unmodifiableSet(ACTIVE_REDUCERS);
+  public static void initialize() {
+    StoreModule.initialize(ACTIVE_REDUCERS);
   }
 }

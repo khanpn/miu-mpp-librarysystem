@@ -2,6 +2,7 @@ package edu.miu.cs.librarysystem;
 
 import edu.miu.cs.librarysystem.dataaccess.DataAccessFacade;
 import edu.miu.cs.librarysystem.dataaccess.TestData;
+import edu.miu.cs.librarysystem.store.AppStoreModule;
 import edu.miu.cs.librarysystem.ui.window.LoginWindow;
 import edu.miu.cs.librarysystem.util.Util;
 import java.awt.*;
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 public class LibrarySystemApplication {
   public static void main(String[] args) {
+    AppStoreModule.initialize();
     EventQueue.invokeLater(LibrarySystemApplication::run);
   }
 

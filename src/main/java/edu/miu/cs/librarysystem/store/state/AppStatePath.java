@@ -1,6 +1,8 @@
 package edu.miu.cs.librarysystem.store.state;
 
-public enum AppStatePath {
+import edu.miu.cs.librarysystem.store.core.state.StatePath;
+
+public enum AppStatePath implements StatePath {
   LOGIN("login"),
   BOOKSHELF("bookshelf");
   private final String value;
