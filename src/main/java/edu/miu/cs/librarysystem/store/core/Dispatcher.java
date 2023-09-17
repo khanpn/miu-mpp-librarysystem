@@ -7,6 +7,6 @@ public final class Dispatcher {
   private Dispatcher() {}
 
   public static <T extends State<?>> void dispatch(Action<?> action) {
-    Reducers.reduce(action);
+    ActionQueues.put(action);
   }
 }

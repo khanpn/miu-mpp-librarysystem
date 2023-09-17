@@ -3,6 +3,7 @@ package edu.miu.cs.librarysystem.store.core;
 import edu.miu.cs.librarysystem.store.core.reducer.Reducer;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Executors;
 
 @SuppressWarnings("rawtypes")
 public final class StoreModule {
@@ -13,7 +14,7 @@ public final class StoreModule {
   }
 
   public static void initialize(Set<Reducer> reducers) {
-    ACTIVE_REDUCERS.clear();
+    Executors.newSingleThreadExecutor().execute(() -> new ActionLoop().start());
     if (reducers == null) {
       return;
     }
