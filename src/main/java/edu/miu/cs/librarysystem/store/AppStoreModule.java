@@ -18,6 +18,7 @@ public class AppStoreModule {
     ACTIVE_REDUCERS.add(new CheckoutBookReducer());
     ACTIVE_REDUCERS.add(new CheckoutRecordReducer());
     ACTIVE_REDUCERS.add(new SearchOverdueBookReducer());
+    ACTIVE_REDUCERS.add(new MainWindowReducer());
   }
 
   public static void initialize() {

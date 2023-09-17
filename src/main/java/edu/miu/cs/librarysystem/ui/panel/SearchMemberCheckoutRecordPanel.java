@@ -22,8 +22,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class SearchMemberCheckoutRecordPanel extends JPanel
-    implements LibWindow, StateChangeListener<CheckoutRecordState> {
-  private boolean isInitialized = false;
+    implements StateChangeListener<CheckoutRecordState> {
 
   private JTextField txtFieldFirstName;
   private JTextField txtState;
@@ -41,7 +40,6 @@ public class SearchMemberCheckoutRecordPanel extends JPanel
     init();
   }
 
-  @Override
   public void init() {
     setLayout(new BorderLayout());
     JPanel panel = new JPanel();
@@ -188,16 +186,6 @@ public class SearchMemberCheckoutRecordPanel extends JPanel
     txtState.setText("");
     txtTelephone.setText("");
     txtZip.setText("");
-  }
-
-  @Override
-  public boolean isInitialized() {
-    return isInitialized;
-  }
-
-  @Override
-  public void setInitialized(boolean val) {
-    isInitialized = val;
   }
 
   @Override

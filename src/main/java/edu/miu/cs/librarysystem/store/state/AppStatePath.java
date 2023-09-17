@@ -3,6 +3,7 @@ package edu.miu.cs.librarysystem.store.state;
 import edu.miu.cs.librarysystem.store.core.state.StatePath;
 
 public enum AppStatePath implements StatePath {
+  MAIN_WINDOW("mainWindow"),
   LOGIN("login"),
   BOOKSHELF("bookshelf"),
   LIBRARY_MEMBER("libraryMember"),

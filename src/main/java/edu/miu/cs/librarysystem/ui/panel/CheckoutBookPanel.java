@@ -24,11 +24,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class CheckoutBookPanel extends JPanel
-    implements LibWindow, StateChangeListener<CheckoutBookState> {
-
-  private static final long serialVersionUID = -6316708968684859855L;
-  private boolean isInitialized = false;
+public class CheckoutBookPanel extends JPanel implements StateChangeListener<CheckoutBookState> {
 
   private JComboBox<String> bookIsbnComboBox;
   private JComboBox<String> memberIdComboBox;
@@ -42,7 +38,6 @@ public class CheckoutBookPanel extends JPanel
     Dispatcher.dispatch(new CheckoutBookRefreshAction());
   }
 
-  @Override
   public void init() {
     setLayout(new BorderLayout());
     JPanel panel = new JPanel();
@@ -162,16 +157,6 @@ public class CheckoutBookPanel extends JPanel
             checkout.getMember().getTelephone(),
           });
     }
-  }
-
-  @Override
-  public boolean isInitialized() {
-    return isInitialized;
-  }
-
-  @Override
-  public void setInitialized(boolean val) {
-    isInitialized = val;
   }
 
   @Override

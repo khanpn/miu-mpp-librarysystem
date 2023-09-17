@@ -21,7 +21,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,10 +29,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class LibraryMemberPanel extends JPanel
-    implements LibWindow, StateChangeListener<LibraryMemberState> {
-  @Serial private static final long serialVersionUID = 7863919163615773327L;
-  private boolean isInitialized = false;
+public class LibraryMemberPanel extends JPanel implements StateChangeListener<LibraryMemberState> {
   private JTextField txtFieldFirstName;
   private JTextField txtState;
   private JTextField txtZip;
@@ -59,7 +55,6 @@ public class LibraryMemberPanel extends JPanel
     init();
   }
 
-  @Override
   public void init() {
     setLayout(new BorderLayout());
     JPanel titlePanel = new JPanel();
@@ -321,16 +316,6 @@ public class LibraryMemberPanel extends JPanel
     txtState.setText("");
     txtTelephone.setText("");
     txtZip.setText("");
-  }
-
-  @Override
-  public boolean isInitialized() {
-    return isInitialized;
-  }
-
-  @Override
-  public void setInitialized(boolean val) {
-    isInitialized = val;
   }
 
   @Override

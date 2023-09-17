@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 public class SearchOverdueBookPanel extends JPanel
-    implements LibWindow, StateChangeListener<SearchOverdueBookState> {
+    implements StateChangeListener<SearchOverdueBookState> {
   private boolean isInitialized = false;
 
   private final List<String> defaultList = new ArrayList<>();
@@ -37,7 +37,6 @@ public class SearchOverdueBookPanel extends JPanel
     init();
   }
 
-  @Override
   public void init() {
     setLayout(new BorderLayout());
     JPanel panel = new JPanel();
@@ -144,16 +143,6 @@ public class SearchOverdueBookPanel extends JPanel
 
   void clearText() {
     searchField.setText("");
-  }
-
-  @Override
-  public boolean isInitialized() {
-    return isInitialized;
-  }
-
-  @Override
-  public void setInitialized(boolean val) {
-    isInitialized = val;
   }
 
   @Override

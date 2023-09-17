@@ -3,8 +3,7 @@ package edu.miu.cs.librarysystem;
 import edu.miu.cs.librarysystem.dataaccess.DataAccessFacade;
 import edu.miu.cs.librarysystem.dataaccess.TestData;
 import edu.miu.cs.librarysystem.store.AppStoreModule;
-import edu.miu.cs.librarysystem.ui.window.LoginWindow;
-import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.ui.LibrarySystem;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
@@ -23,13 +22,6 @@ public class LibrarySystemApplication {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    LoginWindow loginWindow = new LoginWindow();
-    Util.centerFrameOnDesktop(loginWindow);
-    loginWindow.setVisible(true);
-
-    // for testing
-    //    AppStore.setState(
-    //        new LoginState(new AuthenticationContextViewModel(new User("103", "111",
-    // Auth.BOTH))));
+    LibrarySystem.start();
   }
 }
