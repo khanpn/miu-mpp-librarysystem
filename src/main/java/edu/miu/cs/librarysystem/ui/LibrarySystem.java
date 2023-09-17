@@ -3,8 +3,6 @@ package edu.miu.cs.librarysystem.ui;
 import edu.miu.cs.librarysystem.store.core.StateChangeListener;
 import edu.miu.cs.librarysystem.store.core.Store;
 import edu.miu.cs.librarysystem.ui.window.LoginWindow;
-import edu.miu.cs.librarysystem.util.Util;
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,7 +31,6 @@ public final class LibrarySystem {
 
   private static <T extends LibWindow> void openWindow(T libWindow) {
     registerStateChange(libWindow);
-    Util.centerFrameOnDesktop((Component) libWindow);
     libWindow.init();
     libWindow.setVisible(true);
   }

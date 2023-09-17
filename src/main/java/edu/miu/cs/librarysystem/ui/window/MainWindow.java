@@ -41,6 +41,7 @@ public class MainWindow extends JFrame implements LibWindow, StateChangeListener
 
     setSize(1100, 700);
     splitPane.setDividerLocation(300);
+    Util.centerFrameOnDesktop(this);
   }
 
   private void repaintMenuPanel() {
