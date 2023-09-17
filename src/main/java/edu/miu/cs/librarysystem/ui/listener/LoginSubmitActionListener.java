@@ -1,8 +1,8 @@
 package edu.miu.cs.librarysystem.ui.listener;
 
 import edu.miu.cs.librarysystem.business.BasicAuthCredentials;
-import edu.miu.cs.librarysystem.store.Dispatcher;
 import edu.miu.cs.librarysystem.store.action.login.LoginSubmitAction;
+import edu.miu.cs.librarysystem.store.core.Dispatcher;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

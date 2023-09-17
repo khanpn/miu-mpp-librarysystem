@@ -5,34 +5,39 @@ import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import edu.miu.cs.librarysystem.business.Book;
 import edu.miu.cs.librarysystem.business.CheckoutHistory;
 import edu.miu.cs.librarysystem.business.LibraryMember;
-import edu.miu.cs.librarysystem.controller.ControllerInterface;
-import edu.miu.cs.librarysystem.controller.SystemController;
-import edu.miu.cs.librarysystem.exception.LibrarySystemException;
+import edu.miu.cs.librarysystem.store.action.checkoutbook.CheckoutBookCheckoutBookAction;
+import edu.miu.cs.librarysystem.store.action.checkoutbook.CheckoutBookRefreshAction;
+import edu.miu.cs.librarysystem.store.core.Dispatcher;
+import edu.miu.cs.librarysystem.store.core.StateChangeEvent;
+import edu.miu.cs.librarysystem.store.core.StateChangeListener;
+import edu.miu.cs.librarysystem.store.core.Store;
+import edu.miu.cs.librarysystem.store.core.state.StatePath;
+import edu.miu.cs.librarysystem.store.state.AppStatePath;
+import edu.miu.cs.librarysystem.store.state.CheckoutBookState;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
 import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.viewmodel.CheckoutBookViewModel;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class CheckoutBookPanel extends JPanel implements LibWindow {
+public class CheckoutBookPanel extends JPanel implements StateChangeListener<CheckoutBookState> {
 
-  private static final long serialVersionUID = -6316708968684859855L;
-  private boolean isInitialized = false;
-
-  private JComboBox<String> bookIsbnTextField;
-  private JComboBox<String> memberIdTextField;
-
+  private JComboBox<String> bookIsbnComboBox;
+  private JComboBox<String> memberIdComboBox;
   DefaultTableModel model = new DefaultTableModel();
-  ControllerInterface ci = new SystemController();
+
+  private List<LibraryMember> libraryMembers;
 
   public CheckoutBookPanel() {
+    Store.registerOnStateChange(AppStatePath.CHECKOUT_BOOK, this);
     init();
+    Dispatcher.dispatch(new CheckoutBookRefreshAction());
   }
 
-  @Override
   public void init() {
     setLayout(new BorderLayout());
     JPanel panel = new JPanel();
@@ -51,7 +56,6 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     };
 
     model.setColumnIdentifiers(columnsObjects);
-    getCheckoutHistoryList();
 
     JPanel panel_1 = new JPanel();
     add(panel_1, BorderLayout.SOUTH);
@@ -60,8 +64,6 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     add(centerPanel, BorderLayout.CENTER);
 
     JPanel actionPanel = new JPanel();
-    // test
-    //    checkoutPanel.setBorder(new LineBorder(null, 1, true));
 
     JButton checkoutBookButton = new JButton("CHECKOUT BOOK");
     Util.addButtonHover(checkoutBookButton);
@@ -69,46 +71,23 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     checkoutBookButton.setHorizontalAlignment(SwingConstants.RIGHT);
 
     JPanel controlsPanel = new JPanel();
-    // test
-    //    inputsPanel.setBorder(new LineBorder(null, 1, true));
     JLabel memberIdLabel = new JLabel("Member ID:");
     controlsPanel.add(memberIdLabel);
 
-    Collection<LibraryMember> members = ci.allLibraryMembers();
-
-    String[] membersStrings = new String[members.size()];
-    int counter = 0;
-    for (LibraryMember member : members) {
-      membersStrings[counter] = member.getMemberId() + " - " + member.getFullName();
-      counter++;
-    }
-
-    memberIdTextField = new JComboBox<>(membersStrings);
-    controlsPanel.add(memberIdTextField);
+    memberIdComboBox = new JComboBox<>();
+    controlsPanel.add(memberIdComboBox);
 
     JLabel bookIsbnLabel = new JLabel("ISBN:");
     controlsPanel.add(bookIsbnLabel);
 
-    Collection<Book> books = ci.allBooks();
-    String[] bookStrings = new String[books.size()];
-    int index = 0;
-    for (Book book : books) {
-      bookStrings[index] = book.getIsbn() + " - " + book.getTitle();
-      index++;
-    }
-
-    bookIsbnTextField = new JComboBox<>(bookStrings);
-    controlsPanel.add(bookIsbnTextField);
+    bookIsbnComboBox = new JComboBox<>();
+    controlsPanel.add(bookIsbnComboBox);
 
     actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 6));
     actionPanel.setBounds(5, 200, 460, 40);
 
     controlsPanel.setLayout(new GridLayout(0, 2, 10, 20));
     controlsPanel.setBounds(5, 5, 460, 100);
-
-    //    centerPanel.setLayout(null);
-    //    centerPanel.add(checkoutPanel);
-    //    centerPanel.add(inputsPanel);
 
     centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
@@ -122,11 +101,6 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
     centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
     centerPanel.add(actionPanel);
     centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-
-    //    JPanel tablePanel = new JPanel();
-    //    tablePanel.setBounds(5, 200, 650, 275);
-    //    tablePanel.setLayout(new BorderLayout(0, 0));
-    //    centerPanel.add(tablePanel);
 
     JPanel tablePanel = new JPanel();
     tablePanel.setLayout(new FlowLayout(0, 0, 0));
@@ -155,8 +129,8 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
 
     checkoutBookButton.addActionListener(
         event -> {
-          String memberId = (String) memberIdTextField.getSelectedItem();
-          String bookIsbn = (String) bookIsbnTextField.getSelectedItem();
+          String memberId = (String) memberIdComboBox.getSelectedItem();
+          String bookIsbn = (String) bookIsbnComboBox.getSelectedItem();
           if (memberId == null || memberId.isEmpty() || bookIsbn == null || bookIsbn.isEmpty()) {
             JOptionPane.showMessageDialog(
                 this, "All fields are required", "", JOptionPane.ERROR_MESSAGE);
@@ -165,33 +139,14 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
 
           memberId = memberId.substring(0, memberId.indexOf(" - ")).trim();
           bookIsbn = bookIsbn.substring(0, bookIsbn.indexOf(" - ")).trim();
-
-          try {
-            clearText();
-            ci.checkBook(memberId, bookIsbn);
-            JOptionPane.showMessageDialog(
-                this,
-                "Book successfully checked out",
-                "",
-                INFORMATION_MESSAGE,
-                new ImageIcon(System.getProperty("user.dir") + "/src/librarysystem/success.png"));
-            getCheckoutHistoryList();
-          } catch (LibrarySystemException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-          }
+          Dispatcher.dispatch(new CheckoutBookCheckoutBookAction(memberId + "," + bookIsbn));
         });
   }
 
-  void clearText() {
-    memberIdTextField.setSelectedItem(null);
-    bookIsbnTextField.setSelectedItem(null);
-  }
-
-  void getCheckoutHistoryList() {
-    Collection<CheckoutHistory> checkouts = ci.getCheckoutHistory();
+  void repopulateCheckoutHistoryList(List<CheckoutHistory> checkoutHistories) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     model.setRowCount(0);
-    for (CheckoutHistory checkout : checkouts) {
+    for (CheckoutHistory checkout : checkoutHistories) {
       model.addRow(
           new Object[] {
             checkout.getCheckoutDate().format(formatter),
@@ -205,12 +160,39 @@ public class CheckoutBookPanel extends JPanel implements LibWindow {
   }
 
   @Override
-  public boolean isInitialized() {
-    return isInitialized;
+  public void onStateChanged(StateChangeEvent<CheckoutBookState> event) {
+    CheckoutBookViewModel viewModel = event.getNewState().getData();
+    if (viewModel.isCheckout()) {
+      JOptionPane.showMessageDialog(this, "Book successfully checked out", "", INFORMATION_MESSAGE);
+      Dispatcher.dispatch(new CheckoutBookRefreshAction());
+      return;
+    }
+    if (viewModel.getException() != null) {
+      JOptionPane.showMessageDialog(
+          this, viewModel.getException().getMessage(), "", JOptionPane.ERROR_MESSAGE);
+      Dispatcher.dispatch(new CheckoutBookRefreshAction());
+      return;
+    }
+    memberIdComboBox.removeAllItems();
+    bookIsbnComboBox.removeAllItems();
+
+    libraryMembers = viewModel.getLibraryMembers();
+    List<Book> books = viewModel.getBooks();
+    if (libraryMembers != null) {
+      for (LibraryMember member : libraryMembers) {
+        memberIdComboBox.addItem(member.getMemberId() + " - " + member.getFullName());
+      }
+    }
+    if (books != null) {
+      for (Book book : books) {
+        bookIsbnComboBox.addItem(book.getIsbn() + " - " + book.getTitle());
+      }
+    }
+    repopulateCheckoutHistoryList(viewModel.getCheckoutHistories());
   }
 
   @Override
-  public void setInitialized(boolean val) {
-    isInitialized = val;
+  public StatePath getListeningStatePath() {
+    return AppStatePath.CHECKOUT_BOOK;
   }
 }

@@ -1,9 +1,9 @@
 package edu.miu.cs.librarysystem.ui.dialog;
 
 import edu.miu.cs.librarysystem.business.Book;
-import edu.miu.cs.librarysystem.store.AppStore;
-import edu.miu.cs.librarysystem.store.Dispatcher;
 import edu.miu.cs.librarysystem.store.action.bookshelf.BookshelfUpdateBookAction;
+import edu.miu.cs.librarysystem.store.core.Dispatcher;
+import edu.miu.cs.librarysystem.store.core.Store;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.BookshelfState;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
@@ -36,7 +36,7 @@ public class CopyBookDialog extends JDialog {
             return;
           }
           Book selectedBook =
-              AppStore.getState(AppStatePath.BOOKSHELF, BookshelfState.class)
+              Store.getState(AppStatePath.BOOKSHELF, BookshelfState.class)
                   .getData()
                   .getSelectedBook();
           if (selectedBook == null) {

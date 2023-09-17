@@ -1,13 +1,14 @@
 package edu.miu.cs.librarysystem.ui.panel;
 
 import edu.miu.cs.librarysystem.business.Book;
-import edu.miu.cs.librarysystem.store.AppStateChangeEvent;
-import edu.miu.cs.librarysystem.store.AppStateChangeListener;
-import edu.miu.cs.librarysystem.store.AppStore;
-import edu.miu.cs.librarysystem.store.Dispatcher;
 import edu.miu.cs.librarysystem.store.action.bookshelf.BookshelfFilterAction;
 import edu.miu.cs.librarysystem.store.action.bookshelf.BookshelfLoadBooksAction;
 import edu.miu.cs.librarysystem.store.action.bookshelf.BookshelfSelectBookAction;
+import edu.miu.cs.librarysystem.store.core.Dispatcher;
+import edu.miu.cs.librarysystem.store.core.StateChangeEvent;
+import edu.miu.cs.librarysystem.store.core.StateChangeListener;
+import edu.miu.cs.librarysystem.store.core.Store;
+import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.BookshelfState;
 import edu.miu.cs.librarysystem.ui.dialog.AddBookDialog;
@@ -25,7 +26,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class BookshelfPanel extends JPanel implements AppStateChangeListener<BookshelfState> {
+public class BookshelfPanel extends JPanel implements StateChangeListener<BookshelfState> {
   private JPanel contentPane;
   private JLabel bookshelfLabel;
   private JTextField searchField;
@@ -41,7 +42,7 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
   private List<Book> books;
 
   public BookshelfPanel() {
-    AppStore.registerOnStateChange(getListeningStatePath(), this);
+    Store.registerOnStateChange(getListeningStatePath(), this);
     init();
   }
 
@@ -132,7 +133,7 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
   }
 
   @Override
-  public void onStateChanged(AppStateChangeEvent<BookshelfState> event) {
+  public void onStateChanged(StateChangeEvent<BookshelfState> event) {
     BookshelfViewModel viewModel = event.getNewState().getData();
     copyBookButton.setEnabled(false);
     Book selectedBook = viewModel.getSelectedBook();
@@ -161,7 +162,7 @@ public class BookshelfPanel extends JPanel implements AppStateChangeListener<Boo
   }
 
   @Override
-  public AppStatePath getListeningStatePath() {
+  public StatePath getListeningStatePath() {
     return AppStatePath.BOOKSHELF;
   }
 

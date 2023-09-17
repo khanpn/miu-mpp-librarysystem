@@ -1,12 +1,12 @@
-package edu.miu.cs.librarysystem.store;
+package edu.miu.cs.librarysystem.store.core;
 
-import edu.miu.cs.librarysystem.store.state.AppState;
+import edu.miu.cs.librarysystem.store.core.state.State;
 
-public class AppStateChangeEvent<T extends AppState<?>> {
+public class StateChangeEvent<T extends State<?>> {
   private T oldState;
   private T newState;
 
-  public AppStateChangeEvent(T newState, T oldState) {
+  public StateChangeEvent(T newState, T oldState) {
     this.oldState = oldState;
     this.newState = newState;
   }

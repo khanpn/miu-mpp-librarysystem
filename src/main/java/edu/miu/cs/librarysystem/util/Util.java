@@ -2,6 +2,7 @@ package edu.miu.cs.librarysystem.util;
 
 import java.awt.*;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -10,6 +11,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Util {
+
+  public static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
   public static Font makeSmallFont(Font f) {
     return new Font(f.getName(), f.getStyle(), (f.getSize() - 2));

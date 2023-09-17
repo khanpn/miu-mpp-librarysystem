@@ -4,18 +4,25 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
 import edu.miu.cs.librarysystem.business.Book;
 import edu.miu.cs.librarysystem.business.LibraryMember;
-import edu.miu.cs.librarysystem.controller.ControllerInterface;
-import edu.miu.cs.librarysystem.controller.SystemController;
+import edu.miu.cs.librarysystem.store.action.checkoutrecord.CheckoutRecordPrintAction;
+import edu.miu.cs.librarysystem.store.action.checkoutrecord.CheckoutRecordSearchAction;
+import edu.miu.cs.librarysystem.store.core.Dispatcher;
+import edu.miu.cs.librarysystem.store.core.StateChangeEvent;
+import edu.miu.cs.librarysystem.store.core.StateChangeListener;
+import edu.miu.cs.librarysystem.store.core.Store;
+import edu.miu.cs.librarysystem.store.core.state.StatePath;
+import edu.miu.cs.librarysystem.store.state.AppStatePath;
+import edu.miu.cs.librarysystem.store.state.CheckoutRecordState;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
 import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.viewmodel.CheckoutRecordViewModel;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow {
-  private static final long serialVersionUID = -4264885214167193462L;
-  private boolean isInitialized = false;
+public class SearchMemberCheckoutRecordPanel extends JPanel
+    implements StateChangeListener<CheckoutRecordState> {
 
   private JTextField txtFieldFirstName;
   private JTextField txtState;
@@ -27,13 +34,12 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
   private JTextField txtTelephone;
 
   DefaultTableModel model = new DefaultTableModel();
-  ControllerInterface ci = new SystemController();
 
   public SearchMemberCheckoutRecordPanel() {
+    Store.registerOnStateChange(getListeningStatePath(), this);
     init();
   }
 
-  @Override
   public void init() {
     setLayout(new BorderLayout());
     JPanel panel = new JPanel();
@@ -153,24 +159,7 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
                 this, "Please Enter Member ID to search", "", ERROR_MESSAGE);
             return;
           }
-
-          LibraryMember member = ci.findMemberById(memberId);
-
-          if (member == null) {
-            JOptionPane.showMessageDialog(
-                this, "Member with ID " + memberId + " not found", "", ERROR_MESSAGE);
-            return;
-          }
-
-          txtFieldId.setEnabled(false);
-
-          txtFieldFirstName.setText(member.getFirstName());
-          txtFieldLastName.setText(member.getLastName());
-          txtTelephone.setText(member.getTelephone());
-          txtFieldStreet.setText(member.getAddress().getStreet());
-          txtZip.setText(member.getAddress().getZip());
-          txtCity.setText(member.getAddress().getCity());
-          txtState.setText(member.getAddress().getState());
+          Dispatcher.dispatch(new CheckoutRecordSearchAction(memberId));
         });
 
     printRecordButton.addActionListener(
@@ -181,41 +170,7 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
                 this, "Please Enter Member ID to search", "", ERROR_MESSAGE);
             return;
           }
-
-          LibraryMember member = ci.findMemberById(memberId);
-
-          if (member == null) {
-            JOptionPane.showMessageDialog(
-                this, "Member with ID " + memberId + " not found", "", ERROR_MESSAGE);
-            return;
-          }
-
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-          System.out.printf(
-              "%-10s\t%-10s\t%-8s\t%-6s\t%-20s\t%s\n",
-              "CHECKOUT", "DUE", "ISBN", "COPIES", "TITLE", "MEMBER");
-          member
-              .getCheckoutRecords()
-              .forEach(
-                  record -> {
-                    record
-                        .getEntries()
-                        .forEach(
-                            entry -> {
-                              Book b = entry.getCopy().getBook();
-                              LibraryMember m = record.getMember();
-                              String checkoutDate = entry.getCheckoutDate().format(formatter);
-                              String dueDate = entry.getDueDate().format(formatter);
-                              System.out.printf(
-                                  "%-10s\t%-10s\t%-8s\t%-6s\t%-20s\t%s\n",
-                                  checkoutDate,
-                                  dueDate,
-                                  b.getIsbn(),
-                                  b.getNumCopies(),
-                                  b.getTitle(),
-                                  m.getFullName());
-                            });
-                  });
+          Dispatcher.dispatch(new CheckoutRecordPrintAction(memberId));
         });
 
     clearFieldsButton.addActionListener((evt) -> clearText());
@@ -234,12 +189,63 @@ public class SearchMemberCheckoutRecordPanel extends JPanel implements LibWindow
   }
 
   @Override
-  public boolean isInitialized() {
-    return isInitialized;
+  public void onStateChanged(StateChangeEvent<CheckoutRecordState> event) {
+    CheckoutRecordViewModel viewModel = event.getNewState().getData();
+    LibraryMember libraryMember = viewModel.getLibraryMember();
+    if (libraryMember == null) {
+      JOptionPane.showMessageDialog(
+          this, "Member with ID " + viewModel.getMemberId() + " not found", "", ERROR_MESSAGE);
+      return;
+    }
+    updateMemberFields(libraryMember);
+    if (viewModel.isPrintCheckoutRecords()) {
+      printCheckoutRecords(libraryMember);
+    }
+  }
+
+  private void updateMemberFields(LibraryMember member) {
+    txtFieldId.setEnabled(false);
+
+    txtFieldFirstName.setText(member.getFirstName());
+    txtFieldLastName.setText(member.getLastName());
+    txtTelephone.setText(member.getTelephone());
+    txtFieldStreet.setText(member.getAddress().getStreet());
+    txtZip.setText(member.getAddress().getZip());
+    txtCity.setText(member.getAddress().getCity());
+    txtState.setText(member.getAddress().getState());
+  }
+
+  private void printCheckoutRecords(LibraryMember member) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+    System.out.printf(
+        "%-10s\t%-10s\t%-8s\t%-6s\t%-20s\t%s\n",
+        "CHECKOUT", "DUE", "ISBN", "COPIES", "TITLE", "MEMBER");
+    member
+        .getCheckoutRecords()
+        .forEach(
+            record -> {
+              record
+                  .getEntries()
+                  .forEach(
+                      entry -> {
+                        Book b = entry.getCopy().getBook();
+                        LibraryMember m = record.getMember();
+                        String checkoutDate = entry.getCheckoutDate().format(formatter);
+                        String dueDate = entry.getDueDate().format(formatter);
+                        System.out.printf(
+                            "%-10s\t%-10s\t%-8s\t%-6s\t%-20s\t%s\n",
+                            checkoutDate,
+                            dueDate,
+                            b.getIsbn(),
+                            b.getNumCopies(),
+                            b.getTitle(),
+                            m.getFullName());
+                      });
+            });
   }
 
   @Override
-  public void setInitialized(boolean val) {
-    isInitialized = val;
+  public StatePath getListeningStatePath() {
+    return AppStatePath.CHECKOUT_RECORD;
   }
 }

@@ -3,14 +3,19 @@ package edu.miu.cs.librarysystem.ui.panel;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
 import edu.miu.cs.librarysystem.business.Book;
-import edu.miu.cs.librarysystem.business.CheckoutRecord;
-import edu.miu.cs.librarysystem.business.LibraryMember;
-import edu.miu.cs.librarysystem.controller.ControllerInterface;
-import edu.miu.cs.librarysystem.controller.SystemController;
+import edu.miu.cs.librarysystem.store.action.searchoverduebook.SearchOverdueBookClearSearchAction;
+import edu.miu.cs.librarysystem.store.action.searchoverduebook.SearchOverdueBookSearchAction;
+import edu.miu.cs.librarysystem.store.core.Dispatcher;
+import edu.miu.cs.librarysystem.store.core.StateChangeEvent;
+import edu.miu.cs.librarysystem.store.core.StateChangeListener;
+import edu.miu.cs.librarysystem.store.core.Store;
+import edu.miu.cs.librarysystem.store.core.state.StatePath;
+import edu.miu.cs.librarysystem.store.state.AppStatePath;
+import edu.miu.cs.librarysystem.store.state.SearchOverdueBookState;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
 import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.viewmodel.SearchOverdueBookViewModel;
 import java.awt.*;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -18,8 +23,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class SearchOverDuePanel extends JPanel implements LibWindow {
-  private static final long serialVersionUID = -8785710954048069875L;
+public class SearchOverdueBookPanel extends JPanel
+    implements StateChangeListener<SearchOverdueBookState> {
   private boolean isInitialized = false;
 
   private final List<String> defaultList = new ArrayList<>();
@@ -27,13 +32,11 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
   private JTextField searchField;
   DefaultTableModel model;
 
-  ControllerInterface ci = new SystemController();
-
-  public SearchOverDuePanel() {
+  public SearchOverdueBookPanel() {
+    Store.registerOnStateChange(getListeningStatePath(), this);
     init();
   }
 
-  @Override
   public void init() {
     setLayout(new BorderLayout());
     JPanel panel = new JPanel();
@@ -129,61 +132,13 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
           String isbn = searchField.getText();
           if (isbn.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Enter book ISBN", "", ERROR_MESSAGE);
-            System.out.println("exist member id");
             return;
           }
-
-          Book theBook = ci.getBookByISBN(isbn);
-          if (theBook == null) {
-            JOptionPane.showMessageDialog(
-                this, "Book with ISBN " + isbn + " could not be found", "", ERROR_MESSAGE);
-            return;
-          }
-
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-
-          List<CheckoutRecord> records =
-              ci.allLibraryMembers().stream()
-                  .map(LibraryMember::getCheckoutRecords)
-                  .filter(checkoutRecords -> checkoutRecords.size() > 0)
-                  .flatMap(List::stream)
-                  .toList();
-
-          records.forEach(
-              record -> {
-                record
-                    .getEntries()
-                    .forEach(
-                        entry -> {
-                          Book book = entry.getCopy().getBook();
-                          if (entry.isOverdue() && isbn.equalsIgnoreCase(book.getIsbn())) {
-                            clearTable();
-                            model.addRow(
-                                new Object[] {
-                                  book.getIsbn(),
-                                  book.getTitle(),
-                                  entry.getCopy().getCopyNum(),
-                                  entry.isOverdue() ? "YES" : "NO",
-                                  entry.getDueDate().format(formatter),
-                                  record.getMember().getFullName()
-                                });
-                          }
-                        });
-              });
+          Dispatcher.dispatch(new SearchOverdueBookSearchAction(isbn));
         });
 
     btnClearSearch.addActionListener(
-        (evt) -> {
-          clearText();
-          //          model.setRowCount(0);
-          clearTable();
-        });
-  }
-
-  void clearTable() {
-    while (model.getRowCount() > 0) {
-      model.removeRow(0);
-    }
+        (evt) -> Dispatcher.dispatch(new SearchOverdueBookClearSearchAction()));
   }
 
   void clearText() {
@@ -191,12 +146,46 @@ public class SearchOverDuePanel extends JPanel implements LibWindow {
   }
 
   @Override
-  public boolean isInitialized() {
-    return isInitialized;
+  public void onStateChanged(StateChangeEvent<SearchOverdueBookState> event) {
+    SearchOverdueBookViewModel viewModel = event.getNewState().getData();
+    model.setRowCount(0);
+    if (viewModel.isClearSearch()) {
+      clearText();
+      return;
+    }
+    if (viewModel.getBook() == null) {
+      JOptionPane.showMessageDialog(
+          this,
+          "Book with ISBN " + viewModel.getBookId() + " could not be found",
+          "",
+          ERROR_MESSAGE);
+      return;
+    }
+    viewModel
+        .getOverdueCheckoutRecordEntries()
+        .forEach(
+            entry -> {
+              entry.forEach(
+                  (member, checkoutRecordEntries) -> {
+                    checkoutRecordEntries.forEach(
+                        overdueRecord -> {
+                          Book overDueBook = overdueRecord.getCopy().getBook();
+                          model.addRow(
+                              new Object[] {
+                                overDueBook.getIsbn(),
+                                overDueBook.getTitle(),
+                                overdueRecord.getCopy().getCopyNum(),
+                                "YES",
+                                overdueRecord.getDueDate().format(Util.DATE_FORMATTER),
+                                member.getFullName()
+                              });
+                        });
+                  });
+            });
   }
 
   @Override
-  public void setInitialized(boolean val) {
-    isInitialized = val;
+  public StatePath getListeningStatePath() {
+    return AppStatePath.SEARCH_OVERDUE_BOOK;
   }
 }

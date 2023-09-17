@@ -5,26 +5,31 @@ import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 import edu.miu.cs.librarysystem.business.Address;
 import edu.miu.cs.librarysystem.business.LibraryMember;
-import edu.miu.cs.librarysystem.controller.ControllerInterface;
-import edu.miu.cs.librarysystem.controller.SystemController;
+import edu.miu.cs.librarysystem.store.action.librarymember.LibraryMemberDeleteAction;
+import edu.miu.cs.librarysystem.store.action.librarymember.LibraryMemberGetAllMemberAction;
+import edu.miu.cs.librarysystem.store.action.librarymember.LibraryMemberSaveAction;
+import edu.miu.cs.librarysystem.store.core.Dispatcher;
+import edu.miu.cs.librarysystem.store.core.StateChangeEvent;
+import edu.miu.cs.librarysystem.store.core.StateChangeListener;
+import edu.miu.cs.librarysystem.store.core.Store;
+import edu.miu.cs.librarysystem.store.core.state.StatePath;
+import edu.miu.cs.librarysystem.store.state.AppStatePath;
+import edu.miu.cs.librarysystem.store.state.LibraryMemberState;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
 import edu.miu.cs.librarysystem.util.Util;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.Serial;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class AddMemberPanel extends JPanel implements LibWindow {
-  @Serial private static final long serialVersionUID = 7863919163615773327L;
-  private boolean isInitialized = false;
-
+public class LibraryMemberPanel extends JPanel implements StateChangeListener<LibraryMemberState> {
   private JTextField txtFieldFirstName;
   private JTextField txtState;
   private JTextField txtZip;
@@ -39,14 +44,17 @@ public class AddMemberPanel extends JPanel implements LibWindow {
 
   private JFrame frame;
   private JTable table;
-  ControllerInterface controller = new SystemController();
   private int selectedRow = -1;
 
-  public AddMemberPanel() {
+  private DefaultTableModel tableModel;
+
+  private List<LibraryMember> libraryMembers;
+
+  public LibraryMemberPanel() {
+    Store.registerOnStateChange(AppStatePath.LIBRARY_MEMBER, this);
     init();
   }
 
-  @Override
   public void init() {
     setLayout(new BorderLayout());
     JPanel titlePanel = new JPanel();
@@ -57,20 +65,6 @@ public class AddMemberPanel extends JPanel implements LibWindow {
     JLabel lblNewLabel = new JLabel("Table of Library Members");
     TypographyUtils.applyHeadingStyle(lblNewLabel);
     titlePanel.add(lblNewLabel);
-    Object[] columnsObjects = {"ID", "First Name", "Last Name", "TEL", "Address"};
-    DefaultTableModel model = new DefaultTableModel();
-    model.setColumnIdentifiers(columnsObjects);
-    Collection<LibraryMember> members = controller.allLibraryMembers();
-    for (LibraryMember member : members) {
-      model.addRow(
-          new Object[] {
-            member.getMemberId(),
-            member.getFirstName(),
-            member.getLastName(),
-            member.getTelephone(),
-            member.getAddress()
-          });
-    }
 
     JPanel panel_1 = new JPanel();
     add(panel_1, BorderLayout.SOUTH);
@@ -156,10 +150,6 @@ public class AddMemberPanel extends JPanel implements LibWindow {
     controlsPanel.setBounds(5, 5, 460, 219);
     controlsPanel.setLayout(new GridLayout(0, 2, 0, 0));
 
-    //    centerPanel.setLayout(null);
-    //    centerPanel.add(actionPanel);
-    //    centerPanel.add(controlsPanel);
-
     centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
     controlsPanel.setPreferredSize(new Dimension(460, 219));
@@ -171,35 +161,7 @@ public class AddMemberPanel extends JPanel implements LibWindow {
     centerPanel.add(controlsPanel);
     centerPanel.add(actionPanel);
 
-    JPanel tablePanel = new JPanel();
-    tablePanel.setLayout(new FlowLayout(0, 0, 0));
-    tablePanel.setPreferredSize(new Dimension(750, 275));
-    tablePanel.setMaximumSize(new Dimension(750, 275));
-
-    centerPanel.add(tablePanel);
-
-    table =
-        new JTable() {
-          private static final long serialVersionUID = -5795502418632762890L;
-
-          public boolean isCellEditable(int row, int column) {
-            return false;
-          }
-        };
-    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    table.setModel(model);
-    ((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer())
-        .setHorizontalAlignment(JLabel.LEFT);
-    TableColumnModel colModel = table.getColumnModel();
-    colModel.getColumn(4).setPreferredWidth(300);
-    colModel.getColumn(3).setPreferredWidth(200);
-    colModel.getColumn(2).setPreferredWidth(100);
-    colModel.getColumn(1).setPreferredWidth(100);
-    colModel.getColumn(0).setPreferredWidth(50);
-    JScrollPane jScrollPane = new JScrollPane();
-    jScrollPane.setViewportView(table);
-    jScrollPane.setPreferredSize(new Dimension(750, 275));
-    tablePanel.add(jScrollPane);
+    initLibraryMemberTable(centerPanel);
 
     // Delete button
     btnDelete.addActionListener(
@@ -209,41 +171,14 @@ public class AddMemberPanel extends JPanel implements LibWindow {
             selectedRow = table.getSelectedRow();
 
             String memberIdString = (String) table.getValueAt(selectedRow, 0);
-            model.removeRow(selectedRow);
-            controller.deleteMember(memberIdString);
+            tableModel.removeRow(selectedRow);
+            Dispatcher.dispatch(new LibraryMemberDeleteAction(memberIdString));
             selectedRow = -1;
             clearText();
           } else if (count > 1) {
             JOptionPane.showMessageDialog(frame, "Please select single row", "", ERROR_MESSAGE);
           } else {
             JOptionPane.showMessageDialog(frame, "There is no row to delete", "", ERROR_MESSAGE);
-          }
-        });
-
-    // on select table row
-    table.addMouseListener(
-        new MouseAdapter() {
-
-          @Override
-          public void mousePressed(MouseEvent e) {
-            int count = table.getSelectedRowCount();
-            if (count == 1) {
-              selectedRow = table.getSelectedRow();
-              System.out.println(model.getValueAt(selectedRow, 0));
-              LibraryMember member =
-                  controller.getLibraryMemberById((String) model.getValueAt(selectedRow, 0));
-              txtCity.setText(member.getAddress().getCity());
-              txtFieldFirstName.setText(member.getFirstName());
-              txtFieldId.setText(member.getMemberId());
-              txtFieldLastName.setText(member.getLastName());
-              txtFieldStreet.setText(member.getAddress().getStreet());
-              txtState.setText(member.getAddress().getState());
-              txtTelephone.setText(member.getTelephone());
-              txtZip.setText(member.getAddress().getZip());
-            } else {
-              clearText();
-            }
-            super.mouseClicked(e);
           }
         });
 
@@ -264,8 +199,10 @@ public class AddMemberPanel extends JPanel implements LibWindow {
             System.out.println("Invalid id or first name or last name");
             return;
           }
-          List<String> memberStrings = controller.allMemberIds();
-          if (memberStrings.contains(idString)) {
+          boolean alreadyExist =
+              Optional.ofNullable(libraryMembers).orElse(new ArrayList<>()).stream()
+                  .anyMatch(m -> m.getMemberId().equals(idString));
+          if (alreadyExist) {
             JOptionPane.showMessageDialog(frame, "exist member id", "", ERROR_MESSAGE);
             System.out.println("exist member id");
             return;
@@ -274,21 +211,8 @@ public class AddMemberPanel extends JPanel implements LibWindow {
           LibraryMember member =
               new LibraryMember(
                   idString, firstNameString, lastNameString, telephoneString, newAddress);
-          controller.saveMember(member);
-          JOptionPane.showMessageDialog(
-              frame,
-              "Add member successfully",
-              "",
-              INFORMATION_MESSAGE,
-              new ImageIcon(System.getProperty("user.dir") + "/src/librarysystem/success.png"));
-          Object[] rowData = {
-            member.getMemberId(),
-            member.getFirstName(),
-            member.getLastName(),
-            member.getTelephone(),
-            member.getAddress()
-          };
-          model.addRow(rowData);
+          Dispatcher.dispatch(new LibraryMemberSaveAction(member));
+          JOptionPane.showMessageDialog(frame, "Add member successfully", "", INFORMATION_MESSAGE);
         });
 
     // Update button
@@ -313,19 +237,73 @@ public class AddMemberPanel extends JPanel implements LibWindow {
           LibraryMember member =
               new LibraryMember(
                   idString, firstNameString, lastNameString, telephoneString, newAddress);
-          controller.saveMember(member);
+          Dispatcher.dispatch(new LibraryMemberSaveAction(member));
           JOptionPane.showMessageDialog(
-              frame,
-              "Update member successfully",
-              "",
-              INFORMATION_MESSAGE,
-              new ImageIcon(System.getProperty("user.dir") + "/src/librarysystem/success.png"));
-          model.setValueAt(member.getMemberId(), selectedRow, 0);
-          model.setValueAt(member.getFirstName(), selectedRow, 1);
-          model.setValueAt(member.getLastName(), selectedRow, 2);
-          model.setValueAt(member.getTelephone(), selectedRow, 3);
-          model.setValueAt(member.getAddress(), selectedRow, 4);
+              frame, "Update member successfully", "", INFORMATION_MESSAGE);
           clearText();
+        });
+    Dispatcher.dispatch(new LibraryMemberGetAllMemberAction());
+  }
+
+  private void initLibraryMemberTable(JPanel container) {
+    Object[] columnsObjects = {"ID", "First Name", "Last Name", "TEL", "Address"};
+    tableModel = new DefaultTableModel();
+    tableModel.setColumnIdentifiers(columnsObjects);
+    table =
+        new JTable() {
+          private static final long serialVersionUID = -5795502418632762890L;
+
+          public boolean isCellEditable(int row, int column) {
+            return false;
+          }
+        };
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    table.setModel(tableModel);
+    ((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(JLabel.LEFT);
+    TableColumnModel colModel = table.getColumnModel();
+    colModel.getColumn(4).setPreferredWidth(300);
+    colModel.getColumn(3).setPreferredWidth(200);
+    colModel.getColumn(2).setPreferredWidth(100);
+    colModel.getColumn(1).setPreferredWidth(100);
+    colModel.getColumn(0).setPreferredWidth(50);
+    JScrollPane jScrollPane = new JScrollPane();
+    jScrollPane.setViewportView(table);
+    jScrollPane.setPreferredSize(new Dimension(750, 275));
+    JPanel tablePanel = new JPanel();
+    tablePanel.setLayout(new FlowLayout(0, 0, 0));
+    tablePanel.setPreferredSize(new Dimension(750, 275));
+    tablePanel.setMaximumSize(new Dimension(750, 275));
+    tablePanel.add(jScrollPane);
+    container.add(tablePanel);
+    table.addMouseListener(
+        new MouseAdapter() {
+
+          @Override
+          public void mousePressed(MouseEvent e) {
+            int count = table.getSelectedRowCount();
+            if (count == 1) {
+              selectedRow = table.getSelectedRow();
+              System.out.println(tableModel.getValueAt(selectedRow, 0));
+              String memberId = (String) tableModel.getValueAt(selectedRow, 0);
+              LibraryMember member =
+                  libraryMembers.stream()
+                      .filter(m -> m.getMemberId().equals(memberId))
+                      .findFirst()
+                      .orElseThrow();
+              txtCity.setText(member.getAddress().getCity());
+              txtFieldFirstName.setText(member.getFirstName());
+              txtFieldId.setText(member.getMemberId());
+              txtFieldLastName.setText(member.getLastName());
+              txtFieldStreet.setText(member.getAddress().getStreet());
+              txtState.setText(member.getAddress().getState());
+              txtTelephone.setText(member.getTelephone());
+              txtZip.setText(member.getAddress().getZip());
+            } else {
+              clearText();
+            }
+            super.mouseClicked(e);
+          }
         });
   }
 
@@ -341,12 +319,27 @@ public class AddMemberPanel extends JPanel implements LibWindow {
   }
 
   @Override
-  public boolean isInitialized() {
-    return isInitialized;
+  public void onStateChanged(StateChangeEvent<LibraryMemberState> event) {
+    tableModel.setRowCount(0);
+    libraryMembers = event.getNewState().getData().getMembers();
+    if (libraryMembers == null) {
+      return;
+    }
+
+    for (LibraryMember member : libraryMembers) {
+      tableModel.addRow(
+          new Object[] {
+            member.getMemberId(),
+            member.getFirstName(),
+            member.getLastName(),
+            member.getTelephone(),
+            member.getAddress()
+          });
+    }
   }
 
   @Override
-  public void setInitialized(boolean val) {
-    isInitialized = val;
+  public StatePath getListeningStatePath() {
+    return AppStatePath.LIBRARY_MEMBER;
   }
 }
