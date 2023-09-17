@@ -22,7 +22,7 @@ public class MenuWindow extends JPanel implements LibWindow {
     switch (role) {
       case ADMIN -> {
         add(getCopyAndAddBookButton());
-        add(addMember());
+        add(libraryMember());
       }
       case LIBRARIAN -> {
         add(getCheckoutButton());
@@ -31,7 +31,7 @@ public class MenuWindow extends JPanel implements LibWindow {
       }
       case BOTH -> {
         add(getCopyAndAddBookButton());
-        add(addMember());
+        add(libraryMember());
         add(getCheckoutButton());
         add(getSearchOverDueBookButton());
         add(getSearchMemberCheckoutRecordButton());
@@ -61,8 +61,8 @@ public class MenuWindow extends JPanel implements LibWindow {
     return logoutButton;
   }
 
-  private static JButton addMember() {
-    JButton btn = Util.buttonImage("/images/add-member-color.png", "Add Member", 30, 30);
+  private static JButton libraryMember() {
+    JButton btn = Util.buttonImage("/images/add-member-color.png", "Library Member", 30, 30);
     Util.addButtonHover(btn);
     btn.addActionListener(e -> LibrarySystem.INSTANCE.openListLibraryMemberWindow());
     return btn;

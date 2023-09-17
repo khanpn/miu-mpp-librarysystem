@@ -93,8 +93,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
   }
 
   public void openListLibraryMemberWindow() {
-    if (!(mainPanel instanceof AddMemberPanel)) {
-      mainPanel = new AddMemberPanel();
+    if (!(mainPanel instanceof LibraryMemberPanel)) {
+      mainPanel = new LibraryMemberPanel();
       splitPane.setRightComponent(mainPanel);
       splitPane.setDividerLocation(300);
     }
