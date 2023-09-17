@@ -22,8 +22,7 @@ public class BookshelfReducer implements Reducer<BookshelfState, Action<?>> {
       BookshelfViewModel currentViewModel = currentState.getData();
       return new BookshelfState(new BookshelfViewModel(currentViewModel.getBooks(), selectedBook));
     } else if (action instanceof BookshelfLoadBooksAction) {
-      List<Book> books = loadBook();
-      return new BookshelfState(new BookshelfViewModel(books));
+      return reloadState();
     } else if (action instanceof BookshelfFilterAction filterAction) {
       List<Book> books =
           loadBook().stream()
@@ -32,12 +31,16 @@ public class BookshelfReducer implements Reducer<BookshelfState, Action<?>> {
       return new BookshelfState(new BookshelfViewModel(books));
     } else if (action instanceof BookshelfAddBookAction addBookAction) {
       BookService.getInstance().save(addBookAction.getData());
-      return new BookshelfState(new BookshelfViewModel(loadBook()));
+      return reloadState();
     } else if (action instanceof BookshelfUpdateBookAction updateBookAction) {
       BookService.getInstance().save(updateBookAction.getData());
-      return new BookshelfState(new BookshelfViewModel(loadBook()));
+      return reloadState();
     }
-    throw new IllegalArgumentException("Unexpected action: " + action.getClass());
+    return new BookshelfState(new BookshelfViewModel(new ArrayList<>()));
+  }
+
+  private BookshelfState reloadState() {
+    return new BookshelfState(new BookshelfViewModel(loadBook()));
   }
 
   private List<Book> loadBook() {

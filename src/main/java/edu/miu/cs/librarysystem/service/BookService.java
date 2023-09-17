@@ -4,10 +4,7 @@ import edu.miu.cs.librarysystem.business.*;
 import edu.miu.cs.librarysystem.dataaccess.DataAccess;
 import edu.miu.cs.librarysystem.dataaccess.DataAccessFacade;
 import edu.miu.cs.librarysystem.exception.LibrarySystemException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class BookService {
   private static final BookService INSTANCE = new BookService();
@@ -28,8 +25,8 @@ public class BookService {
     return DA.findBookByIsbn(bookId);
   }
 
-  public Collection<Book> getAllBooks() {
-    return DA.readBooksMap().values();
+  public List<Book> getAllBooks() {
+    return new ArrayList<>(DA.readBooksMap().values());
   }
 
   public void checkBook(String memberId, String isbn) throws LibrarySystemException {
@@ -64,29 +61,57 @@ public class BookService {
     dao.saveBook(book);
   }
 
-  public List<CheckoutHistory> getCheckoutHistory() {
+  private List<LibraryMember> getMembersHaveCheckoutRecords() {
     Collection<LibraryMember> members = DA.readMemberMap().values();
+    return members.stream().filter(member -> !member.getCheckoutRecords().isEmpty()).toList();
+  }
 
-    List<CheckoutRecord> records =
-        members.stream()
-            .map(LibraryMember::getCheckoutRecords)
-            .filter(checkoutRecords -> checkoutRecords.size() > 0)
-            .flatMap(List::stream)
-            .toList();
+  public List<Map<LibraryMember, List<CheckoutRecordEntry>>> getOverdueCheckoutRecordEntries(
+      Book book) {
+    Objects.requireNonNull(book);
+    List<Map<LibraryMember, List<CheckoutRecordEntry>>> overdues = new ArrayList<>();
+    getMembersHaveCheckoutRecords()
+        .forEach(
+            member -> {
+              List<CheckoutRecordEntry> overdueEntries =
+                  member.getCheckoutRecords().stream()
+                      .map(CheckoutRecord::getEntries)
+                      .flatMap(List::stream)
+                      .filter(
+                          entry ->
+                              entry.isOverdue()
+                                  && entry
+                                      .getCopy()
+                                      .getBook()
+                                      .getIsbn()
+                                      .equalsIgnoreCase(book.getIsbn()))
+                      .toList();
+              if (!overdueEntries.isEmpty()) {
+                Map<LibraryMember, List<CheckoutRecordEntry>> overdueMap = new HashMap<>();
+                overdueMap.put(member, overdueEntries);
+                overdues.add(overdueMap);
+              }
+            });
+    return overdues;
+  }
 
+  public List<CheckoutHistory> getCheckoutHistory() {
     List<CheckoutHistory> history = new ArrayList<>();
-    records.forEach(
-        record ->
-            record
-                .getEntries()
-                .forEach(
-                    entry ->
-                        history.add(
-                            new CheckoutHistory(
-                                entry.getCopy(),
-                                record.getMember(),
-                                entry.getCheckoutDate(),
-                                entry.getDueDate()))));
+    getMembersHaveCheckoutRecords().stream()
+        .map(LibraryMember::getCheckoutRecords)
+        .flatMap(List::stream)
+        .forEach(
+            record ->
+                record
+                    .getEntries()
+                    .forEach(
+                        entry ->
+                            history.add(
+                                new CheckoutHistory(
+                                    entry.getCopy(),
+                                    record.getMember(),
+                                    entry.getCheckoutDate(),
+                                    entry.getDueDate()))));
 
     return history;
   }

@@ -125,8 +125,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
   }
 
   public void openSearchOverDueWindow() {
-    if (!(mainPanel instanceof SearchOverDuePanel)) {
-      mainPanel = new SearchOverDuePanel();
+    if (!(mainPanel instanceof SearchOverdueBookPanel)) {
+      mainPanel = new SearchOverdueBookPanel();
       splitPane.setRightComponent(mainPanel);
       splitPane.setDividerLocation(300);
     }
