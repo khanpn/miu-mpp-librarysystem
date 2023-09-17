@@ -1,8 +1,16 @@
 ### Login credentials
 
-- Username/Password/Role: 101/xyz/LIBRARIAN
-- Username/Password/Role: 102/abc/ADMIN
-- Username/Password/Role: 103/111/BOTH
+| Username | Password |      Role |
+|:---------|:--------:|----------:|
+| 101      |   xyz    | LIBRARIAN |
+| 102      |   abc    |     ADMIN |
+| 103      |   111    |      BOTH |
+
+### To format code using google-java-format with maven spotless plugin
+
+```
+mvn spotless:apply
+```
 
 ### To build application with maven
 
