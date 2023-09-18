@@ -10,7 +10,6 @@ import edu.miu.cs.librarysystem.store.action.checkoutbook.CheckoutBookRefreshAct
 import edu.miu.cs.librarysystem.store.core.Dispatcher;
 import edu.miu.cs.librarysystem.store.core.StateChangeEvent;
 import edu.miu.cs.librarysystem.store.core.StateChangeListener;
-import edu.miu.cs.librarysystem.store.core.Store;
 import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.CheckoutBookState;
@@ -24,19 +23,12 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class CheckoutBookPanel extends JPanel implements StateChangeListener<CheckoutBookState> {
+public class CheckoutBookPanel extends JPanel
+    implements LibPanel, StateChangeListener<CheckoutBookState> {
 
   private JComboBox<String> bookIsbnComboBox;
   private JComboBox<String> memberIdComboBox;
   DefaultTableModel model = new DefaultTableModel();
-
-  private List<LibraryMember> libraryMembers;
-
-  public CheckoutBookPanel() {
-    Store.registerOnStateChange(AppStatePath.CHECKOUT_BOOK, this);
-    init();
-    Dispatcher.dispatch(new CheckoutBookRefreshAction());
-  }
 
   public void init() {
     setLayout(new BorderLayout());
@@ -111,8 +103,6 @@ public class CheckoutBookPanel extends JPanel implements StateChangeListener<Che
 
     JTable table =
         new JTable() {
-          private static final long serialVersionUID = 1L;
-
           public boolean isCellEditable(int row, int column) {
             return false;
           }
@@ -141,6 +131,7 @@ public class CheckoutBookPanel extends JPanel implements StateChangeListener<Che
           bookIsbn = bookIsbn.substring(0, bookIsbn.indexOf(" - ")).trim();
           Dispatcher.dispatch(new CheckoutBookCheckoutBookAction(memberId + "," + bookIsbn));
         });
+    Dispatcher.dispatch(new CheckoutBookRefreshAction());
   }
 
   void repopulateCheckoutHistoryList(List<CheckoutHistory> checkoutHistories) {
@@ -176,7 +167,7 @@ public class CheckoutBookPanel extends JPanel implements StateChangeListener<Che
     memberIdComboBox.removeAllItems();
     bookIsbnComboBox.removeAllItems();
 
-    libraryMembers = viewModel.getLibraryMembers();
+    List<LibraryMember> libraryMembers = viewModel.getLibraryMembers();
     List<Book> books = viewModel.getBooks();
     if (libraryMembers != null) {
       for (LibraryMember member : libraryMembers) {

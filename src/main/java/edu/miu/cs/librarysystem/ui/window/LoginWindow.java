@@ -6,7 +6,6 @@ import edu.miu.cs.librarysystem.store.core.StateChangeListener;
 import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.LoginState;
-import edu.miu.cs.librarysystem.ui.LibWindow;
 import edu.miu.cs.librarysystem.ui.LibrarySystem;
 import edu.miu.cs.librarysystem.ui.listener.LoginSubmitActionListener;
 import edu.miu.cs.librarysystem.util.TypographyUtils;

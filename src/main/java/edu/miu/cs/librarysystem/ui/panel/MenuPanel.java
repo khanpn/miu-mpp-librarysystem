@@ -7,20 +7,13 @@ import edu.miu.cs.librarysystem.store.state.LoginState;
 import edu.miu.cs.librarysystem.ui.MenuItem;
 import javax.swing.*;
 
-public class MenuPanel extends JPanel {
-
-  private Auth role;
-
-  public MenuPanel() {
-    role =
+public class MenuPanel extends JPanel implements LibPanel {
+  public void init() {
+    Auth role =
         Store.getState(AppStatePath.LOGIN, LoginState.class)
             .getData()
             .getAuthUser()
             .getAuthorization();
-    init();
-  }
-
-  public void init() {
     clearContent();
 
     switch (role) {

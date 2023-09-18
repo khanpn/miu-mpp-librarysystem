@@ -5,7 +5,6 @@ import edu.miu.cs.librarysystem.store.core.StateChangeListener;
 import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.MainWindowState;
-import edu.miu.cs.librarysystem.ui.LibWindow;
 import edu.miu.cs.librarysystem.ui.LibrarySystem;
 import edu.miu.cs.librarysystem.ui.MenuItem;
 import edu.miu.cs.librarysystem.ui.panel.*;
@@ -48,6 +47,9 @@ public class MainWindow extends JFrame implements LibWindow, StateChangeListener
     LibrarySystem.unregisterStateChange(leftPanel);
     leftPanel = new MenuPanel();
     LibrarySystem.registerStateChange(leftPanel);
+    if (leftPanel instanceof LibPanel libPanel) {
+      libPanel.init();
+    }
     leftPanel.setLayout(new GridLayout(15, 1));
     leftPanel.setBackground(Color.LIGHT_GRAY);
     splitPane.setLeftComponent(leftPanel);
@@ -94,7 +96,10 @@ public class MainWindow extends JFrame implements LibWindow, StateChangeListener
 
   private void changeContentPanel(JPanel contentPanel) {
     LibrarySystem.unregisterStateChange(mainPanel);
-    LibrarySystem.registerStateChange(mainPanel);
+    LibrarySystem.registerStateChange(contentPanel);
+    if (contentPanel instanceof LibPanel libPanel) {
+      libPanel.init();
+    }
     mainPanel = contentPanel;
     splitPane.setRightComponent(mainPanel);
     splitPane.setDividerLocation(300);

@@ -11,7 +11,6 @@ import edu.miu.cs.librarysystem.store.action.librarymember.LibraryMemberSaveActi
 import edu.miu.cs.librarysystem.store.core.Dispatcher;
 import edu.miu.cs.librarysystem.store.core.StateChangeEvent;
 import edu.miu.cs.librarysystem.store.core.StateChangeListener;
-import edu.miu.cs.librarysystem.store.core.Store;
 import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.LibraryMemberState;
@@ -29,7 +28,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class LibraryMemberPanel extends JPanel implements StateChangeListener<LibraryMemberState> {
+public class LibraryMemberPanel extends JPanel
+    implements LibPanel, StateChangeListener<LibraryMemberState> {
   private JTextField txtFieldFirstName;
   private JTextField txtState;
   private JTextField txtZip;
@@ -49,11 +49,6 @@ public class LibraryMemberPanel extends JPanel implements StateChangeListener<Li
   private DefaultTableModel tableModel;
 
   private List<LibraryMember> libraryMembers;
-
-  public LibraryMemberPanel() {
-    Store.registerOnStateChange(AppStatePath.LIBRARY_MEMBER, this);
-    init();
-  }
 
   public void init() {
     setLayout(new BorderLayout());
@@ -251,8 +246,6 @@ public class LibraryMemberPanel extends JPanel implements StateChangeListener<Li
     tableModel.setColumnIdentifiers(columnsObjects);
     table =
         new JTable() {
-          private static final long serialVersionUID = -5795502418632762890L;
-
           public boolean isCellEditable(int row, int column) {
             return false;
           }

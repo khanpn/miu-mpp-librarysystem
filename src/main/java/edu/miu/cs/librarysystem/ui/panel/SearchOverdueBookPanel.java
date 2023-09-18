@@ -8,7 +8,6 @@ import edu.miu.cs.librarysystem.store.action.searchoverduebook.SearchOverdueBook
 import edu.miu.cs.librarysystem.store.core.Dispatcher;
 import edu.miu.cs.librarysystem.store.core.StateChangeEvent;
 import edu.miu.cs.librarysystem.store.core.StateChangeListener;
-import edu.miu.cs.librarysystem.store.core.Store;
 import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.SearchOverdueBookState;
@@ -16,26 +15,15 @@ import edu.miu.cs.librarysystem.util.TypographyUtils;
 import edu.miu.cs.librarysystem.util.Util;
 import edu.miu.cs.librarysystem.viewmodel.SearchOverdueBookViewModel;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 public class SearchOverdueBookPanel extends JPanel
-    implements StateChangeListener<SearchOverdueBookState> {
-  private boolean isInitialized = false;
-
-  private final List<String> defaultList = new ArrayList<>();
-  private final DefaultListModel<String> listModel = new DefaultListModel<>();
+    implements LibPanel, StateChangeListener<SearchOverdueBookState> {
   private JTextField searchField;
   DefaultTableModel model;
-
-  public SearchOverdueBookPanel() {
-    Store.registerOnStateChange(getListeningStatePath(), this);
-    init();
-  }
 
   public void init() {
     setLayout(new BorderLayout());
@@ -77,9 +65,6 @@ public class SearchOverdueBookPanel extends JPanel
     actionPanel.setLayout(new GridLayout(0, 6, 8, 0));
     actionPanel.setBounds(5, 5, 750, 40);
 
-    //    centerPanel.setLayout(null);
-    //    centerPanel.add(actionPanel);
-
     centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
     actionPanel.setPreferredSize(new Dimension(750, 40));
@@ -89,8 +74,6 @@ public class SearchOverdueBookPanel extends JPanel
     centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
     JPanel tablePanel = new JPanel();
-    //    tablePanel.setLayout(new BorderLayout(0, 0));
-    //    tablePanel.setBounds(5, 60, 600, 300);
 
     tablePanel.setLayout(new FlowLayout(0, 0, 0));
     tablePanel.setPreferredSize(new Dimension(750, 275));
@@ -99,7 +82,6 @@ public class SearchOverdueBookPanel extends JPanel
 
     JTable table =
         new JTable() {
-          private static final long serialVersionUID = 1L;
 
           public boolean isCellEditable(int row, int column) {
             return false;

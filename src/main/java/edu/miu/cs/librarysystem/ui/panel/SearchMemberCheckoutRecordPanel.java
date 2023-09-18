@@ -9,7 +9,6 @@ import edu.miu.cs.librarysystem.store.action.checkoutrecord.CheckoutRecordSearch
 import edu.miu.cs.librarysystem.store.core.Dispatcher;
 import edu.miu.cs.librarysystem.store.core.StateChangeEvent;
 import edu.miu.cs.librarysystem.store.core.StateChangeListener;
-import edu.miu.cs.librarysystem.store.core.Store;
 import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.CheckoutRecordState;
@@ -19,10 +18,9 @@ import edu.miu.cs.librarysystem.viewmodel.CheckoutRecordViewModel;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 public class SearchMemberCheckoutRecordPanel extends JPanel
-    implements StateChangeListener<CheckoutRecordState> {
+    implements LibPanel, StateChangeListener<CheckoutRecordState> {
 
   private JTextField txtFieldFirstName;
   private JTextField txtState;
@@ -32,13 +30,6 @@ public class SearchMemberCheckoutRecordPanel extends JPanel
   private JTextField txtFieldStreet;
   private JTextField txtFieldId;
   private JTextField txtTelephone;
-
-  DefaultTableModel model = new DefaultTableModel();
-
-  public SearchMemberCheckoutRecordPanel() {
-    Store.registerOnStateChange(getListeningStatePath(), this);
-    init();
-  }
 
   public void init() {
     setLayout(new BorderLayout());
@@ -131,13 +122,7 @@ public class SearchMemberCheckoutRecordPanel extends JPanel
     txtTelephone.setColumns(10);
 
     actionPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 4));
-
-    //    controlsPanel.setBounds(5, 5, 460, 219);
     controlsPanel.setLayout(new GridLayout(0, 2, 0, 0));
-
-    //    centerPanel.setLayout(null);
-    //    centerPanel.add(actionPanel);
-    //    centerPanel.add(controlsPanel);
 
     centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 

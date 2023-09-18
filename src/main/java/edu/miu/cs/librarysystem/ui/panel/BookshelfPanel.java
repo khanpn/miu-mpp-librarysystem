@@ -7,7 +7,6 @@ import edu.miu.cs.librarysystem.store.action.bookshelf.BookshelfSelectBookAction
 import edu.miu.cs.librarysystem.store.core.Dispatcher;
 import edu.miu.cs.librarysystem.store.core.StateChangeEvent;
 import edu.miu.cs.librarysystem.store.core.StateChangeListener;
-import edu.miu.cs.librarysystem.store.core.Store;
 import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.BookshelfState;
@@ -26,7 +25,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class BookshelfPanel extends JPanel implements StateChangeListener<BookshelfState> {
+public class BookshelfPanel extends JPanel
+    implements LibPanel, StateChangeListener<BookshelfState> {
   private JPanel contentPane;
   private JLabel bookshelfLabel;
   private JTextField searchField;
@@ -41,19 +41,7 @@ public class BookshelfPanel extends JPanel implements StateChangeListener<Booksh
   private DefaultTableModel bookTableModel;
   private List<Book> books;
 
-  public BookshelfPanel() {
-    Store.registerOnStateChange(getListeningStatePath(), this);
-    init();
-  }
-
-  public static void main(String[] args) {
-    JFrame jFrame = new JFrame();
-    jFrame.setContentPane(new BookshelfPanel());
-    jFrame.setSize(500, 400);
-    jFrame.setVisible(true);
-  }
-
-  private void init() {
+  public void init() {
     Util.addButtonHover(searchButton);
     Util.addButtonHover(clearSearchButton);
     Util.addButtonHover(addBookButton);
@@ -64,9 +52,9 @@ public class BookshelfPanel extends JPanel implements StateChangeListener<Booksh
     bookTableModel =
         new DefaultTableModel() {
           @Override
-          public Class getColumnClass(int columnIndex) {
-            Class[] types =
-                new Class[] {
+          public Class<?> getColumnClass(int columnIndex) {
+            Class<?>[] types =
+                new Class<?>[] {
                   String.class,
                   String.class,
                   Integer.class,

@@ -2,6 +2,7 @@ package edu.miu.cs.librarysystem.ui;
 
 import edu.miu.cs.librarysystem.store.core.StateChangeListener;
 import edu.miu.cs.librarysystem.store.core.Store;
+import edu.miu.cs.librarysystem.ui.window.LibWindow;
 import edu.miu.cs.librarysystem.ui.window.LoginWindow;
 import java.util.HashMap;
 import java.util.Map;
