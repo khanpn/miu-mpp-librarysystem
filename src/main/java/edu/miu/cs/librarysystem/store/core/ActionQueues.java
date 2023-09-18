@@ -15,7 +15,7 @@ public class ActionQueues {
     }
   }
 
-  static Optional<Action<?>> get() {
+  static Optional<Action<?>> poll() {
     return Optional.ofNullable(ACTION_QUEUE.poll());
   }
 }

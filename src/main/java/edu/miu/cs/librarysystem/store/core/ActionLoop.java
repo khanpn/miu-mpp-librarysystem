@@ -9,7 +9,7 @@ public class ActionLoop {
   public void start() {
     alive.set(true);
     while (alive.get()) {
-      ActionQueues.get()
+      ActionQueues.poll()
           .ifPresent(
               action -> Executors.newSingleThreadExecutor().execute(() -> Reducers.reduce(action)));
     }
