@@ -37,7 +37,7 @@ public final class LibrarySystem {
   }
 
   public static <T extends LibWindow> void closeWindow(Class<T> libWindowClass) {
-    Optional.ofNullable(CREATED_WINDOWS.get(libWindowClass))
+    Optional.ofNullable(CREATED_WINDOWS.remove(libWindowClass))
         .ifPresent(
             libWindow -> {
               unregisterStateChange(libWindow);

@@ -11,7 +11,6 @@ import edu.miu.cs.librarysystem.ui.panel.*;
 import edu.miu.cs.librarysystem.util.Util;
 import edu.miu.cs.librarysystem.viewmodel.MainWindowViewModel;
 import java.awt.*;
-import java.util.Optional;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -69,12 +68,8 @@ public class MainWindow extends JFrame implements LibWindow, StateChangeListener
   @Override
   public void onStateChanged(StateChangeEvent<MainWindowState> event) {
     MainWindowViewModel viewModel = event.getNewState().getData();
-    MenuItem previousMenuItem =
-        Optional.ofNullable(event.getOldState())
-            .map(state -> state.getData().getSelectedMenuItem())
-            .orElse(null);
     MenuItem selectedMenuItem = viewModel.getSelectedMenuItem();
-    if (previousMenuItem != selectedMenuItem) {
+    if (selectedMenuItem != null) {
       handleMenuItemChange(selectedMenuItem);
     }
   }
