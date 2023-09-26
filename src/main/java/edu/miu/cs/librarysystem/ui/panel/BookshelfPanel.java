@@ -14,7 +14,7 @@ import edu.miu.cs.librarysystem.ui.dialog.AddBookDialog;
 import edu.miu.cs.librarysystem.ui.dialog.CopyBookDialog;
 import edu.miu.cs.librarysystem.ui.renderer.AvailableBookCopyCellRenderer;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
-import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.util.UiUtils;
 import edu.miu.cs.librarysystem.viewmodel.BookshelfViewModel;
 import java.text.MessageFormat;
 import java.util.List;
@@ -42,10 +42,10 @@ public class BookshelfPanel extends JPanel
   private List<Book> books;
 
   public void init() {
-    Util.addButtonHover(searchButton);
-    Util.addButtonHover(clearSearchButton);
-    Util.addButtonHover(addBookButton);
-    Util.addButtonHover(copyBookButton);
+    UiUtils.addButtonHover(searchButton);
+    UiUtils.addButtonHover(clearSearchButton);
+    UiUtils.addButtonHover(addBookButton);
+    UiUtils.addButtonHover(copyBookButton);
     add(contentPane);
     TypographyUtils.applyHeadingStyle(bookshelfLabel);
     selectedBookLabel.setText("");
@@ -108,13 +108,13 @@ public class BookshelfPanel extends JPanel
     addBookButton.addActionListener(
         (e) -> {
           AddBookDialog addBookDialog = new AddBookDialog();
-          Util.centerFrameOnDesktop(addBookDialog);
+          UiUtils.centerFrameOnDesktop(addBookDialog);
           addBookDialog.setVisible(true);
         });
     copyBookButton.addActionListener(
         (e) -> {
           CopyBookDialog copyBookDialog = new CopyBookDialog();
-          Util.centerFrameOnDesktop(copyBookDialog);
+          UiUtils.centerFrameOnDesktop(copyBookDialog);
           copyBookDialog.setVisible(true);
         });
     Dispatcher.dispatch(new BookshelfLoadBooksAction());

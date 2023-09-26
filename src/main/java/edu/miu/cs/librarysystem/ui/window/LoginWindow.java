@@ -9,7 +9,7 @@ import edu.miu.cs.librarysystem.store.state.LoginState;
 import edu.miu.cs.librarysystem.ui.LibrarySystem;
 import edu.miu.cs.librarysystem.ui.listener.LoginSubmitActionListener;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
-import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.util.UiUtils;
 import java.awt.*;
 import javax.swing.*;
 
@@ -26,7 +26,7 @@ public class LoginWindow extends JFrame implements LibWindow, StateChangeListene
     setSize(500, 300);
     setTitle("Login to Library System");
     setContentPane(contentPanel);
-    Util.centerFrameOnDesktop(this);
+    UiUtils.centerFrameOnDesktop(this);
     TypographyUtils.applyHeadingStyle(headingLabel);
     TypographyUtils.applyDangerStyle(errorMessageLabel);
     errorMessageLabel.setText("");
@@ -37,7 +37,7 @@ public class LoginWindow extends JFrame implements LibWindow, StateChangeListene
             return new BasicAuthCredentials(usernameField.getText(), passwordField.getText());
           }
         });
-    Util.addButtonHover(loginButton);
+    UiUtils.addButtonHover(loginButton);
   }
 
   @Override

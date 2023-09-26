@@ -9,7 +9,7 @@ import edu.miu.cs.librarysystem.store.core.Store;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.BookshelfState;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
-import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.util.UiUtils;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
@@ -41,8 +41,8 @@ public class AddBookDialog extends JDialog {
     setContentPane(contentPane);
     setTitle("New Book");
     setSize(550, 310);
-    Util.addButtonHover(addBookButton);
-    Util.addButtonHover(cancelButton);
+    UiUtils.addButtonHover(addBookButton);
+    UiUtils.addButtonHover(cancelButton);
     TypographyUtils.applyHeadingStyle(headingLabel);
     TypographyUtils.applyDangerStyle(errorMessageLabel);
     errorMessageLabel.setText("");
@@ -118,7 +118,7 @@ public class AddBookDialog extends JDialog {
 
   public static void main(String[] args) {
     AddBookDialog addBookDialog = new AddBookDialog();
-    Util.centerFrameOnDesktop(addBookDialog);
+    UiUtils.centerFrameOnDesktop(addBookDialog);
     addBookDialog.setVisible(true);
   }
 

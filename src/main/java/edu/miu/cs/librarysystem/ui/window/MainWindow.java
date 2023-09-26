@@ -8,7 +8,7 @@ import edu.miu.cs.librarysystem.store.state.MainWindowState;
 import edu.miu.cs.librarysystem.ui.LibrarySystem;
 import edu.miu.cs.librarysystem.ui.MenuItem;
 import edu.miu.cs.librarysystem.ui.panel.*;
-import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.util.UiUtils;
 import edu.miu.cs.librarysystem.viewmodel.MainWindowViewModel;
 import java.awt.*;
 import javax.swing.*;
@@ -39,7 +39,7 @@ public class MainWindow extends JFrame implements LibWindow, StateChangeListener
 
     setSize(1100, 700);
     splitPane.setDividerLocation(300);
-    Util.centerFrameOnDesktop(this);
+    UiUtils.centerFrameOnDesktop(this);
   }
 
   private void repaintMenuPanel() {
@@ -60,7 +60,7 @@ public class MainWindow extends JFrame implements LibWindow, StateChangeListener
     mainPanel.validate();
     mainPanel.repaint();
 
-    ImageIcon image = new ImageIcon(Util.getImage("/library.jpg"));
+    ImageIcon image = new ImageIcon(UiUtils.getImage("/images/library.jpg"));
     mainPanel.add(new JLabel(image));
     mainPanel.setBackground(Color.WHITE);
   }

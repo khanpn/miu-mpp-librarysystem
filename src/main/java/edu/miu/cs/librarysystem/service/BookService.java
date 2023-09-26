@@ -8,9 +8,11 @@ import java.util.*;
 
 public class BookService {
   private static final BookService INSTANCE = new BookService();
-  private final DataAccess DA = new DataAccessFacade();
+  private final DataAccess DA;
 
-  private BookService() {}
+  private BookService() {
+    DA = DataAccessFacade.getInstance();
+  }
 
   public static BookService getInstance() {
     return INSTANCE;
@@ -30,10 +32,9 @@ public class BookService {
   }
 
   public void checkBook(String memberId, String isbn) throws LibrarySystemException {
-    DataAccess dao = new DataAccessFacade();
     // search member from data storage
     LibraryMember member =
-        dao.findMemberById(memberId)
+        DA.findMemberById(memberId)
             .orElseThrow(
                 () -> new LibrarySystemException("Member id ID: " + memberId + " not found."));
 
@@ -56,9 +57,9 @@ public class BookService {
     // Add checkoutEntry to CheckoutRecord
     member.checkout(copy, book.getMaxCheckoutLength());
     // save member
-    dao.saveNewMember(member);
+    DA.saveNewMember(member);
     // save book
-    dao.saveBook(book);
+    DA.saveBook(book);
   }
 
   private List<LibraryMember> getMembersHaveCheckoutRecords() {

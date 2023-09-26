@@ -14,10 +14,10 @@ public final class StoreModule {
   }
 
   public static void initialize(Set<Reducer> reducers) {
-    Executors.newSingleThreadExecutor().execute(() -> new ActionLoop().start());
     if (reducers == null) {
       return;
     }
+    Executors.newSingleThreadExecutor().execute(() -> new ActionLoop().start());
     ACTIVE_REDUCERS.addAll(reducers);
   }
 }

@@ -6,10 +6,12 @@ import edu.miu.cs.librarysystem.dataaccess.User;
 import java.util.Optional;
 
 public class UserService {
-  private final DataAccess DA = new DataAccessFacade();
+  private final DataAccess DA;
   private static final UserService INSTANCE = new UserService();
 
-  private UserService() {}
+  private UserService() {
+    DA = DataAccessFacade.getInstance();
+  }
 
   public static UserService getInstance() {
     return INSTANCE;

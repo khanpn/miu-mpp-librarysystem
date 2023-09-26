@@ -14,7 +14,7 @@ import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.CheckoutBookState;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
-import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.util.UiUtils;
 import edu.miu.cs.librarysystem.viewmodel.CheckoutBookViewModel;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
@@ -58,7 +58,7 @@ public class CheckoutBookPanel extends JPanel
     JPanel actionPanel = new JPanel();
 
     JButton checkoutBookButton = new JButton("CHECKOUT BOOK");
-    Util.addButtonHover(checkoutBookButton);
+    UiUtils.addButtonHover(checkoutBookButton);
     actionPanel.add(checkoutBookButton, BorderLayout.EAST);
     checkoutBookButton.setHorizontalAlignment(SwingConstants.RIGHT);
 

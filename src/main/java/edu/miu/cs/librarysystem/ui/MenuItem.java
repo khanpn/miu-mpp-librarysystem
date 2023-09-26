@@ -2,15 +2,16 @@ package edu.miu.cs.librarysystem.ui;
 
 import edu.miu.cs.librarysystem.store.action.mainwindow.MainWindowMenuSelectItemAction;
 import edu.miu.cs.librarysystem.store.core.Dispatcher;
-import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.util.UiUtils;
 import javax.swing.*;
 
 public enum MenuItem {
   BOOKSHELF("Bookshelf", "/images/add-copy-book-color.png", 30, 30) {
     @Override
     public JComponent create() {
-      JButton button = Util.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
-      Util.addButtonHover(button);
+      JButton button =
+          UiUtils.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
+      UiUtils.addButtonHover(button);
       button.addActionListener(e -> Dispatcher.dispatch(new MainWindowMenuSelectItemAction(this)));
       return button;
     }
@@ -18,8 +19,9 @@ public enum MenuItem {
   LIBRARY_MEMBER("Library Member", "/images/add-member-color.png", 30, 30) {
     @Override
     public JComponent create() {
-      JButton button = Util.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
-      Util.addButtonHover(button);
+      JButton button =
+          UiUtils.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
+      UiUtils.addButtonHover(button);
       button.addActionListener(e -> Dispatcher.dispatch(new MainWindowMenuSelectItemAction(this)));
       return button;
     }
@@ -27,8 +29,9 @@ public enum MenuItem {
   CHECKOUT_BOOK("Checkout Book", "/images/checkout-book-color.png", 30, 30) {
     @Override
     public JComponent create() {
-      JButton button = Util.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
-      Util.addButtonHover(button);
+      JButton button =
+          UiUtils.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
+      UiUtils.addButtonHover(button);
       button.addActionListener(e -> Dispatcher.dispatch(new MainWindowMenuSelectItemAction(this)));
       return button;
     }
@@ -36,8 +39,9 @@ public enum MenuItem {
   SEARCH_OVERDUE_BOOK("Search Overdue Book", "/images/search-overdue-color.png", 30, 30) {
     @Override
     public JComponent create() {
-      JButton button = Util.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
-      Util.addButtonHover(button);
+      JButton button =
+          UiUtils.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
+      UiUtils.addButtonHover(button);
       button.addActionListener(e -> Dispatcher.dispatch(new MainWindowMenuSelectItemAction(this)));
       return button;
     }
@@ -46,8 +50,9 @@ public enum MenuItem {
       "Search Member Checkout Record", "/images/search-checkout-color.png", 30, 30) {
     @Override
     public JComponent create() {
-      JButton button = Util.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
-      Util.addButtonHover(button);
+      JButton button =
+          UiUtils.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
+      UiUtils.addButtonHover(button);
       button.addActionListener(e -> Dispatcher.dispatch(new MainWindowMenuSelectItemAction(this)));
       return button;
     }
@@ -55,8 +60,9 @@ public enum MenuItem {
   LOGOUT("Logout", "/images/logout-color.png", 30, 30) {
     @Override
     public JComponent create() {
-      JButton button = Util.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
-      Util.addButtonHover(button);
+      JButton button =
+          UiUtils.buttonImage(getIconPath(), getName(), getIconWidth(), getIconHeight());
+      UiUtils.addButtonHover(button);
       button.addActionListener(e -> Dispatcher.dispatch(new MainWindowMenuSelectItemAction(this)));
       return button;
     }

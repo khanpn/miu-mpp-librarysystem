@@ -14,9 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public class DataAccessFacade implements DataAccess {
+public final class DataAccessFacade implements DataAccess {
 
   private static final DataAccessFacade INSTANCE = new DataAccessFacade();
+
+  private DataAccessFacade() {}
+
+  public static DataAccessFacade getInstance() {
+    return INSTANCE;
+  }
 
   enum StorageType {
     BOOKS,

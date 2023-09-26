@@ -12,7 +12,7 @@ import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.SearchOverdueBookState;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
-import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.util.UiUtils;
 import edu.miu.cs.librarysystem.viewmodel.SearchOverdueBookViewModel;
 import java.awt.*;
 import javax.swing.*;
@@ -55,11 +55,11 @@ public class SearchOverdueBookPanel extends JPanel
     actionPanel.add(new JLabel());
 
     JButton btnSearch = new JButton("SEARCH");
-    Util.addButtonHover(btnSearch);
+    UiUtils.addButtonHover(btnSearch);
     actionPanel.add(btnSearch);
 
     JButton btnClearSearch = new JButton("CLEAR");
-    Util.addButtonHover(btnClearSearch);
+    UiUtils.addButtonHover(btnClearSearch);
     actionPanel.add(btnClearSearch);
 
     actionPanel.setLayout(new GridLayout(0, 6, 8, 0));
@@ -158,7 +158,7 @@ public class SearchOverdueBookPanel extends JPanel
                                 overDueBook.getTitle(),
                                 overdueRecord.getCopy().getCopyNum(),
                                 "YES",
-                                overdueRecord.getDueDate().format(Util.DATE_FORMATTER),
+                                overdueRecord.getDueDate().format(UiUtils.DATE_FORMATTER),
                                 member.getFullName()
                               });
                         });

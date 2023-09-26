@@ -13,7 +13,7 @@ import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.CheckoutRecordState;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
-import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.util.UiUtils;
 import edu.miu.cs.librarysystem.viewmodel.CheckoutRecordViewModel;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
@@ -52,16 +52,16 @@ public class SearchMemberCheckoutRecordPanel extends JPanel
     actionPanel.setBounds(154, 231, 430, 39);
 
     JButton searchMemberButton = new JButton("SEARCH");
-    Util.addButtonHover(searchMemberButton);
+    UiUtils.addButtonHover(searchMemberButton);
     actionPanel.add(searchMemberButton);
     searchMemberButton.setHorizontalAlignment(SwingConstants.RIGHT);
 
     JButton printRecordButton = new JButton("PRINT RECORD");
-    Util.addButtonHover(printRecordButton);
+    UiUtils.addButtonHover(printRecordButton);
     actionPanel.add(printRecordButton);
 
     JButton clearFieldsButton = new JButton("CLEAR FIELDS");
-    Util.addButtonHover(clearFieldsButton);
+    UiUtils.addButtonHover(clearFieldsButton);
     actionPanel.add(clearFieldsButton);
 
     JPanel controlsPanel = new JPanel();

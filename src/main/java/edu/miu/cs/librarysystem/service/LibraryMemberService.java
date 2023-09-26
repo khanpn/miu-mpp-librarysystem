@@ -9,9 +9,11 @@ import java.util.Optional;
 public class LibraryMemberService {
 
   private static final LibraryMemberService INSTANCE = new LibraryMemberService();
-  private final DataAccess DA = new DataAccessFacade();
+  private final DataAccess DA;
 
-  private LibraryMemberService() {}
+  private LibraryMemberService() {
+    DA = DataAccessFacade.getInstance();
+  }
 
   public static LibraryMemberService getInstance() {
     return INSTANCE;

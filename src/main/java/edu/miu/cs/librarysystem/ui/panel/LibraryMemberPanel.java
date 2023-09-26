@@ -15,7 +15,7 @@ import edu.miu.cs.librarysystem.store.core.state.StatePath;
 import edu.miu.cs.librarysystem.store.state.AppStatePath;
 import edu.miu.cs.librarysystem.store.state.LibraryMemberState;
 import edu.miu.cs.librarysystem.util.TypographyUtils;
-import edu.miu.cs.librarysystem.util.Util;
+import edu.miu.cs.librarysystem.util.UiUtils;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -70,16 +70,16 @@ public class LibraryMemberPanel extends JPanel
     JPanel actionPanel = new JPanel();
 
     btnAdd = new JButton("ADD");
-    Util.addButtonHover(btnAdd);
+    UiUtils.addButtonHover(btnAdd);
     actionPanel.add(btnAdd, BorderLayout.EAST);
     actionPanel.add(btnAdd);
 
     btnDelete = new JButton("DELETE");
-    Util.addButtonHover(btnDelete);
+    UiUtils.addButtonHover(btnDelete);
     actionPanel.add(btnDelete);
 
     btnUpdate = new JButton("UPDATE");
-    Util.addButtonHover(btnUpdate);
+    UiUtils.addButtonHover(btnUpdate);
     actionPanel.add(btnUpdate);
 
     JPanel controlsPanel = new JPanel();
